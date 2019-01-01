@@ -1,2 +1,2 @@
-# learnToCode
-Our final project - coding is easy
+# Sit Planner
+Our final project - Smart sit planner
