@@ -10,6 +10,7 @@ namespace SitPlanner.Models
     {
         public int Id { get; set; }
 
+        
         public int NumberOfPeople { get; set; }
 
         public List<Restriction> Restrictions { get; set; }
