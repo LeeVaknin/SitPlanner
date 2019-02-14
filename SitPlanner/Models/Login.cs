@@ -8,8 +8,7 @@ namespace SitPlanner.Models
 {
     public class Login
     {
-        [Required]
-        [EmailAddress]
+        [Required, EmailAddress]
         public string Email { get; set; }
 
         [Required]
