@@ -9,7 +9,10 @@ namespace SitPlanner.Models
     {
         public int Id { get; set; }
 
-        public List<Invitee> Invitees { get; set; }
+        // Think how to handle those lists
+        public IList<Invitee> NotSittingTogether { get; set; }
+
+        public IList<Invitee> SittingTogether { get; set; }
 
     }
 }

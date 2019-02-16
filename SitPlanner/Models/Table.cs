@@ -1,4 +1,5 @@
 ﻿using SitPlanner.Models.Enums;
+using SitPlanner.Models.ManyToMany;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,10 +15,15 @@ namespace SitPlanner.Models
         [Required(ErrorMessage = "Please provide table capacity")]
         [Display(Name = "Tabale capacity")]
         public int CapacityOfPeople { get; set; }
-    
 
-        public List<Restriction> Restrictions { get; set; }
+        
+        [Display(Name = "Tabale type")]
+        public TableType TableType { get; set; }
 
-        public List<Invitee> Invitees { get; set; }
+        //public IList<Restriction> Restrictions { get; set; }
+        public IList<TableRestriction> TableRestrictions { get; set; }
+
+        // public List<Invitee> Invitees { get; set; }
+        public IList<InviteeTable> InviteeTables { get; set; }
     }
 }

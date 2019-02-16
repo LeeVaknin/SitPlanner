@@ -11,8 +11,7 @@ namespace SitPlanner.Models
         public int Id { get; set; }
 
         public TableType TableType { get; set; }
-
-        //not sure if needed
-        //public List<Table> Tables { get; set; }
+        
+        public List<Table> Tables { get; set; }
     }
 }

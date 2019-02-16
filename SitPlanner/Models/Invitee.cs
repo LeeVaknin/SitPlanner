@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SitPlanner.Models.Enums;
+using SitPlanner.Models.ManyToMany;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -35,9 +37,12 @@ namespace SitPlanner.Models
 
         public string Comment { get; set; }
 
-        public int TableId { get; set; }
-        public virtual Table Table { get; set; }
+        //    public int TableId { get; set; }
+        //    public virtual Table Table { get; set; }
+        public IList<InviteeTable> InviteeTables { get; set; }
 
-        public List<Category> Category { get; set; }
+        public IList<InviteeCategory> InviteeCategories { get; set; }
+
+        public IList<InviteeRestriction> InviteeRestrictions { get; set; }
     }
 }

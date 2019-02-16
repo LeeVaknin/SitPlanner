@@ -12,8 +12,9 @@ namespace SitPlanner.Models
 
         public LocationType LocationType { get; set; }
 
-        //not sure if needed
-        //public List<Table> Tables { get; set; }
+        public IList<Table> Tables { get; set; }
+
+      //  public IList<Invitee> Invitees { get; set; }
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using SitPlanner.Models.ManyToMany;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -23,6 +24,7 @@ namespace SitPlanner.Models
         [NotMapped]
         public string FullName => String.Join(" ", FirstName, LastName);
 
-        public List<Event> Events { get; set; }
+        public IList<UserEvent> UserEvents { get; set; }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SitPlanner.Models.ManyToMany;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace SitPlanner.Models
         [Required(ErrorMessage = "Please provide category name")]
         [Display(Name = "Category name")]
         public string Name { get; set; }
-        
-        public List<Invitee> Invitees { get; set; }
+
+        public IList<InviteeCategory> InviteeCategories { get; set; }
     }
 }
