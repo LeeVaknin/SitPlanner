@@ -37,12 +37,15 @@ namespace SitPlanner.Models
 
         public string Comment { get; set; }
 
-        //    public int TableId { get; set; }
-        //    public virtual Table Table { get; set; }
         public IList<InviteeTable> InviteeTables { get; set; }
 
         public IList<InviteeCategory> InviteeCategories { get; set; }
 
         public IList<InviteeRestriction> InviteeRestrictions { get; set; }
+
+
+        // TODO: Configure one-to-many with event
+        public int EventId { get; set; }
+        public virtual Event Event { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SitPlanner.Models.Enums
 {
-    //the enum describe the probelm
+    // The enum describe the probelm
     public enum LocationType
     {
         Noise,

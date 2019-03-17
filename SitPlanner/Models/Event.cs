@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,7 +23,6 @@ namespace SitPlanner.Models
         // --- Validate we need it ---------------
         public int NumOfTables { get; set; }
 
-        public int NumOfInvitees { get; set; }
 
         //----------------------------------------------
 
@@ -30,5 +30,11 @@ namespace SitPlanner.Models
 
         public IList<UserEvent> UserEvents { get; set; }
 
+
+        // TODO: Configure one-to-many with invitee
+        public IList<Invitee> Invitees { get; set; }
+
+        [NotMapped]
+        public int NumOfInvitees => Invitees.Count();
     }
 }
