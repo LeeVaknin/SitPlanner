@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 
 namespace SitPlanner.Models
 {
-    public class AccessibilityRestriction : Restriction
+    public class AccessibilityRestriction
     {
         public int Id { get; set; }
 
-        public TableType TableType { get; set; }
+        public string AccessibilityRestrictionName { get; set; }
         
         public List<Table> Tables { get; set; }
+
+        public List<Invitee> InviteesWithAccessibilityRestriction { get; set; }
+
     }
 }

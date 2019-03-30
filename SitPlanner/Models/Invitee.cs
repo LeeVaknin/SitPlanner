@@ -37,6 +37,7 @@ namespace SitPlanner.Models
 
         public string Comment { get; set; }
 
+        //part of the solution - do we want it here?
         public IList<InviteeTable> InviteeTables { get; set; }
 
         public IList<InviteeCategory> InviteeCategories { get; set; }

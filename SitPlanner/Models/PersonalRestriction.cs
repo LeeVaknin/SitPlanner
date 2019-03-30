@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 
 namespace SitPlanner.Models
 {
-    public class PersonalRestriction : Restriction
+    public class PersonalRestriction
     {
         public int Id { get; set; }
 
-        // Think how to handle those lists
+        public int InviteeId { get; set; }
+        public virtual Invitee Invitee { get; set; }
+
         public IList<Invitee> NotSittingTogether { get; set; }
 
         public IList<Invitee> SittingTogether { get; set; }
