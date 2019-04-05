@@ -13,13 +13,13 @@ namespace SitPlanner.Models
         public int Id { get; set; }
 
         public int EventId { get; set; }
-        //Do we need it? or it will be passed in the constractor? 
         public virtual Event Event { get; set; }
 
-        public int InviteeCategoryId { get; set; }
-        public virtual InviteeCategory InviteeCategory { get; set; }
+        public List<InviteeCategory> InviteeCategories { get; set; }
 
+        public List<PersonalRestriction> PersonalRestrictions { get; set; }
 
+        public List<AccessibilityRestriction> AccessibilityRestrictions { get; set; }
 
     }
 }

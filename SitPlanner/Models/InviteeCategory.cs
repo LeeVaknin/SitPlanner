@@ -7,6 +7,8 @@ namespace SitPlanner.Models.ManyToMany
 {
     public class InviteeCategory
     {
+        public int Id { get; set; }
+
         public int InviteeId { get; set; }
         public virtual Invitee Invitee { get; set; }
 

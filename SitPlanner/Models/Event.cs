@@ -35,9 +35,8 @@ namespace SitPlanner.Models
 
         public IList<Category> Categories { get; set; }
 
-        public IList<PersonalRestriction> PersonalRestrictions { get; set; }
+        public IList<EventOption> EventOptions { get; set; }
 
-        public IList<AccessibilityRestriction> AccessibilityRestrictions { get; set; }
 
     }
 }

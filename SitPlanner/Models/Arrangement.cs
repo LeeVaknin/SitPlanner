@@ -10,9 +10,10 @@ namespace SitPlanner.Models
     {
         public int Id { get; set; }
 
-        // public List<Table> Tables { get; set; }
+        public List<InviteeTable> InviteeTableList { get; set; }
 
-        public List<InviteeTable> InviteeTables { get; set; }
+        public int EventOptionId { get; set; }
+        public virtual EventOption EventOption { get; set; }
 
         public int EventId { get; set; }
         public virtual Event Event { get; set; }
