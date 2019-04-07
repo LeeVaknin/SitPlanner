@@ -21,7 +21,7 @@ namespace SitPlanner.Models
         public DateTime Date { get; set; }
 
 
-        public IList<UserEvent> UserEvents { get; set; }
+        public IList<User> Users { get; set; }
 
         public IList<Invitee> Invitees { get; set; }
 

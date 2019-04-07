@@ -24,7 +24,7 @@ namespace SitPlanner.Models
         [NotMapped]
         public string FullName => String.Join(" ", FirstName, LastName);
 
-        public IList<UserEvent> UserEvents { get; set; }
+        public IList<Event> Events { get; set; }
 
     }
 }

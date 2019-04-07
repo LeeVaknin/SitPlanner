@@ -20,15 +20,13 @@ namespace SitPlanner.Models
         [Display(Name = "Tabale type")]
         public TableType TableType { get; set; }
 
-        public int EventId { get; set; }
+        //public int EventId { get; set; }
         public virtual Event Event { get; set; }
-
-
 
         //public IList<Restriction> Restrictions { get; set; }
         //public IList<TableRestriction> TableRestrictions { get; set; }
 
-        // public List<Invitee> Invitees { get; set; }
+        //public List<Invitee> Invitees { get; set; }
         //public IList<InviteeTable> InviteeTables { get; set; }
     }
 }
