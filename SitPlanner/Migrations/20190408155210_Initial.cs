@@ -550,15 +550,15 @@ namespace SitPlanner.Migrations
                 table: "Invitee",
                 column: "EventId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Invitee_PersonalRestrictionId",
-                table: "Invitee",
-                column: "PersonalRestrictionId");
+            //migrationBuilder.CreateIndex(
+            //    name: "IX_Invitee_PersonalRestrictionId",
+            //    table: "Invitee",
+            //    column: "PersonalRestrictionId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Invitee_PersonalRestrictionId1",
-                table: "Invitee",
-                column: "PersonalRestrictionId1");
+            //migrationBuilder.CreateIndex(
+            //    name: "IX_Invitee_PersonalRestrictionId1",
+            //    table: "Invitee",
+            //    column: "PersonalRestrictionId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InviteeCategory_CategoryId",
