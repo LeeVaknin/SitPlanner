@@ -262,3 +262,5 @@ __pycache__/
 *.pdb
 *.dll
 .vs/SitPlanner/v15/.suo
+.vs/SitPlanner/DesignTimeBuild/.dtbcache
+.vs/SitPlanner/v15/.suo
