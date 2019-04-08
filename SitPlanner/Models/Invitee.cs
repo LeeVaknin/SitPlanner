@@ -1,5 +1,4 @@
 ﻿using SitPlanner.Models.Enums;
-using SitPlanner.Models.ManyToMany;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

@@ -1,4 +1,4 @@
-﻿using SitPlanner.Models.ManyToMany;
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,7 +21,7 @@ namespace SitPlanner.Models
         public DateTime Date { get; set; }
 
 
-        public IList<User> Users { get; set; }
+        //public List<User> Users { get; set; }
 
         public IList<Invitee> Invitees { get; set; }
 
