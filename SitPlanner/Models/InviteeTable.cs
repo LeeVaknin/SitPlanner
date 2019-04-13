@@ -1,5 +1,4 @@
-﻿using SitPlanner.Models.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SitPlanner.Models
 {
-    public class AccessibilityRestriction
+    public class InviteeTable
     {
         public int Id { get; set; }
 
@@ -16,8 +15,6 @@ namespace SitPlanner.Models
 
         public int TableId { get; set; }
         public virtual Table Table { get; set; }
-
-        public bool IsSittingAtTable { get; set; }
 
         public int EventOptionId { get; set; }
         public virtual EventOption EventOption { get; set; }

@@ -1,5 +1,4 @@
-﻿using SitPlanner.Models.ManyToMany;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -15,6 +14,8 @@ namespace SitPlanner.Models
         [Display(Name = "Category name")]
         public string Name { get; set; }
 
-        public IList<InviteeCategory> InviteeCategories { get; set; }
+        public int EventId { get; set; }
+        public virtual Event Event { get; set; }
+
     }
 }
