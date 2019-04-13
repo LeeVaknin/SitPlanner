@@ -20,13 +20,13 @@ namespace SitPlanner.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_InviteeCategory", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_InviteeCategory_Category_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Category",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                    table.PrimaryKey("PK_InviteeCategory", x => new { x.CategoryId, x.InviteeId });
+                    //table.ForeignKey(
+                    //    name: "FK_InviteeCategory_Category_CategoryId",
+                    //    column: x => x.CategoryId,
+                    //    principalTable: "Category",
+                    //    principalColumn: "Id",
+                    //    onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_InviteeCategory_Event_EventId",
                         column: x => x.EventId,
@@ -39,12 +39,12 @@ namespace SitPlanner.Migrations
                         principalTable: "EventOption",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_InviteeCategory_Invitee_InviteeId",
-                        column: x => x.InviteeId,
-                        principalTable: "Invitee",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                    //table.ForeignKey(
+                    //    name: "FK_InviteeCategory_Invitee_InviteeId",
+                    //    column: x => x.InviteeId,
+                    //    principalTable: "Invitee",
+                    //    principalColumn: "Id",
+                    //    onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(
