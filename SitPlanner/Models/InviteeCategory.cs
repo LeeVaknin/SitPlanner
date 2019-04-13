@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SitPlanner.Models
 {
-    
     public class InviteeCategory
     {
         public int Id { get; set; }

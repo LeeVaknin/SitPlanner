@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SitPlanner.Models
 {
-    [NotMapped]
     public class AccessibilityRestriction
     {
         public int Id { get; set; }
