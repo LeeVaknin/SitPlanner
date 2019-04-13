@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace SitPlanner.Models
 {
@@ -11,9 +12,11 @@ namespace SitPlanner.Models
     {
         public int Id { get; set; }
 
+        [Key]
         public int InviteeId { get; set; }
         public virtual Invitee Invitee { get; set; }
 
+        [Key]
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }
 
