@@ -25,13 +25,13 @@ namespace SitPlanner.Data
         
         public DbSet<SitPlanner.Models.EventOption> EventOption { get; set; }
 
-        //public DbSet<SitPlanner.Models.AccessibilityRestriction> AccessibilityRestriction { get; set; }
+        public DbSet<SitPlanner.Models.AccessibilityRestriction> AccessibilityRestriction { get; set; }
 
         public DbSet<SitPlanner.Models.InviteeCategory> InviteeCategory { get; set; }
 
-        //public DbSet<SitPlanner.Models.InviteeTable> InviteeTable { get; set; }
+        public DbSet<SitPlanner.Models.InviteeTable> InviteeTable { get; set; }
 
-        //public DbSet<SitPlanner.Models.PersonalRestriction> PersonalRestriction { get; set; }
+        public DbSet<SitPlanner.Models.PersonalRestriction> PersonalRestriction { get; set; }
 
         //public DbSet<SitPlanner.Models.Login> Login { get; set; }
 
