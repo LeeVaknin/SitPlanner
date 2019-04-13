@@ -6,7 +6,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SitPlanner.Models
 {
-    [NotMapped]
     public class PersonalRestriction
     {
         public int Id { get; set; }

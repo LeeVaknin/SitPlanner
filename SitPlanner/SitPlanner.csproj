@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190413114941_createConnections.cs" />
+    <Compile Remove="Migrations\20190413114941_createConnections.Designer.cs" />
+    <Compile Remove="Migrations\20190413121452_createConnections.cs" />
+    <Compile Remove="Migrations\20190413121452_createConnections.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="bootstrap" Version="4.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />

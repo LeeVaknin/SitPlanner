@@ -6,7 +6,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SitPlanner.Models
 {
-    [NotMapped]
     public class InviteeTable
     {
         public int Id { get; set; }
