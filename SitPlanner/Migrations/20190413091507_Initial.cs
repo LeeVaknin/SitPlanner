@@ -224,7 +224,7 @@ namespace SitPlanner.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: false),
-                    EventId = table.Column<int>(nullable: true)
+                    EventId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -234,7 +234,7 @@ namespace SitPlanner.Migrations
                         column: x => x.EventId,
                         principalTable: "Event",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -243,7 +243,7 @@ namespace SitPlanner.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    EventId = table.Column<int>(nullable: true)
+                    EventId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -253,159 +253,7 @@ namespace SitPlanner.Migrations
                         column: x => x.EventId,
                         principalTable: "Event",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Arrangement",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    EventOptionId = table.Column<int>(nullable: true),
-                    EventId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Arrangement", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Arrangement_Event_EventId",
-                        column: x => x.EventId,
-                        principalTable: "Event",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Arrangement_EventOption_EventOptionId",
-                        column: x => x.EventOptionId,
-                        principalTable: "EventOption",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Table",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CapacityOfPeople = table.Column<int>(nullable: false),
-                    TableType = table.Column<int>(nullable: false),
-                    EventId = table.Column<int>(nullable: true),
-                    AccessibilityRestrictionId = table.Column<int>(nullable: true),
-                    AccessibilityRestrictionId1 = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Table", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Table_Event_EventId",
-                        column: x => x.EventId,
-                        principalTable: "Event",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InviteeTable",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    InviteeId = table.Column<int>(nullable: true),
-                    TableId = table.Column<int>(nullable: true),
-                    EventOptionId = table.Column<int>(nullable: true),
-                    EventId = table.Column<int>(nullable: true),
-                    ArrangementId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InviteeTable", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_InviteeTable_Arrangement_ArrangementId",
-                        column: x => x.ArrangementId,
-                        principalTable: "Arrangement",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_InviteeTable_Event_EventId",
-                        column: x => x.EventId,
-                        principalTable: "Event",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_InviteeTable_EventOption_EventOptionId",
-                        column: x => x.EventOptionId,
-                        principalTable: "EventOption",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_InviteeTable_Table_TableId",
-                        column: x => x.TableId,
-                        principalTable: "Table",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InviteeCategory",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    InviteeId = table.Column<int>(nullable: true),
-                    CategoryId = table.Column<int>(nullable: true),
-                    EventOptionId = table.Column<int>(nullable: true),
-                    EventId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InviteeCategory", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_InviteeCategory_Category_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Category",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_InviteeCategory_Event_EventId",
-                        column: x => x.EventId,
-                        principalTable: "Event",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_InviteeCategory_EventOption_EventOptionId",
-                        column: x => x.EventOptionId,
-                        principalTable: "EventOption",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AccessibilityRestriction",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    AccessibilityRestrictionName = table.Column<string>(nullable: true),
-                    InviteeId = table.Column<int>(nullable: true),
-                    EventOptionId = table.Column<int>(nullable: true),
-                    EventId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AccessibilityRestriction", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AccessibilityRestriction_Event_EventId",
-                        column: x => x.EventId,
-                        principalTable: "Event",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_AccessibilityRestriction_EventOption_EventOptionId",
-                        column: x => x.EventOptionId,
-                        principalTable: "EventOption",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -420,7 +268,7 @@ namespace SitPlanner.Migrations
                     Address = table.Column<string>(nullable: true),
                     IsComing = table.Column<bool>(nullable: false),
                     Comment = table.Column<string>(nullable: true),
-                    EventId = table.Column<int>(nullable: true),
+                    EventId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -430,66 +278,29 @@ namespace SitPlanner.Migrations
                         column: x => x.EventId,
                         principalTable: "Event",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "PersonalRestriction",
+                name: "Table",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    InviteeId = table.Column<int>(nullable: true),
-                    EventId = table.Column<int>(nullable: true),
-                    EventOptionId = table.Column<int>(nullable: true)
+                    CapacityOfPeople = table.Column<int>(nullable: false),
+                    TableType = table.Column<int>(nullable: false),
+                    EventId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PersonalRestriction", x => x.Id);
+                    table.PrimaryKey("PK_Table", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PersonalRestriction_Event_EventId",
+                        name: "FK_Table_Event_EventId",
                         column: x => x.EventId,
                         principalTable: "Event",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_PersonalRestriction_EventOption_EventOptionId",
-                        column: x => x.EventOptionId,
-                        principalTable: "EventOption",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_PersonalRestriction_Invitee_InviteeId",
-                        column: x => x.InviteeId,
-                        principalTable: "Invitee",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AccessibilityRestriction_EventId",
-                table: "AccessibilityRestriction",
-                column: "EventId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AccessibilityRestriction_EventOptionId",
-                table: "AccessibilityRestriction",
-                column: "EventOptionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AccessibilityRestriction_InviteeId",
-                table: "AccessibilityRestriction",
-                column: "InviteeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Arrangement_EventId",
-                table: "Arrangement",
-                column: "EventId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Arrangement_EventOptionId",
-                table: "Arrangement",
-                column: "EventOptionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -550,170 +361,14 @@ namespace SitPlanner.Migrations
                 table: "Invitee",
                 column: "EventId");
 
-            //migrationBuilder.CreateIndex(
-            //    name: "IX_Invitee_PersonalRestrictionId",
-            //    table: "Invitee",
-            //    column: "PersonalRestrictionId");
-
-            //migrationBuilder.CreateIndex(
-            //    name: "IX_Invitee_PersonalRestrictionId1",
-            //    table: "Invitee",
-            //    column: "PersonalRestrictionId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InviteeCategory_CategoryId",
-                table: "InviteeCategory",
-                column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InviteeCategory_EventId",
-                table: "InviteeCategory",
-                column: "EventId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InviteeCategory_EventOptionId",
-                table: "InviteeCategory",
-                column: "EventOptionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InviteeCategory_InviteeId",
-                table: "InviteeCategory",
-                column: "InviteeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InviteeTable_ArrangementId",
-                table: "InviteeTable",
-                column: "ArrangementId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InviteeTable_EventId",
-                table: "InviteeTable",
-                column: "EventId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InviteeTable_EventOptionId",
-                table: "InviteeTable",
-                column: "EventOptionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InviteeTable_InviteeId",
-                table: "InviteeTable",
-                column: "InviteeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InviteeTable_TableId",
-                table: "InviteeTable",
-                column: "TableId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PersonalRestriction_EventId",
-                table: "PersonalRestriction",
-                column: "EventId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PersonalRestriction_EventOptionId",
-                table: "PersonalRestriction",
-                column: "EventOptionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PersonalRestriction_InviteeId",
-                table: "PersonalRestriction",
-                column: "InviteeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Table_AccessibilityRestrictionId",
-                table: "Table",
-                column: "AccessibilityRestrictionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Table_AccessibilityRestrictionId1",
-                table: "Table",
-                column: "AccessibilityRestrictionId1");
-
             migrationBuilder.CreateIndex(
                 name: "IX_Table_EventId",
                 table: "Table",
                 column: "EventId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Table_AccessibilityRestriction_AccessibilityRestrictionId",
-                table: "Table",
-                column: "AccessibilityRestrictionId",
-                principalTable: "AccessibilityRestriction",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Table_AccessibilityRestriction_AccessibilityRestrictionId1",
-                table: "Table",
-                column: "AccessibilityRestrictionId1",
-                principalTable: "AccessibilityRestriction",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_InviteeTable_Invitee_InviteeId",
-                table: "InviteeTable",
-                column: "InviteeId",
-                principalTable: "Invitee",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_InviteeCategory_Invitee_InviteeId",
-                table: "InviteeCategory",
-                column: "InviteeId",
-                principalTable: "Invitee",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_AccessibilityRestriction_Invitee_InviteeId",
-                table: "AccessibilityRestriction",
-                column: "InviteeId",
-                principalTable: "Invitee",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            //migrationBuilder.AddForeignKey(
-            //    name: "FK_Invitee_PersonalRestriction_PersonalRestrictionId",
-            //    table: "Invitee",
-            //    column: "PersonalRestrictionId",
-            //    principalTable: "PersonalRestriction",
-            //    principalColumn: "Id",
-            //    onDelete: ReferentialAction.Restrict);
-
-            //migrationBuilder.AddForeignKey(
-            //    name: "FK_Invitee_PersonalRestriction_PersonalRestrictionId1",
-            //    table: "Invitee",
-            //    column: "PersonalRestrictionId1",
-            //    principalTable: "PersonalRestriction",
-            //    principalColumn: "Id",
-            //    onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_EventOption_Event_EventId",
-                table: "EventOption");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Invitee_Event_EventId",
-                table: "Invitee");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_PersonalRestriction_Event_EventId",
-                table: "PersonalRestriction");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_PersonalRestriction_EventOption_EventOptionId",
-                table: "PersonalRestriction");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_PersonalRestriction_Invitee_InviteeId",
-                table: "PersonalRestriction");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -730,37 +385,7 @@ namespace SitPlanner.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "InviteeCategory");
-
-            migrationBuilder.DropTable(
-                name: "InviteeTable");
-
-            migrationBuilder.DropTable(
-                name: "Role");
-
-            migrationBuilder.DropTable(
-                name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Category");
-
-            migrationBuilder.DropTable(
-                name: "Arrangement");
-
-            migrationBuilder.DropTable(
-                name: "Table");
-
-            migrationBuilder.DropTable(
-                name: "AccessibilityRestriction");
-
-            migrationBuilder.DropTable(
-                name: "Event");
-
-            migrationBuilder.DropTable(
-                name: "User");
 
             migrationBuilder.DropTable(
                 name: "EventOption");
@@ -769,7 +394,22 @@ namespace SitPlanner.Migrations
                 name: "Invitee");
 
             migrationBuilder.DropTable(
-                name: "PersonalRestriction");
+                name: "Role");
+
+            migrationBuilder.DropTable(
+                name: "Table");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Event");
+
+            migrationBuilder.DropTable(
+                name: "User");
         }
     }
 }

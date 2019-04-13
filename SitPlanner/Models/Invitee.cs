@@ -36,8 +36,7 @@ namespace SitPlanner.Models
 
         public string Comment { get; set; }
 
-        // TODO: Configure one-to-many with event
-        //public int EventId { get; set; }
+        public int EventId { get; set; }
         public virtual Event Event { get; set; }
 
     }

@@ -14,9 +14,8 @@ namespace SitPlanner.Models
         [Display(Name = "Category name")]
         public string Name { get; set; }
 
-        //public int EventId { get; set; }
+        public int EventId { get; set; }
         public virtual Event Event { get; set; }
 
-        //public IList<InviteeCategory> InviteeCategories { get; set; }
     }
 }

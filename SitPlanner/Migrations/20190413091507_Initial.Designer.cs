@@ -10,7 +10,7 @@ using SitPlanner.Data;
 namespace SitPlanner.Migrations
 {
     [DbContext(typeof(SitPlannerContext))]
-    [Migration("20190408155210_Initial")]
+    [Migration("20190413091507_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -186,57 +186,13 @@ namespace SitPlanner.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("SitPlanner.Models.AccessibilityRestriction", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AccessibilityRestrictionName");
-
-                    b.Property<int?>("EventId");
-
-                    b.Property<int?>("EventOptionId");
-
-                    b.Property<int?>("InviteeId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EventId");
-
-                    b.HasIndex("EventOptionId");
-
-                    b.HasIndex("InviteeId");
-
-                    b.ToTable("AccessibilityRestriction");
-                });
-
-            modelBuilder.Entity("SitPlanner.Models.Arrangement", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("EventId");
-
-                    b.Property<int?>("EventOptionId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EventId");
-
-                    b.HasIndex("EventOptionId");
-
-                    b.ToTable("Arrangement");
-                });
-
             modelBuilder.Entity("SitPlanner.Models.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("EventId");
+                    b.Property<int>("EventId");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -274,7 +230,7 @@ namespace SitPlanner.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("EventId");
+                    b.Property<int>("EventId");
 
                     b.HasKey("Id");
 
@@ -293,7 +249,7 @@ namespace SitPlanner.Migrations
 
                     b.Property<string>("Comment");
 
-                    b.Property<int?>("EventId");
+                    b.Property<int>("EventId");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -305,102 +261,13 @@ namespace SitPlanner.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<int?>("PersonalRestrictionId");
-
-                    b.Property<int?>("PersonalRestrictionId1");
-
                     b.Property<int>("PhoneNumber");
 
                     b.HasKey("Id");
 
                     b.HasIndex("EventId");
 
-                    b.HasIndex("PersonalRestrictionId");
-
-                    b.HasIndex("PersonalRestrictionId1");
-
                     b.ToTable("Invitee");
-                });
-
-            modelBuilder.Entity("SitPlanner.Models.InviteeCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CategoryId");
-
-                    b.Property<int?>("EventId");
-
-                    b.Property<int?>("EventOptionId");
-
-                    b.Property<int?>("InviteeId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("EventId");
-
-                    b.HasIndex("EventOptionId");
-
-                    b.HasIndex("InviteeId");
-
-                    b.ToTable("InviteeCategory");
-                });
-
-            modelBuilder.Entity("SitPlanner.Models.InviteeTable", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("ArrangementId");
-
-                    b.Property<int?>("EventId");
-
-                    b.Property<int?>("EventOptionId");
-
-                    b.Property<int?>("InviteeId");
-
-                    b.Property<int?>("TableId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ArrangementId");
-
-                    b.HasIndex("EventId");
-
-                    b.HasIndex("EventOptionId");
-
-                    b.HasIndex("InviteeId");
-
-                    b.HasIndex("TableId");
-
-                    b.ToTable("InviteeTable");
-                });
-
-            modelBuilder.Entity("SitPlanner.Models.PersonalRestriction", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("EventId");
-
-                    b.Property<int?>("EventOptionId");
-
-                    b.Property<int?>("InviteeId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EventId");
-
-                    b.HasIndex("EventOptionId");
-
-                    b.HasIndex("InviteeId");
-
-                    b.ToTable("PersonalRestriction");
                 });
 
             modelBuilder.Entity("SitPlanner.Models.Role", b =>
@@ -426,21 +293,13 @@ namespace SitPlanner.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AccessibilityRestrictionId");
-
-                    b.Property<int?>("AccessibilityRestrictionId1");
-
                     b.Property<int>("CapacityOfPeople");
 
-                    b.Property<int?>("EventId");
+                    b.Property<int>("EventId");
 
                     b.Property<int>("TableType");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AccessibilityRestrictionId");
-
-                    b.HasIndex("AccessibilityRestrictionId1");
 
                     b.HasIndex("EventId");
 
@@ -539,37 +398,12 @@ namespace SitPlanner.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SitPlanner.Models.AccessibilityRestriction", b =>
-                {
-                    b.HasOne("SitPlanner.Models.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId");
-
-                    b.HasOne("SitPlanner.Models.EventOption", "EventOption")
-                        .WithMany("AccessibilityRestrictions")
-                        .HasForeignKey("EventOptionId");
-
-                    b.HasOne("SitPlanner.Models.Invitee", "Invitee")
-                        .WithMany()
-                        .HasForeignKey("InviteeId");
-                });
-
-            modelBuilder.Entity("SitPlanner.Models.Arrangement", b =>
-                {
-                    b.HasOne("SitPlanner.Models.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId");
-
-                    b.HasOne("SitPlanner.Models.EventOption", "EventOption")
-                        .WithMany()
-                        .HasForeignKey("EventOptionId");
-                });
-
             modelBuilder.Entity("SitPlanner.Models.Category", b =>
                 {
                     b.HasOne("SitPlanner.Models.Event", "Event")
                         .WithMany("Categories")
-                        .HasForeignKey("EventId");
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SitPlanner.Models.Event", b =>
@@ -583,94 +417,24 @@ namespace SitPlanner.Migrations
                 {
                     b.HasOne("SitPlanner.Models.Event", "Event")
                         .WithMany("EventOptions")
-                        .HasForeignKey("EventId");
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SitPlanner.Models.Invitee", b =>
                 {
                     b.HasOne("SitPlanner.Models.Event", "Event")
                         .WithMany("Invitees")
-                        .HasForeignKey("EventId");
-
-                    b.HasOne("SitPlanner.Models.PersonalRestriction")
-                        .WithMany("CannottSitWith")
-                        .HasForeignKey("PersonalRestrictionId");
-
-                    b.HasOne("SitPlanner.Models.PersonalRestriction")
-                        .WithMany("MustSitWith")
-                        .HasForeignKey("PersonalRestrictionId1");
-                });
-
-            modelBuilder.Entity("SitPlanner.Models.InviteeCategory", b =>
-                {
-                    b.HasOne("SitPlanner.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
-
-                    b.HasOne("SitPlanner.Models.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId");
-
-                    b.HasOne("SitPlanner.Models.EventOption", "EventOption")
-                        .WithMany("InviteeCategories")
-                        .HasForeignKey("EventOptionId");
-
-                    b.HasOne("SitPlanner.Models.Invitee", "Invitee")
-                        .WithMany()
-                        .HasForeignKey("InviteeId");
-                });
-
-            modelBuilder.Entity("SitPlanner.Models.InviteeTable", b =>
-                {
-                    b.HasOne("SitPlanner.Models.Arrangement")
-                        .WithMany("InviteeTableList")
-                        .HasForeignKey("ArrangementId");
-
-                    b.HasOne("SitPlanner.Models.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId");
-
-                    b.HasOne("SitPlanner.Models.EventOption", "EventOption")
-                        .WithMany()
-                        .HasForeignKey("EventOptionId");
-
-                    b.HasOne("SitPlanner.Models.Invitee", "Invitee")
-                        .WithMany()
-                        .HasForeignKey("InviteeId");
-
-                    b.HasOne("SitPlanner.Models.Table", "Table")
-                        .WithMany()
-                        .HasForeignKey("TableId");
-                });
-
-            modelBuilder.Entity("SitPlanner.Models.PersonalRestriction", b =>
-                {
-                    b.HasOne("SitPlanner.Models.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId");
-
-                    b.HasOne("SitPlanner.Models.EventOption", "EventOption")
-                        .WithMany("PersonalRestrictions")
-                        .HasForeignKey("EventOptionId");
-
-                    b.HasOne("SitPlanner.Models.Invitee", "Invitee")
-                        .WithMany()
-                        .HasForeignKey("InviteeId");
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SitPlanner.Models.Table", b =>
                 {
-                    b.HasOne("SitPlanner.Models.AccessibilityRestriction")
-                        .WithMany("IncompatibleTables")
-                        .HasForeignKey("AccessibilityRestrictionId");
-
-                    b.HasOne("SitPlanner.Models.AccessibilityRestriction")
-                        .WithMany("RecommendedTables")
-                        .HasForeignKey("AccessibilityRestrictionId1");
-
                     b.HasOne("SitPlanner.Models.Event", "Event")
                         .WithMany("Tables")
-                        .HasForeignKey("EventId");
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

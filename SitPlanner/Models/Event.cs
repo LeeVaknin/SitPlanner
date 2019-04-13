@@ -25,13 +25,13 @@ namespace SitPlanner.Models
 
         public IList<Invitee> Invitees { get; set; }
 
-        [NotMapped]
-        public int NumOfInvitees => Invitees.Count();
+        //[NotMapped]
+        //public int NumOfInvitees => Invitees.Count();
 
         public IList<Table> Tables { get; set; }
 
-        [NotMapped]
-        public int NumOfTables => Tables.Count();
+        //[NotMapped]
+        //public int NumOfTables => Tables.Count();
 
         public IList<Category> Categories { get; set; }
 
