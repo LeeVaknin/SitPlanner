@@ -21,7 +21,8 @@ namespace SitPlanner.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AccessibilityRestriction", x => x.Id);
+                    //table.PrimaryKey("PK_AccessibilityRestriction", x => x.Id);
+                    table.PrimaryKey("PK_AccessibilityRestriction", x => new { x.InviteeId, x.TableId });
                     table.ForeignKey(
                         name: "FK_AccessibilityRestriction_Event_EventId",
                         column: x => x.EventId,
@@ -34,18 +35,18 @@ namespace SitPlanner.Migrations
                         principalTable: "EventOption",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_AccessibilityRestriction_Invitee_InviteeId",
-                        column: x => x.InviteeId,
-                        principalTable: "Invitee",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_AccessibilityRestriction_Table_TableId",
-                        column: x => x.TableId,
-                        principalTable: "Table",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                    //table.ForeignKey(
+                    //    name: "FK_AccessibilityRestriction_Invitee_InviteeId",
+                    //    column: x => x.InviteeId,
+                    //    principalTable: "Invitee",
+                    //    principalColumn: "Id",
+                    //    onDelete: ReferentialAction.NoAction);
+                    //table.ForeignKey(
+                    //    name: "FK_AccessibilityRestriction_Table_TableId",
+                    //    column: x => x.TableId,
+                    //    principalTable: "Table",
+                    //    principalColumn: "Id",
+                    //    onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -61,7 +62,8 @@ namespace SitPlanner.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_InviteeTable", x => x.Id);
+                    //table.PrimaryKey("PK_InviteeTable", x => x.Id);
+                    table.PrimaryKey("PK_InviteeTable", x => new { x.InviteeId, x.TableId });
                     table.ForeignKey(
                         name: "FK_InviteeTable_Event_EventId",
                         column: x => x.EventId,
@@ -74,18 +76,18 @@ namespace SitPlanner.Migrations
                         principalTable: "EventOption",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_InviteeTable_Invitee_InviteeId",
-                        column: x => x.InviteeId,
-                        principalTable: "Invitee",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_InviteeTable_Table_TableId",
-                        column: x => x.TableId,
-                        principalTable: "Table",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                    //table.ForeignKey(
+                    //    name: "FK_InviteeTable_Invitee_InviteeId",
+                    //    column: x => x.InviteeId,
+                    //    principalTable: "Invitee",
+                    //    principalColumn: "Id",
+                    //    onDelete: ReferentialAction.NoAction);
+                    //table.ForeignKey(
+                    //    name: "FK_InviteeTable_Table_TableId",
+                    //    column: x => x.TableId,
+                    //    principalTable: "Table",
+                    //    principalColumn: "Id",
+                    //    onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -102,7 +104,8 @@ namespace SitPlanner.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PersonalRestriction", x => x.Id);
+                    //table.PrimaryKey("PK_PersonalRestriction", x => x.Id);
+                    table.PrimaryKey("PK_PersonalRestriction", x => new { x.MainInviteeId, x.SecondaryInviteeId });
                     table.ForeignKey(
                         name: "FK_PersonalRestriction_Event_EventId",
                         column: x => x.EventId,
@@ -115,18 +118,18 @@ namespace SitPlanner.Migrations
                         principalTable: "EventOption",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_PersonalRestriction_Invitee_MainInviteeId",
-                        column: x => x.MainInviteeId,
-                        principalTable: "Invitee",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_PersonalRestriction_Invitee_SecondaryInviteeId",
-                        column: x => x.SecondaryInviteeId,
-                        principalTable: "Invitee",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                    //table.ForeignKey(
+                    //    name: "FK_PersonalRestriction_Invitee_MainInviteeId",
+                    //    column: x => x.MainInviteeId,
+                    //    principalTable: "Invitee",
+                    //    principalColumn: "Id",
+                    //    onDelete: ReferentialAction.NoAction);
+                    //table.ForeignKey(
+                    //    name: "FK_PersonalRestriction_Invitee_SecondaryInviteeId",
+                    //    column: x => x.SecondaryInviteeId,
+                    //    principalTable: "Invitee",
+                    //    principalColumn: "Id",
+                    //    onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(
