@@ -12,11 +12,9 @@ namespace SitPlanner.Models
     {
         public int Id { get; set; }
 
-        [Key]
         public int InviteeId { get; set; }
         public virtual Invitee Invitee { get; set; }
 
-        [Key]
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }
 
