@@ -18,10 +18,19 @@ namespace SitPlanner.Models
 
         
         [Display(Name = "Tabale type")]
-        public TableType TableType { get; set; }
+        public TableTypeEnum TableType { get; set; }
 
         public int EventId { get; set; }
         public virtual Event Event { get; set; }
+
+        public enum TableTypeEnum
+        {
+            High,
+            Low,
+            Square,
+            Round,
+            Rectangle
+        }
 
     }
 }
