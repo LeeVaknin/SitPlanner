@@ -6,35 +6,49 @@
     <title>@ViewData["Title"] - SitPlanner</title>
 
     <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/minty.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">
+            <img src="~/images/Logo.png" alt="Logo" style="width:80px;">
+        </a>
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">SitPlanner</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">SeatMe</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a asp-area="" asp-controller="Events" asp-action="Index" class="nav-link">Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="" asp-controller="Categories" asp-action="Index" class="nav-link">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="" asp-controller="Invitees" asp-action="Index" class="nav-link">Invitees</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="" asp-controller="InviteeCategories" asp-action="Index" class="nav-link">InviteeCategories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="" asp-controller="PersonalRestrictions" asp-action="Index" class="nav-link">PersonalRestrictions</a>
+                    </li>
                 </ul>
-                <partial name="_LoginPartial" />
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                </form>
             </div>
         </div>
     </nav>
@@ -45,7 +59,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2019 - SitPlanner</p>
+            <p>&copy; 2019 - SeatMe</p>
         </footer>
     </div>
 

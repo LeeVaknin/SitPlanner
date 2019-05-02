@@ -11,8 +11,11 @@ namespace SitPlanner.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Please provide category name")]
+        [Display(Name = "Category name")]
         public string Name { get; set; }
-        
-        public List<Invitee> Invitees { get; set; }
+
+        public int EventId { get; set; }
+        public virtual Event Event { get; set; }
+
     }
 }

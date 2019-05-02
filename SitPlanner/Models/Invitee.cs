@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SitPlanner.Models.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -25,16 +26,18 @@ namespace SitPlanner.Models
         public string FullName => String.Join(" ", FirstName, LastName);
 
         [Required(ErrorMessage = "Please provide phone number")]
+        [Display(Name = "Phone number")]
         public int PhoneNumber { get; set; }
 
         public string Address { get; set; }
 
+        [Display(Name = "Confirmed invatation ?")]
         public bool IsComing { get; set; }
 
         public string Comment { get; set; }
 
-        public Table Table { get; set; }
+        public int EventId { get; set; }
+        public virtual Event Event { get; set; }
 
-        public List<Category> Category { get; set; }
     }
 }
