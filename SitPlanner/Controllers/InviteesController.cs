@@ -22,12 +22,35 @@ namespace SitPlanner.Controllers
         // GET: Invitees
         public async Task<IActionResult> Index()
         {
-            var sitPlannerContext = _context.Invitee.Include(i => i.Event);
+            var sitPlannerContext = _context.Invitee.Include(i => i.Category).Include(i => i.Event);
             return View(await sitPlannerContext.ToListAsync());
         }
 
-        // GET: Invitees/Details/5
-        public async Task<IActionResult> Details(int? id)
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Index(string name, Category category)
+        //{
+        //    var sitPlannerContext = _context.Invitee.Include(i => i.Category).Include(i => i.Event);
+        //    //return View(await sitPlannerContext.ToListAsync());
+        //    ViewBag.EnumList = new SelectList();
+
+        //    var result = from row in _context.Invitee
+        //                 select row;
+        //    if (!string.IsNullOrEmpty(name))
+        //    {
+        //        result = result.Where(x => x.FirstName.Contains(name));
+        //        result = result.Where(x => x.LastName.Contains(name));
+        //    }
+
+        //    if (category != null)
+        //    {
+        //        result = result.Where(x => x.CategoryId.Equals(category.Id));
+        //    }
+        //    return View(await result.ToListAsync());
+        //}
+
+// GET: Invitees/Details/5
+public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -35,6 +58,7 @@ namespace SitPlanner.Controllers
             }
 
             var invitee = await _context.Invitee
+                .Include(i => i.Category)
                 .Include(i => i.Event)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (invitee == null)
@@ -48,6 +72,7 @@ namespace SitPlanner.Controllers
         // GET: Invitees/Create
         public IActionResult Create()
         {
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name");
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
             return View();
         }
@@ -57,7 +82,7 @@ namespace SitPlanner.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,PhoneNumber,Address,IsComing,Comment,EventId")] Invitee invitee)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,PhoneNumber,Address,IsComing,Comment,EventId,CategoryId")] Invitee invitee)
         {
             if (ModelState.IsValid)
             {
@@ -65,6 +90,7 @@ namespace SitPlanner.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", invitee.CategoryId);
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", invitee.EventId);
             return View(invitee);
         }
@@ -82,6 +108,7 @@ namespace SitPlanner.Controllers
             {
                 return NotFound();
             }
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", invitee.CategoryId);
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", invitee.EventId);
             return View(invitee);
         }
@@ -91,7 +118,7 @@ namespace SitPlanner.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,PhoneNumber,Address,IsComing,Comment,EventId")] Invitee invitee)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,PhoneNumber,Address,IsComing,Comment,EventId,CategoryId")] Invitee invitee)
         {
             if (id != invitee.Id)
             {
@@ -118,6 +145,7 @@ namespace SitPlanner.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", invitee.CategoryId);
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", invitee.EventId);
             return View(invitee);
         }
@@ -131,6 +159,7 @@ namespace SitPlanner.Controllers
             }
 
             var invitee = await _context.Invitee
+                .Include(i => i.Category)
                 .Include(i => i.Event)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (invitee == null)

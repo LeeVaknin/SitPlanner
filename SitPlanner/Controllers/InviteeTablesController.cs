@@ -10,23 +10,23 @@ using SitPlanner.Models;
 
 namespace SitPlanner.Controllers
 {
-    public class InviteeCategoriesController : Controller
+    public class InviteeTablesController : Controller
     {
         private readonly SitPlannerContext _context;
 
-        public InviteeCategoriesController(SitPlannerContext context)
+        public InviteeTablesController(SitPlannerContext context)
         {
             _context = context;
         }
 
-        // GET: InviteeCategories
+        // GET: InviteeTables
         public async Task<IActionResult> Index()
         {
-            var sitPlannerContext = _context.InviteeCategory.Include(i => i.Category).Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee);
+            var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee).Include(i => i.Table);
             return View(await sitPlannerContext.ToListAsync());
         }
 
-        // GET: InviteeCategories/Details/5
+        // GET: InviteeTables/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,51 +34,51 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
 
-            var inviteeCategory = await _context.InviteeCategory
-                .Include(i => i.Category)
+            var inviteeTable = await _context.InviteeTable
                 .Include(i => i.Event)
                 .Include(i => i.EventOption)
                 .Include(i => i.Invitee)
+                .Include(i => i.Table)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (inviteeCategory == null)
+            if (inviteeTable == null)
             {
                 return NotFound();
             }
 
-            return View(inviteeCategory);
+            return View(inviteeTable);
         }
 
-        // GET: InviteeCategories/Create
+        // GET: InviteeTables/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name");
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
             ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id");
             ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName");
+            ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id");
             return View();
         }
 
-        // POST: InviteeCategories/Create
+        // POST: InviteeTables/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,InviteeId,CategoryId,EventOptionId,EventId")] InviteeCategory inviteeCategory)
+        public async Task<IActionResult> Create([Bind("Id,InviteeId,TableId,EventOptionId,EventId")] InviteeTable inviteeTable)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(inviteeCategory);
+                _context.Add(inviteeTable);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", inviteeCategory.CategoryId);
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", inviteeCategory.EventId);
-            ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id", inviteeCategory.EventOptionId);
-            ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", inviteeCategory.InviteeId);
-            return View(inviteeCategory);
+            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", inviteeTable.EventId);
+            ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id", inviteeTable.EventOptionId);
+            ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", inviteeTable.InviteeId);
+            ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id", inviteeTable.TableId);
+            return View(inviteeTable);
         }
 
-        // GET: InviteeCategories/Edit/5
+        // GET: InviteeTables/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -86,26 +86,26 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
 
-            var inviteeCategory = await _context.InviteeCategory.FindAsync(id);
-            if (inviteeCategory == null)
+            var inviteeTable = await _context.InviteeTable.FindAsync(id);
+            if (inviteeTable == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", inviteeCategory.CategoryId);
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", inviteeCategory.EventId);
-            ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id", inviteeCategory.EventOptionId);
-            ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", inviteeCategory.InviteeId);
-            return View(inviteeCategory);
+            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", inviteeTable.EventId);
+            ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id", inviteeTable.EventOptionId);
+            ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", inviteeTable.InviteeId);
+            ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id", inviteeTable.TableId);
+            return View(inviteeTable);
         }
 
-        // POST: InviteeCategories/Edit/5
+        // POST: InviteeTables/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,InviteeId,CategoryId,EventOptionId,EventId")] InviteeCategory inviteeCategory)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,InviteeId,TableId,EventOptionId,EventId")] InviteeTable inviteeTable)
         {
-            if (id != inviteeCategory.Id)
+            if (id != inviteeTable.Id)
             {
                 return NotFound();
             }
@@ -114,12 +114,12 @@ namespace SitPlanner.Controllers
             {
                 try
                 {
-                    _context.Update(inviteeCategory);
+                    _context.Update(inviteeTable);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!InviteeCategoryExists(inviteeCategory.Id))
+                    if (!InviteeTableExists(inviteeTable.Id))
                     {
                         return NotFound();
                     }
@@ -130,14 +130,14 @@ namespace SitPlanner.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", inviteeCategory.CategoryId);
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", inviteeCategory.EventId);
-            ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id", inviteeCategory.EventOptionId);
-            ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", inviteeCategory.InviteeId);
-            return View(inviteeCategory);
+            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", inviteeTable.EventId);
+            ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id", inviteeTable.EventOptionId);
+            ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", inviteeTable.InviteeId);
+            ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id", inviteeTable.TableId);
+            return View(inviteeTable);
         }
 
-        // GET: InviteeCategories/Delete/5
+        // GET: InviteeTables/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -145,34 +145,34 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
 
-            var inviteeCategory = await _context.InviteeCategory
-                .Include(i => i.Category)
+            var inviteeTable = await _context.InviteeTable
                 .Include(i => i.Event)
                 .Include(i => i.EventOption)
                 .Include(i => i.Invitee)
+                .Include(i => i.Table)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (inviteeCategory == null)
+            if (inviteeTable == null)
             {
                 return NotFound();
             }
 
-            return View(inviteeCategory);
+            return View(inviteeTable);
         }
 
-        // POST: InviteeCategories/Delete/5
+        // POST: InviteeTables/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var inviteeCategory = await _context.InviteeCategory.FindAsync(id);
-            _context.InviteeCategory.Remove(inviteeCategory);
+            var inviteeTable = await _context.InviteeTable.FindAsync(id);
+            _context.InviteeTable.Remove(inviteeTable);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool InviteeCategoryExists(int id)
+        private bool InviteeTableExists(int id)
         {
-            return _context.InviteeCategory.Any(e => e.Id == id);
+            return _context.InviteeTable.Any(e => e.Id == id);
         }
     }
 }

@@ -15,8 +15,6 @@ namespace SitPlanner.Models
         public int EventId { get; set; }
         public virtual Event Event { get; set; }
 
-        public List<InviteeCategory> InviteeCategories { get; set; }
-
         public List<PersonalRestriction> PersonalRestrictions { get; set; }
 
         public List<AccessibilityRestriction> AccessibilityRestrictions { get; set; }

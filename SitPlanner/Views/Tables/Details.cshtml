@@ -1,4 +1,4 @@
-﻿@model SitPlanner.Models.InviteeCategory
+﻿@model SitPlanner.Models.Table
 
 @{
     ViewData["Title"] = "Details";
@@ -7,26 +7,20 @@
 <h2>Details</h2>
 
 <div>
-    <h4>InviteeCategory</h4>
+    <h4>Table</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Invitee)
+            @Html.DisplayNameFor(model => model.CapacityOfPeople)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Invitee.FirstName)
+            @Html.DisplayFor(model => model.CapacityOfPeople)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Category)
+            @Html.DisplayNameFor(model => model.TableType)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Category.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.EventOption)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.EventOption.Id)
+            @Html.DisplayFor(model => model.TableType)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Event)

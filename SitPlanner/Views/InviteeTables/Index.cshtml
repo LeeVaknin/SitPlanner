@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SitPlanner.Models.InviteeCategory>
+﻿@model IEnumerable<SitPlanner.Models.InviteeTable>
 
 @{
     ViewData["Title"] = "Index";
@@ -16,7 +16,7 @@
                 @Html.DisplayNameFor(model => model.Invitee)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Category)
+                @Html.DisplayNameFor(model => model.Table)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.EventOption)
@@ -34,7 +34,7 @@
                 @Html.DisplayFor(modelItem => item.Invitee.FirstName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Category.Name)
+                @Html.DisplayFor(modelItem => item.Table.Id)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.EventOption.Id)
