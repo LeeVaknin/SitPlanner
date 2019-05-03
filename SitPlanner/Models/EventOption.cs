@@ -1,21 +1,23 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace SitPlanner.Models
 {
-    public class Category
+    public class EventOption
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Please provide category name")]
-        [Display(Name = "Category name")]
-        public string Name { get; set; }
-
         public int EventId { get; set; }
         public virtual Event Event { get; set; }
+
+        public List<PersonalRestriction> PersonalRestrictions { get; set; }
+
+        public List<AccessibilityRestriction> AccessibilityRestrictions { get; set; }
 
     }
 }

@@ -1,4 +1,4 @@
-﻿using SitPlanner.Models.ManyToMany;
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -20,21 +20,23 @@ namespace SitPlanner.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }
 
-        // --- Validate we need it ---------------
-        public int NumOfTables { get; set; }
 
+        //public List<User> Users { get; set; }
 
-        //----------------------------------------------
-
-        public IList<Arrangement> Arrangements { get; set; }
-
-        public IList<UserEvent> UserEvents { get; set; }
-
-
-        // TODO: Configure one-to-many with invitee
         public IList<Invitee> Invitees { get; set; }
 
-        [NotMapped]
-        public int NumOfInvitees => Invitees.Count();
+        //[NotMapped]
+        //public int NumOfInvitees => Invitees.Count();
+
+        public IList<Table> Tables { get; set; }
+
+        //[NotMapped]
+        //public int NumOfTables => Tables.Count();
+
+        public IList<Category> Categories { get; set; }
+
+        public IList<EventOption> EventOptions { get; set; }
+
+
     }
 }
