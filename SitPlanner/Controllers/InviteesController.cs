@@ -26,8 +26,31 @@ namespace SitPlanner.Controllers
             return View(await sitPlannerContext.ToListAsync());
         }
 
-        // GET: Invitees/Details/5
-        public async Task<IActionResult> Details(int? id)
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Index(string name, Category category)
+        //{
+        //    var sitPlannerContext = _context.Invitee.Include(i => i.Category).Include(i => i.Event);
+        //    //return View(await sitPlannerContext.ToListAsync());
+        //    ViewBag.EnumList = new SelectList();
+
+        //    var result = from row in _context.Invitee
+        //                 select row;
+        //    if (!string.IsNullOrEmpty(name))
+        //    {
+        //        result = result.Where(x => x.FirstName.Contains(name));
+        //        result = result.Where(x => x.LastName.Contains(name));
+        //    }
+
+        //    if (category != null)
+        //    {
+        //        result = result.Where(x => x.CategoryId.Equals(category.Id));
+        //    }
+        //    return View(await result.ToListAsync());
+        //}
+
+// GET: Invitees/Details/5
+public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {

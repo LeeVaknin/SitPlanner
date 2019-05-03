@@ -6,6 +6,16 @@
 
 <h2>Index</h2>
 
+@*<div id="filter-blog">
+    @using (Html.BeginForm("Index", "Invitees", FormMethod.Post))
+    {
+        <label>Search Invitee:</label> <br />
+        <label for="Category">category</label> @Html.DropDownList("category", ViewBag.EnumList as SelectList)
+        <input id="input-h" type="search" name="name" maxlength="20" placeholder="Name" style="width:105px;">
+        <input id="btn-filter" type="submit" value="Search">
+    }
+</div>*@
+
 <p>
     <a asp-action="Create">Create New</a>
 </p>
