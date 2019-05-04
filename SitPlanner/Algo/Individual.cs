@@ -39,7 +39,10 @@ namespace SitPlanner.Algo
             return fitness;
         }
 
-        
+        public Gen[] getGens()
+        {
+            return gens;
+        }
 
         //random Gen will create Gen with the invitee id by i, and random table
         private Gen generateRandomGen(int i)
@@ -51,5 +54,7 @@ namespace SitPlanner.Algo
 
             return gen;
         }
+
+
     }
 }

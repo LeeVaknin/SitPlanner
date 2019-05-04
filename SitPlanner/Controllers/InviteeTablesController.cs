@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using SitPlanner.Algo;
 using SitPlanner.Data;
 using SitPlanner.Models;
 
@@ -16,6 +17,7 @@ namespace SitPlanner.Controllers
         private Algo.AlgoLogic algo;
         List<Invitee> invitees;
         List<Table> tables;
+        List<Gen> result;
 
         public InviteeTablesController(SitPlannerContext context)
         {
@@ -27,14 +29,6 @@ namespace SitPlanner.Controllers
         public async Task<IActionResult> Index()
         {
             var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee).Include(i => i.Table);
-
-            var sitPlannerContextInvitees = _context.Invitee.Include(i => i.Category).Include(i => i.Event).ToList();
-            invitees = new List<Invitee>(sitPlannerContextInvitees);
-
-            var sitPlannerContextTables = _context.Table.Include(t => t.Event).ToList();
-            tables = new List<Table>(sitPlannerContextTables);
-
-            algo.RunAlgo(invitees, tables);
 
             return View(await sitPlannerContext.ToListAsync());
         }
@@ -64,6 +58,18 @@ namespace SitPlanner.Controllers
         // GET: InviteeTables/Create
         public IActionResult Create()
         {
+            var sitPlannerContextInvitees = _context.Invitee.Include(i => i.Category).Include(i => i.Event).ToList();
+            invitees = new List<Invitee>(sitPlannerContextInvitees);
+
+            var sitPlannerContextTables = _context.Table.Include(t => t.Event).ToList();
+            tables = new List<Table>(sitPlannerContextTables);
+
+            result = algo.RunAlgo(invitees, tables).getGens().ToList();
+
+            foreach (var item in result)
+            {
+                //Save the list of gens (inviteeTable into DB)
+            }
 
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
             ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id");
