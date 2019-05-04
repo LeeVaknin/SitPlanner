@@ -13,16 +13,29 @@ namespace SitPlanner.Controllers
     public class InviteeTablesController : Controller
     {
         private readonly SitPlannerContext _context;
+        private Algo.AlgoLogic algo;
+        List<Invitee> invitees;
+        List<Table> tables;
 
         public InviteeTablesController(SitPlannerContext context)
         {
             _context = context;
+            algo = new Algo.AlgoLogic();
         }
 
         // GET: InviteeTables
         public async Task<IActionResult> Index()
         {
             var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee).Include(i => i.Table);
+
+            var sitPlannerContextInvitees = _context.Invitee.Include(i => i.Category).Include(i => i.Event).ToList();
+            invitees = new List<Invitee>(sitPlannerContextInvitees);
+
+            var sitPlannerContextTables = _context.Table.Include(t => t.Event).ToList();
+            tables = new List<Table>(sitPlannerContextTables);
+
+            algo.RunAlgo(invitees, tables);
+
             return View(await sitPlannerContext.ToListAsync());
         }
 
@@ -51,6 +64,7 @@ namespace SitPlanner.Controllers
         // GET: InviteeTables/Create
         public IActionResult Create()
         {
+
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
             ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id");
             ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName");

@@ -12,27 +12,41 @@ namespace SitPlanner.Algo
         Individual[] top3Individuals = new Individual[3];
         int iterations = 0;
         int iterationsWithNoTop3Change = 0;
+        Individual bestResult;
 
 
 
-        public AlgoLogic(List<Invitee> invitees, List<Table> tables)
+        public AlgoLogic()
         { 
 
         }
 
-    //Initialize population
+        public Individual RunAlgo(List<Invitee> invitees, List<Table> tables)
+        {
+            //Initialize population
+            Population pop = new Population(invitees, tables);
+            pop.initializePopulation(AlgoConsts.populationLength);
 
-    //Calculate fitness of each individual + update Top3
 
-    //While not break condition
+            //Calculate fitness of each individual + update Top3
+            pop.CalculateTop3Fintess();
 
-        //Do selection
+            
+            //While not break condition
+            while (false)
+            {
+                //Do selection
+                
+                //Do crossover
 
-        //Do crossover
+                //Do mutation under a random probability
 
-        //Do mutation under a random probability
+                //Calculate new fitness value + check top3
 
-        //Calculate new fitness value + check top3
+            }
+
+            return bestResult; 
+        }
 
     }
 }
