@@ -12,5 +12,11 @@ namespace SitPlanner.Algo
         public const int populationLength = 100;
 
         #endregion
+
+        #region Algo
+
+        public const int iterationsWithNoTop3Change = 2;
+
+        #endregion
     }
 }
