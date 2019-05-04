@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
-    <Folder Include="Algo\" />
     <Folder Include="Services\DAL\" />
   </ItemGroup>
 
