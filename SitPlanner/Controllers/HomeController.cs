@@ -24,7 +24,7 @@ namespace SitPlanner.Controllers
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Your contact page.";
+            ViewData["Message"] = "Please feel free to contact us with any feedback or question.";
 
             return View();
         }
