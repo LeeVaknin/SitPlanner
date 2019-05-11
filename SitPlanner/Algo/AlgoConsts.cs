@@ -16,8 +16,8 @@ namespace SitPlanner.Algo
 
         #region Algo
 
-        public const int NumiterationsWithNoTopXChange = 2;
-        public const int bestResult = 0;
+        public const int NumIterationsWithoutChange = 1000;
+        public const int optimalResult = 0;
         public const int maxIterationsCount = 100;
 
         #endregion

@@ -10,9 +10,8 @@ namespace SitPlanner.Algo
     {
 
         Individual[] topXIndividuals = new Individual[AlgoConsts.topXAmount];
-        //SortedList<int, Individual> sortedAllIndividuals = new SortedList<int, Individual>();
         int iterations = 0;
-        int iterationsWithNoTopXChange = 0;
+        int iterationsWithoutTopXChange = 0;
 
         public AlgoLogic()
         {
@@ -22,28 +21,30 @@ namespace SitPlanner.Algo
         public Individual RunAlgo(List<Invitee> invitees, List<Table> tables)
         {
             //Initialize population
-            Population pop = new Population(invitees, tables);
-            pop.initializePopulation(AlgoConsts.populationLength);
+            Population population = new Population(invitees, tables);
+            population.initializePopulation(AlgoConsts.populationLength);
 
 
             //Calculate fitness of each individual + update Top X
-            pop.CalculateIndividualsFitness();
-            updateTopX(pop);
+            population.CalculateIndividualsFitness();
+            updateTopX(population);
 
+            
             //While not break condition
-            while (!(iterationsWithNoTopXChange > AlgoConsts.NumiterationsWithNoTopXChange || 
-                GetIndividualWithBestResult().fitness == AlgoConsts.bestResult || 
-                iterations == AlgoConsts.maxIterationsCount))
+            while (!breakCondition())
+                
             {
                 //Do selection
 
+
                 //Do crossover
+
 
                 //Do mutation under a random probability
 
                 //Calculate new fitness value + update top X
-                pop.CalculateIndividualsFitness();
-                updateTopX(pop);
+                population.CalculateIndividualsFitness();
+                updateTopX(population);
 
                 iterations++;
             }
@@ -77,7 +78,7 @@ namespace SitPlanner.Algo
             }
             //if there was no change - update the iteration flag
             if (changesCount == 0)
-                iterationsWithNoTopXChange++;
+                iterationsWithoutTopXChange++;
         }
 
         private Individual GetIndividualWithBestResult()
@@ -90,6 +91,14 @@ namespace SitPlanner.Algo
                     maxIndividual = topXIndividuals[i];
             }
             return maxIndividual;
+        }
+
+        private bool breakCondition()
+        {
+
+            return (iterationsWithoutTopXChange > AlgoConsts.NumIterationsWithoutChange ||
+            GetIndividualWithBestResult().fitness == AlgoConsts.optimalResult ||
+            iterations == AlgoConsts.maxIterationsCount);
         }
     }
 }

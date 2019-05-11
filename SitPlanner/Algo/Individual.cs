@@ -10,12 +10,13 @@ namespace SitPlanner.Algo
 {
     public class Individual
     {
-        public int fitness { get; }
-        List<Invitee> invitees;
-        List<Table> tables;
+        public int fitness = -1;
+        private List<Invitee> invitees;
+        private List<Table> tables;
         private int invitessAmount;
         private int tablesAmount;
-        Gen[] gens;
+        public Gen[] gens;
+
 
         public Individual(List<Invitee> invitees, List<Table> tables)
         {
@@ -32,6 +33,7 @@ namespace SitPlanner.Algo
                 gens[i] = generateRandomGen(i+1);
             }
         }
+        
         //calculate individual fitness
         public int CalculateFitness()
         {
