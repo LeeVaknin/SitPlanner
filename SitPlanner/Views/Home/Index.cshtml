@@ -1,18 +1,26 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+
+
+
 <center>
-    <div id="logo1" class="row fadeIn" style="display:table-cell; vertical-align:middle; text-align:center">
+    <div id="logo1" class="row" style="display:none; vertical-align:middle; text-align:center">
         <img src="~/images/seatme_site.png" />
     </div>
-    <p style="font-size:30px; font-family: Times;">
-        <a asp-action="Create">Create New Event</a>
+    <p style="font-size:30px; font-family: Montserrat, -apple-system, system-ui, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;">
+        <a asp-controller="Events" asp-action="Create">Create New Event</a>
         &nbsp;
-    |
+        |
         &nbsp;
-        <a asp-action="Create">Existing Event</a>
+        <a asp-controller="Events" asp-action="Index">Existing Event</a>
     </p>
 </center>
-<script>
-	$('#logo1').fadeIn(1000);
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+
+<script type="text/javascript">
+    (function () {
+        $('#logo1').fadeIn(1000);
+        $('#logo1').css('display', 'table-cell');
+    })();
 </script>
