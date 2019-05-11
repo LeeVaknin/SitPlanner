@@ -18,6 +18,17 @@ namespace SitPlanner.Algo
         public Gen[] gens;
 
 
+       
+        public Individual(Individual copyIndividual)
+        {
+            cloneGens(copyIndividual.getGens());
+        }
+
+        public Individual(Gen[] gens)
+        {
+            cloneGens(gens);
+        }
+
         public Individual(List<Invitee> invitees, List<Table> tables)
         {
             //initialize 
@@ -33,11 +44,40 @@ namespace SitPlanner.Algo
                 gens[i] = generateRandomGen(i+1);
             }
         }
-        
+       
+        public void cloneGens(Gen[] gens)
+        {
+            Gen[] newGens = new Gen[gens.Length];
+            for (int i = 0; i < gens.Length; i++)
+            {
+                newGens[i] = new Gen(gens[i]);
+            }
+
+            this.gens = newGens;
+        }
+
+        public void updateGensByIndex(Gen[] gens, int startIndex, int endIndex)
+        {
+            for (int i = startIndex; i < endIndex; i++)
+            {
+                this.gens[i] = gens[i];
+            }
+            
+        }
+
         //calculate individual fitness
         public int CalculateFitness()
         {
-
+            //per invitee
+                //all invitees exist - MUST
+                //invitee-category --> at least 1 with the same category? ++points for more invitees with same category?
+                //invitee-restriction (cannot)
+                //invitee-restriction (must sit with) 
+                //invitee-accesabilityRestriction
+           
+            //per table
+                //limit of amount of invitees per table
+                //category - all invitees in the table are with the same category? 
             return fitness;
         }
 
@@ -57,6 +97,6 @@ namespace SitPlanner.Algo
             return gen;
         }
 
-
+       
     }
 }

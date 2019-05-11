@@ -13,6 +13,11 @@ namespace SitPlanner.Algo
         public Individual[] population = new Individual[AlgoConsts.populationLength];
         Individual[] topXIndividuals = new Individual[AlgoConsts.topXAmount];
 
+        public Population(Individual[] individuals)
+        {
+            cloneIndividuals(individuals);
+        }
+
         public Population(List<Invitee> invitees, List<Table> tables)
         {
             this.invitees = new List<Invitee>(invitees);
@@ -36,5 +41,15 @@ namespace SitPlanner.Algo
             }
         }
 
+
+        private void cloneIndividuals(Individual[] individuals)
+        {
+            Individual[] newIndividuals = new Individual[individuals.Length];
+            for (int i = 0; i < individuals.Length; i++)
+            {
+                newIndividuals[0] = new Individual(individuals[0]);
+            }
+            this.population = newIndividuals;
+        }
     }
 }
