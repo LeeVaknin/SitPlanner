@@ -18,7 +18,12 @@ namespace SitPlanner.Algo
         public Gen[] gens;
 
 
-       
+
+        public Individual(int gensSize)
+        {
+            gens = new Gen[gensSize];
+        }
+
         public Individual(Individual copyIndividual)
         {
             cloneGens(copyIndividual.getGens());

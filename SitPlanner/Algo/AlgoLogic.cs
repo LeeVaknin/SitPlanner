@@ -138,7 +138,7 @@ namespace SitPlanner.Algo
                 for (int i = 0; i < 2; i++)
                 {
                     childCount++;
-                    newChildrenArray[childCount] = coupleChildren[i];
+                    newChildrenArray[childCount-1] = coupleChildren[i];
                 }
             }
 
@@ -147,12 +147,17 @@ namespace SitPlanner.Algo
 
         private Individual[] Create2ChildrenFrom2ParentsWithCrossOver(Individual[] individuals)
         {
+            //initial children array
             Individual[] children = new Individual[2];
             int gensAmount = individuals[0].getGens().Length;
+            children[0] = new Individual(gensAmount);
+            children[1] = new Individual(gensAmount);
 
             //on each child copy parent half gens into a child
             children[0].updateGensByIndex(individuals[0].getGens(), 0, gensAmount / 2);
-            children[1].updateGensByIndex(individuals[1].getGens(), gensAmount / 2, gensAmount -1 );
+            children[0].updateGensByIndex(individuals[1].getGens(), gensAmount / 2, gensAmount);
+            children[1].updateGensByIndex(individuals[1].getGens(), 0, gensAmount / 2);
+            children[1].updateGensByIndex(individuals[1].getGens(), gensAmount / 2, gensAmount);
 
             return children;
         }
