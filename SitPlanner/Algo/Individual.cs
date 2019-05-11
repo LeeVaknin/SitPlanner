@@ -33,7 +33,7 @@ namespace SitPlanner.Algo
             }
         }
         //calculate individual fitness
-        public int CalculateFintess()
+        public int CalculateFitness()
         {
 
             return fitness;

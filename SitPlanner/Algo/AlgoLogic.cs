@@ -9,15 +9,13 @@ namespace SitPlanner.Algo
     public class AlgoLogic
     {
 
-        Individual[] top3Individuals = new Individual[3];
+        Individual[] topXIndividuals = new Individual[AlgoConsts.topXAmount];
+        //SortedList<int, Individual> sortedAllIndividuals = new SortedList<int, Individual>();
         int iterations = 0;
-        int iterationsWithNoTop3Change = 0;
-        Individual bestResult;
-
-
+        int iterationsWithNoTopXChange = 0;
 
         public AlgoLogic()
-        { 
+        {
 
         }
 
@@ -28,12 +26,14 @@ namespace SitPlanner.Algo
             pop.initializePopulation(AlgoConsts.populationLength);
 
 
-            //Calculate fitness of each individual + update Top3
-            pop.CalculateTop3Fintess();
-            saveTop3(pop);
+            //Calculate fitness of each individual + update Top X
+            pop.CalculateIndividualsFitness();
+            updateTopX(pop);
 
             //While not break condition
-            while (iterationsWithNoTop3Change < AlgoConsts.iterationsWithNoTop3Change)
+            while (!(iterationsWithNoTopXChange > AlgoConsts.NumiterationsWithNoTopXChange || 
+                GetIndividualWithBestResult().fitness == AlgoConsts.bestResult || 
+                iterations == AlgoConsts.maxIterationsCount))
             {
                 //Do selection
 
@@ -41,49 +41,55 @@ namespace SitPlanner.Algo
 
                 //Do mutation under a random probability
 
-                //Calculate new fitness value + check top3
-                pop.CalculateTop3Fintess();
-                saveTop3(pop);
+                //Calculate new fitness value + update top X
+                pop.CalculateIndividualsFitness();
+                updateTopX(pop);
 
+                iterations++;
             }
 
-            bestResult = pop.firstMaxFit;
-            return bestResult; 
+            return GetIndividualWithBestResult();
         }
 
-        private void saveTop3(Population pop)
+        private void updateTopX(Population pop)
         {
-            int top3Change = 0;
-            for (int i = 0; i < top3Individuals.Length; i++)
+            int changesCount = 0;
+            //go over all individual in a single population and check if its fitness bigger than the Top x
+            for (int i = 0; i < AlgoConsts.populationLength; i++)
             {
-                if (top3Individuals[i] == null || pop.firstMaxFit.fitness < top3Individuals[i].fitness)
+                for (int x = 0; x < AlgoConsts.topXAmount; x++)
                 {
-                    top3Individuals[i] = pop.firstMaxFit;
-                    top3Change++;
-                    break;
+                    if (topXIndividuals[x] != null)
+                    {
+                        if (pop.population[i].fitness > topXIndividuals[x].fitness)
+                        {
+                            topXIndividuals[x] = pop.population[i];
+                            changesCount++;
+                        }
+                    }
+                    else
+                    {
+                        topXIndividuals[x] = pop.population[i];
+                        changesCount++;
+                    }
+                    
                 }
             }
-            for (int i = 0; i < top3Individuals.Length; i++)
-            {
-                if (top3Individuals[i] == null || pop.secondMaxFit.fitness < top3Individuals[i].fitness)
-                {
-                    top3Individuals[i] = pop.secondMaxFit;
-                    top3Change++;
-                    break;
-                }
-            }
-            for (int i = 0; i < top3Individuals.Length; i++)
-            {
-                if (top3Individuals[i] == null || pop.thirdMaxFit.fitness < top3Individuals[i].fitness)
-                {
-                    top3Individuals[i] = pop.thirdMaxFit;
-                    top3Change++;
-                    break;
-                }
-            } 
+            //if there was no change - update the iteration flag
+            if (changesCount == 0)
+                iterationsWithNoTopXChange++;
+        }
 
-            if (!(top3Change > 0))
-                iterationsWithNoTop3Change++;
+        private Individual GetIndividualWithBestResult()
+        {
+            Individual maxIndividual = topXIndividuals[0];
+
+            for (int i = 0; i < AlgoConsts.topXAmount; i++)
+            {
+                if (topXIndividuals[i].fitness > maxIndividual.fitness)
+                    maxIndividual = topXIndividuals[i];
+            }
+            return maxIndividual;
         }
     }
 }
