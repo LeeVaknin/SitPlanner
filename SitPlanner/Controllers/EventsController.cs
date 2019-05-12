@@ -46,7 +46,7 @@ namespace SitPlanner.Controllers
         // GET: Events/Create
         public IActionResult Create()
         {
-            return View();
+            return PartialView("_Create");
         }
 
         // POST: Events/Create
