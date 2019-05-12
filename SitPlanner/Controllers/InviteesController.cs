@@ -74,7 +74,8 @@ public async Task<IActionResult> Details(int? id)
         {
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name");
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
-            return View();
+            
+            return PartialView("_Create");
         }
 
         // POST: Invitees/Create

@@ -29,4 +29,10 @@
     <Folder Include="Services\DAL\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Shared\_Partial.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
 </Project>
