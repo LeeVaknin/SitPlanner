@@ -10,10 +10,13 @@ namespace SitPlanner.Algo
     {
         List<Invitee> invitees;
         List<Table> tables;
-        Individual[] population = new Individual[AlgoConsts.populationLength];
-        public Individual firstMaxFit { get; set; }
-        public Individual secondMaxFit { get; set; }
-        public Individual thirdMaxFit { get; set; }
+        public Individual[] population = new Individual[AlgoConsts.populationLength];
+        Individual[] topXIndividuals = new Individual[AlgoConsts.topXAmount];
+
+        public Population(Individual[] individuals)
+        {
+            cloneIndividuals(individuals);
+        }
 
         public Population(List<Invitee> invitees, List<Table> tables)
         {
@@ -29,33 +32,24 @@ namespace SitPlanner.Algo
             }
         }
 
-        //Calculate fitness of each individual
-        public void CalculateTop3Fintess()
+        //Calculate fitness of each individual in single population
+        public void CalculateIndividualsFitness()
         {
-
             for (int i = 0; i < population.Length; i++)
             {
-                population[i].CalculateFintess();
+                population[i].CalculateFitness();
             }
-            firstMaxFit = GetFittest();
-            secondMaxFit = GetFittest(firstMaxFit.fitness);
-            thirdMaxFit = GetFittest(secondMaxFit.fitness);
         }
 
-        //Get the fittest individual in a population
-        public Individual GetFittest(int currentMaxfit = -1)
+
+        private void cloneIndividuals(Individual[] individuals)
         {
-            int maxFit = currentMaxfit;
-            int maxFitIndex = -1;
-            for (int i = 0; i < population.Length; i++)
+            Individual[] newIndividuals = new Individual[individuals.Length];
+            for (int i = 0; i < individuals.Length; i++)
             {
-                if (maxFit <= population[i].fitness)
-                {
-                    maxFit = population[i].fitness;
-                    maxFitIndex = i;
-                }
+                newIndividuals[0] = new Individual(individuals[0]);
             }
-            return population[maxFitIndex];
+            this.population = newIndividuals;
         }
     }
 }

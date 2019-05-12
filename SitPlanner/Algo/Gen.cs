@@ -16,7 +16,12 @@ namespace SitPlanner.Algo
         {
                 this.InviteeId = InviteeId;
                 this.TableId = TableId;
-            
+        }
+
+        public Gen(Gen copyGen)
+        {
+            this.InviteeId = copyGen.InviteeId;
+            this.TableId = copyGen.TableId;
         }
 
     }

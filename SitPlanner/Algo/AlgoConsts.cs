@@ -10,12 +10,15 @@ namespace SitPlanner.Algo
         #region Population
 
         public const int populationLength = 100;
+        public const int topXAmount = 3;
 
         #endregion
 
         #region Algo
 
-        public const int iterationsWithNoTop3Change = 2;
+        public const int NumIterationsWithoutChange = 1000;
+        public const int optimalResult = 0;
+        public const int maxIterationsCount = 100;
 
         #endregion
     }

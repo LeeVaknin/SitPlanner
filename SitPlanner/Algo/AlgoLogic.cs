@@ -9,81 +9,157 @@ namespace SitPlanner.Algo
     public class AlgoLogic
     {
 
-        Individual[] top3Individuals = new Individual[3];
+        Individual[] topXIndividuals = new Individual[AlgoConsts.topXAmount];
         int iterations = 0;
-        int iterationsWithNoTop3Change = 0;
-        Individual bestResult;
-
-
+        int iterationsWithoutTopXChange = 0;
+        private List<Individual[]> parentsCouplesList = new List<Individual[]>();
 
         public AlgoLogic()
-        { 
+        {
 
         }
 
         public Individual RunAlgo(List<Invitee> invitees, List<Table> tables)
         {
             //Initialize population
-            Population pop = new Population(invitees, tables);
-            pop.initializePopulation(AlgoConsts.populationLength);
+            Population population = new Population(invitees, tables);
+            population.initializePopulation(AlgoConsts.populationLength);
 
 
-            //Calculate fitness of each individual + update Top3
-            pop.CalculateTop3Fintess();
-            saveTop3(pop);
+            //Calculate fitness of each individual + update Top X
+            population.CalculateIndividualsFitness();
+            updateTopX(population);
 
+            
             //While not break condition
-            while (iterationsWithNoTop3Change < AlgoConsts.iterationsWithNoTop3Change)
+            while (!breakCondition())
+                
             {
                 //Do selection
+                parentsCouplesList = Selection(population);
 
-                //Do crossover
+                //Do crossover - get list of paretns - return new pointer for population
+                population = CrossOver(parentsCouplesList);
 
                 //Do mutation under a random probability
 
-                //Calculate new fitness value + check top3
-                pop.CalculateTop3Fintess();
-                saveTop3(pop);
+                //Calculate new fitness value + update top X
+                population.CalculateIndividualsFitness();
+                updateTopX(population);
 
+                iterations++;
             }
 
-            bestResult = pop.firstMaxFit;
-            return bestResult; 
+            return GetIndividualWithBestResult();
         }
 
-        private void saveTop3(Population pop)
+        private void updateTopX(Population pop)
         {
-            int top3Change = 0;
-            for (int i = 0; i < top3Individuals.Length; i++)
+            int changesCount = 0;
+            //go over all individual in a single population and check if its fitness bigger than the Top x
+            for (int i = 0; i < AlgoConsts.populationLength; i++)
             {
-                if (top3Individuals[i] == null || pop.firstMaxFit.fitness < top3Individuals[i].fitness)
+                for (int x = 0; x < AlgoConsts.topXAmount; x++)
                 {
-                    top3Individuals[i] = pop.firstMaxFit;
-                    top3Change++;
-                    break;
+                    if (topXIndividuals[x] != null)
+                    {
+                        if (pop.population[i].fitness > topXIndividuals[x].fitness)
+                        {
+                            topXIndividuals[x] = pop.population[i];
+                            changesCount++;
+                        }
+                    }
+                    else
+                    {
+                        topXIndividuals[x] = pop.population[i];
+                        changesCount++;
+                    }
+                    
                 }
             }
-            for (int i = 0; i < top3Individuals.Length; i++)
-            {
-                if (top3Individuals[i] == null || pop.secondMaxFit.fitness < top3Individuals[i].fitness)
-                {
-                    top3Individuals[i] = pop.secondMaxFit;
-                    top3Change++;
-                    break;
-                }
-            }
-            for (int i = 0; i < top3Individuals.Length; i++)
-            {
-                if (top3Individuals[i] == null || pop.thirdMaxFit.fitness < top3Individuals[i].fitness)
-                {
-                    top3Individuals[i] = pop.thirdMaxFit;
-                    top3Change++;
-                    break;
-                }
-            } 
+            //if there was no change - update the iteration flag
+            if (changesCount == 0)
+                iterationsWithoutTopXChange++;
+        }
 
-            if (!(top3Change > 0))
-                iterationsWithNoTop3Change++;
+        private Individual GetIndividualWithBestResult()
+        {
+            Individual maxIndividual = topXIndividuals[0];
+
+            for (int i = 0; i < AlgoConsts.topXAmount; i++)
+            {
+                if (topXIndividuals[i].fitness > maxIndividual.fitness)
+                    maxIndividual = topXIndividuals[i];
+            }
+            return maxIndividual;
+        }
+
+        private bool breakCondition()
+        {
+
+            return (iterationsWithoutTopXChange > AlgoConsts.NumIterationsWithoutChange ||
+            GetIndividualWithBestResult().fitness == AlgoConsts.optimalResult ||
+            iterations == AlgoConsts.maxIterationsCount);
+        }
+
+        private List<Individual[]> Selection(Population population)
+        {
+            
+            List<Individual[]> parentsList = new List<Individual[]>();
+
+            //TODO - need to implement the randomization here
+            for (int i = 0; i < population.population.Length ; i = i+2)
+            {
+                Individual[] parents = new Individual[2];
+                parents[0] = population.population[i];
+                parents[1] = population.population[i + 1];
+                parentsList.Add(parents);
+            }
+
+            return parentsList;
+        }
+
+        private Population CrossOver(List<Individual[]> parentsCouplesList)
+        {
+            int childCount = 0;
+            //new children array for new population
+            Individual[] newChildrenArray = new Individual[AlgoConsts.populationLength];
+
+            //for each couple of parents
+            foreach (var parentsCouple in parentsCouplesList)
+            {
+                //couple of children - holder for cross over return value
+                Individual[] coupleChildren = new Individual[2];
+
+                //create 2 new children with Cross Over
+                coupleChildren = Create2ChildrenFrom2ParentsWithCrossOver(parentsCouple);
+
+                //insert to the Individual final array, the new children couple
+                for (int i = 0; i < 2; i++)
+                {
+                    childCount++;
+                    newChildrenArray[childCount-1] = coupleChildren[i];
+                }
+            }
+
+            return new Population(newChildrenArray);
+        }
+
+        private Individual[] Create2ChildrenFrom2ParentsWithCrossOver(Individual[] individuals)
+        {
+            //initial children array
+            Individual[] children = new Individual[2];
+            int gensAmount = individuals[0].getGens().Length;
+            children[0] = new Individual(gensAmount);
+            children[1] = new Individual(gensAmount);
+
+            //on each child copy parent half gens into a child
+            children[0].updateGensByIndex(individuals[0].getGens(), 0, gensAmount / 2);
+            children[0].updateGensByIndex(individuals[1].getGens(), gensAmount / 2, gensAmount);
+            children[1].updateGensByIndex(individuals[1].getGens(), 0, gensAmount / 2);
+            children[1].updateGensByIndex(individuals[1].getGens(), gensAmount / 2, gensAmount);
+
+            return children;
         }
     }
 }
