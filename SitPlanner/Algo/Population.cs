@@ -8,6 +8,7 @@ namespace SitPlanner.Algo
 {
     public class Population
     {
+        AlgoUtils algoUtils = new AlgoUtils();
         List<Invitee> invitees;
         List<Table> tables;
         public Individual[] population = new Individual[AlgoConsts.populationLength];
@@ -47,7 +48,7 @@ namespace SitPlanner.Algo
             Individual[] newIndividuals = new Individual[individuals.Length];
             for (int i = 0; i < individuals.Length; i++)
             {
-                newIndividuals[0] = new Individual(individuals[0]);
+                newIndividuals[i] = new Individual(individuals[i]);
             }
             this.population = newIndividuals;
         }

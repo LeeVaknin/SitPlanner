@@ -10,6 +10,7 @@ namespace SitPlanner.Algo
 {
     public class Individual
     {
+        AlgoUtils algoUtils = new AlgoUtils();
         public int fitness = -1;
         private List<Invitee> invitees;
         private List<Table> tables;
@@ -94,8 +95,7 @@ namespace SitPlanner.Algo
         //random Gen will create Gen with the invitee id by i, and random table
         private Gen generateRandomGen(int i)
         {
-            Random rn = new Random();
-            int ran = Convert.ToInt32(Math.Abs(rn.NextDouble())) % tablesAmount;
+            int ran = algoUtils.AlgoRandom(tablesAmount);
 
             Gen gen = new Gen(invitees[i].Id, tables[ran].Id);
 

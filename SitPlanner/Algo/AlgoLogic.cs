@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SitPlanner.Models;
+using SitPlanner.Algo;
 
 namespace SitPlanner.Algo
 {
     public class AlgoLogic
     {
-
+        AlgoUtils algoUtils = new AlgoUtils();
         Individual[] topXIndividuals = new Individual[AlgoConsts.topXAmount];
         int iterations = 0;
         int iterationsWithoutTopXChange = 0;
@@ -106,8 +107,21 @@ namespace SitPlanner.Algo
         {
             
             List<Individual[]> parentsList = new List<Individual[]>();
-
+            int sumFitness = 0;
+            for (int i = 0; i < population.population.Length; i++)
+            {
+                sumFitness += population.population[i].fitness;
+            }
             //TODO - need to implement the randomization here
+
+            int random = algoUtils.AlgoRandom(sumFitness);
+
+            for (int i = 0; i < population.population.Length; i++)
+            {
+                int sum = 0;
+
+            }
+
             for (int i = 0; i < population.population.Length ; i = i+2)
             {
                 Individual[] parents = new Individual[2];
@@ -157,7 +171,7 @@ namespace SitPlanner.Algo
             children[0].updateGensByIndex(individuals[0].getGens(), 0, gensAmount / 2);
             children[0].updateGensByIndex(individuals[1].getGens(), gensAmount / 2, gensAmount);
             children[1].updateGensByIndex(individuals[1].getGens(), 0, gensAmount / 2);
-            children[1].updateGensByIndex(individuals[1].getGens(), gensAmount / 2, gensAmount);
+            children[1].updateGensByIndex(individuals[0].getGens(), gensAmount / 2, gensAmount);
 
             return children;
         }
