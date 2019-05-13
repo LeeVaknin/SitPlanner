@@ -10,15 +10,15 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
-        var TeamDetailPostBackURL = '/Invitees/Create';
+        var inviteesCreatePostBackURL = '/Invitees/Create';
         $(function () {
             $("#create").click(function () {
                 var $buttonClicked = $(this);
                 var id = $buttonClicked.attr('data-id');
-                var options = {keyboard: true };
+                var options = { keyboard: true };
                 $.ajax({
                     type: "GET",
-                    url: TeamDetailPostBackURL,
+                    url: inviteesCreatePostBackURL,
                     contentType: "application/json; charset=utf-8",
                     data: { "Id": id },
                     datatype: "json",
@@ -33,13 +33,45 @@
                     }
                 });
             });
-            //$("#closebtn").on('click',function(){  
-            //    $('#myModal').modal('hide');    
+            //$("#closebtn").on('click',function(){
+            //    $('#myModal').modal('hide');
 
             $("#closbtn").click(function () {
                 $('#myModal').modal('hide');
             });
-        });  
+        });
+    </script>
+    <script>
+        var categoriesCreatePostBackURL = '/Categories/Create';
+        $(function () {
+            $("#createcategory").click(function () {
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: categoriesCreatePostBackURL,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "Id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        $('#myModalContent').html(data);
+                        $('#myModal').modal(options);
+                        $('#myModal').modal('show');
+
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+            //$("#closebtn").on('click',function(){
+            //    $('#myModal').modal('hide');
+
+            $("#closbtn").click(function () {
+                $('#myModal').modal('hide');
+            });
+        });
     </script>
 
 }
@@ -56,7 +88,7 @@
         }
     </div>*@
 
-<p >
+<p>
     <button style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" id="create">Create New Invitee</button>
 
 </p>
@@ -127,12 +159,46 @@
         }
     </tbody>
 </table>
+<h3 style="color:#F3969A">Category</h3>
+<p>
+    <button style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" id="createcategory">Create New Category</button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Category)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Event)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Event.Name)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-<div id='myModal' class='modal'>
-    <div class="modal-dialog">
-        <div class="modal-content" style="width:700"> 
-            <div id='myModalContent' style="width: auto;margin-left: 50px;"></div>
+    <div id='myModal' class='modal'>
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:700">
+                <div id='myModalContent' style="width: auto;margin-left: 50px;"></div>
+            </div>
         </div>
-    </div>
 
-</div>
+    </div>

@@ -49,7 +49,7 @@ namespace SitPlanner.Controllers
         public IActionResult Create()
         {
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
-            return View();
+            return PartialView("_Create");
         }
 
         // POST: Categories/Create
