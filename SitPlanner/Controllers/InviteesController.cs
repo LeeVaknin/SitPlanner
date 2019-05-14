@@ -66,7 +66,7 @@ public async Task<IActionResult> Details(int? id)
                 return NotFound();
             }
 
-            return View(invitee);
+            return PartialView(invitee);
         }
 
         // GET: Invitees/Create
@@ -111,7 +111,7 @@ public async Task<IActionResult> Details(int? id)
             }
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", invitee.CategoryId);
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", invitee.EventId);
-            return View(invitee);
+            return PartialView(invitee);
         }
 
         // POST: Invitees/Edit/5
@@ -168,7 +168,7 @@ public async Task<IActionResult> Details(int? id)
                 return NotFound();
             }
 
-            return View(invitee);
+            return PartialView(invitee);
         }
 
         // POST: Invitees/Delete/5
