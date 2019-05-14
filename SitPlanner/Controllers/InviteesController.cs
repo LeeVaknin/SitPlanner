@@ -22,8 +22,10 @@ namespace SitPlanner.Controllers
         // GET: Invitees
         public async Task<IActionResult> Index()
         {
-            var sitPlannerContext = _context.Invitee.Include(i => i.Category).Include(i => i.Event);
-            return View(await sitPlannerContext.ToListAsync());
+            var invitees = _context.Invitee.Include(i => i.Category).Include(i => i.Event);
+            var categories = _context.Category.Include(c => c.Event);
+            var tuple = new Tuple<IEnumerable<Invitee>, IEnumerable<Category>>(invitees, categories);
+            return View(tuple);
         }
 
         //[HttpPost]
