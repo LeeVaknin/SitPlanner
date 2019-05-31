@@ -104,30 +104,12 @@ namespace SitPlanner.Algo
         }
 
         private List<Individual[]> Selection(Population population)
-        {
-            
+        {            
             List<Individual[]> parentsList = new List<Individual[]>();
-            int sumFitness = 0;
-            for (int i = 0; i < population.population.Length; i++)
-            {
-                sumFitness += population.population[i].fitness;
-            }
-            //TODO - need to implement the randomization here
-
-            int random = algoUtils.AlgoRandom(sumFitness);
-
-            for (int i = 0; i < population.population.Length; i++)
-            {
-                int sum = 0;
-
-            }
 
             for (int i = 0; i < population.population.Length ; i = i+2)
             {
-                Individual[] parents = new Individual[2];
-                parents[0] = population.population[i];
-                parents[1] = population.population[i + 1];
-                parentsList.Add(parents);
+                parentsList.Add(getCoupleParents(population));
             }
 
             return parentsList;
@@ -174,6 +156,35 @@ namespace SitPlanner.Algo
             children[1].updateGensByIndex(individuals[0].getGens(), gensAmount / 2, gensAmount);
 
             return children;
+        }
+
+
+        private Individual findlIndividualByRandom(int random, Population population)
+        {
+            int localSum = 0;
+
+            for (int i = 0; i < population.population.Length; i++)
+            {
+                localSum += population.population[i].fitness;
+                if (localSum > random)
+                    return population.population[i];
+            }
+            return population.population[population.population.Length-1];
+        }
+
+        private Individual[] getCoupleParents(Population population)
+        {
+            int sumFitness = 0;
+            for (int i = 0; i < population.population.Length; i++)
+            {
+                sumFitness += population.population[i].fitness;
+            }
+
+            Individual[] parents = new Individual[2];
+            parents[0] = findlIndividualByRandom(algoUtils.AlgoRandom(sumFitness), population);
+            parents[1] = findlIndividualByRandom(algoUtils.AlgoRandom(sumFitness), population);
+
+            return parents;
         }
     }
 }
