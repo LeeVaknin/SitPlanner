@@ -17,7 +17,9 @@ namespace SitPlanner.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["Message1"] = "Have you ever dreamed of a tool which will auotomate seating arrangments for you?";
+            ViewData["Message2"] = "SeatMe is here to fulfill your dream.";
+            ViewData["Message3"] = "SeatMe offers an automated wedding seating arrangements by using an advanced algorithm.";
 
             return View();
         }

@@ -22,8 +22,10 @@ namespace SitPlanner.Controllers
         // GET: Invitees
         public async Task<IActionResult> Index()
         {
-            var sitPlannerContext = _context.Invitee.Include(i => i.Category).Include(i => i.Event);
-            return View(await sitPlannerContext.ToListAsync());
+            var invitees = _context.Invitee.Include(i => i.Category).Include(i => i.Event);
+            var categories = _context.Category.Include(c => c.Event);
+            var tuple = new Tuple<IEnumerable<Invitee>, IEnumerable<Category>>(invitees, categories);
+            return View(tuple);
         }
 
         //[HttpPost]
@@ -66,7 +68,7 @@ public async Task<IActionResult> Details(int? id)
                 return NotFound();
             }
 
-            return View(invitee);
+            return PartialView(invitee);
         }
 
         // GET: Invitees/Create
@@ -74,7 +76,8 @@ public async Task<IActionResult> Details(int? id)
         {
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name");
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
-            return View();
+            
+            return PartialView("_Create");
         }
 
         // POST: Invitees/Create
@@ -110,7 +113,7 @@ public async Task<IActionResult> Details(int? id)
             }
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", invitee.CategoryId);
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", invitee.EventId);
-            return View(invitee);
+            return PartialView(invitee);
         }
 
         // POST: Invitees/Edit/5
@@ -167,7 +170,7 @@ public async Task<IActionResult> Details(int? id)
                 return NotFound();
             }
 
-            return View(invitee);
+            return PartialView(invitee);
         }
 
         // POST: Invitees/Delete/5

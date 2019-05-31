@@ -3,17 +3,57 @@
 }
 
 
+@section scripts
+    {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        var TeamDetailPostBackURL = '/Events/Create';
+        $(function () {
+            $("#createevent").click(function () {
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: TeamDetailPostBackURL,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "Id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        $('#myModalContent').html(data);
+                        $('#myModal').modal(options);
+                        $('#myModal').modal('show');
+
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+
+            $("#closbtn").click(function () {
+                $('#myModal').modal('hide');
+            });
+        });
+    </script>
+
+}
+
 
 <center>
     <div id="logo1" class="row" style="display:none; vertical-align:middle; text-align:center">
         <img src="~/images/seatme_site.png" />
     </div>
     <p style="font-size:30px; font-family: Montserrat, -apple-system, system-ui, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;">
-        <a asp-controller="Events" asp-action="Create">Create New Event</a>
+        
+        <button style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" id="createevent">New Event</button>
         &nbsp;
         |
         &nbsp;
-        <a asp-controller="Events" asp-action="Index">Existing Event</a>
+        <input id="logo2" style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" type="button" value="Existing Event" onclick="window.location.href='/Events/index ';" />
+
     </p>
 </center>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
@@ -22,5 +62,18 @@
     (function () {
         $('#logo1').fadeIn(1000);
         $('#logo1').css('display', 'table-cell');
+        $('#logo2').fadeIn(2000);
+        $('#logo2').css('display', 'table-cell');
+
     })();
 </script>
+
+
+<div id='myModal' class='modal'>
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:700">
+            <div id='myModalContent' style="width: auto;margin-left: 50px;"></div>
+        </div>
+    </div>
+
+</div>
