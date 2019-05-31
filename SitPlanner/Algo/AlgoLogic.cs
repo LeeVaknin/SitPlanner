@@ -166,8 +166,10 @@ namespace SitPlanner.Algo
             for (int i = 0; i < population.population.Length; i++)
             {
                 localSum += population.population[i].fitness;
-                if (localSum > random)
+                if (localSum >= random)
+                {
                     return population.population[i];
+                }
             }
             return population.population[population.population.Length-1];
         }
