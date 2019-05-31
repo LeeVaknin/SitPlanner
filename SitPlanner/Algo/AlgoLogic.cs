@@ -20,10 +20,10 @@ namespace SitPlanner.Algo
 
         }
 
-        public Individual RunAlgo(List<Invitee> invitees, List<Table> tables)
+        public Individual RunAlgo(AlgoDb algoDb)
         {
             //Initialize population
-            Population population = new Population(invitees, tables);
+            Population population = new Population(algoDb.invitees, algoDb.tables);
             population.initializePopulation(AlgoConsts.populationLength);
 
 

@@ -17,6 +17,9 @@ namespace SitPlanner.Controllers
         private Algo.AlgoLogic algo;
         List<Invitee> invitees;
         List<Table> tables;
+        List<PersonalRestriction> personalRestrictions;
+        List<AccessibilityRestriction> accessibilityRestrictions;
+        List<Category> categories;
         List<Gen> result;
 
         public InviteeTablesController(SitPlannerContext context)
@@ -54,17 +57,12 @@ namespace SitPlanner.Controllers
 
             return View(inviteeTable);
         }
-
+       
         // GET: InviteeTables/Create
         public IActionResult Create()
         {
-            var sitPlannerContextInvitees = _context.Invitee.Include(i => i.Category).Include(i => i.Event).ToList();
-            invitees = new List<Invitee>(sitPlannerContextInvitees);
-
-            var sitPlannerContextTables = _context.Table.Include(t => t.Event).ToList();
-            tables = new List<Table>(sitPlannerContextTables);
-
-            result = algo.RunAlgo(invitees, tables).getGens().ToList();
+            
+            result = algo.RunAlgo(AlgoDbCreation()).getGens().ToList();
 
             foreach (var item in result)
             {
@@ -193,6 +191,27 @@ namespace SitPlanner.Controllers
         private bool InviteeTableExists(int id)
         {
             return _context.InviteeTable.Any(e => e.Id == id);
+        }
+
+        private AlgoDb AlgoDbCreation()
+        {
+            var sitPlannerContextInvitees = _context.Invitee.Include(i => i.Category).Include(i => i.Event).ToList();
+            invitees = new List<Invitee>(sitPlannerContextInvitees);
+
+            var sitPlannerContextTables = _context.Table.Include(t => t.Event).ToList();
+            tables = new List<Table>(sitPlannerContextTables);
+
+            var sitPlannerContextPersonalRestriction = _context.PersonalRestriction.Include(t => t.Event).ToList();
+            personalRestrictions = new List<PersonalRestriction>(sitPlannerContextPersonalRestriction);
+
+            var sitPlannerContextAccessibilityRestriction = _context.AccessibilityRestriction.Include(t => t.Event).ToList();
+            accessibilityRestrictions = new List<AccessibilityRestriction>(sitPlannerContextAccessibilityRestriction);
+
+            var sitPlannerContextCategory = _context.Category.Include(t => t.Event).ToList();
+            categories = new List<Category>(sitPlannerContextCategory);
+
+            AlgoDb algoDb = new AlgoDb(invitees, tables, personalRestrictions, accessibilityRestrictions, categories);
+            return algoDb;
         }
     }
 }

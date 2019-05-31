@@ -21,5 +21,12 @@ namespace SitPlanner.Algo
         public const int maxIterationsCount = 100;
 
         #endregion
+
+        #region Fitness
+        public const int wrostResult = 0;
+        public const int bestResult = 10000;
+        public const int punishOnMissingInvitee = 1000;
+
+        #endregion
     }
 }

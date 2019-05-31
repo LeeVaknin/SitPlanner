@@ -17,6 +17,7 @@ namespace SitPlanner.Algo
         private int invitessAmount;
         private int tablesAmount;
         public Gen[] gens;
+        AlgoDb algoDb;
 
 
 
@@ -42,15 +43,15 @@ namespace SitPlanner.Algo
             this.tables = new List<Table>(tables);
             this.invitessAmount = invitees.Count;
             this.tablesAmount = tables.Count;
-            gens = new Gen[invitessAmount-1];
+            gens = new Gen[invitessAmount - 1];
 
             //generate gens list - all invitess with random tables
             for (int i = 0; i < gens.Length; i++)
             {
-                gens[i] = generateRandomGen(i+1);
+                gens[i] = generateRandomGen(i + 1);
             }
         }
-       
+
         public void cloneGens(Gen[] gens)
         {
             Gen[] newGens = new Gen[gens.Length];
@@ -68,22 +69,33 @@ namespace SitPlanner.Algo
             {
                 this.gens[i] = gens[i];
             }
-            
+
         }
 
         //calculate individual fitness
         public int CalculateFitness()
         {
+            int fitness = 0;
+
             //per invitee
-                //all invitees exist - MUST
-                //invitee-category --> at least 1 with the same category? ++points for more invitees with same category?
-                //invitee-restriction (cannot)
-                //invitee-restriction (must sit with) 
-                //invitee-accesabilityRestriction
-           
-            //per table
-                //limit of amount of invitees per table
-                //category - all invitees in the table are with the same category? 
+            //all invitees exist - MUST
+            fitness -= InviteesExistensePunishment();
+
+            //invitee-category --> at least 1 with the same category? ++points for more invitees with same category?
+            fitness -= InviteesCategoriesPunishment();
+
+            //invitee-restriction (cannot)
+            //invitee-restriction (must sit with) 
+            fitness -= InviteesPersonalRestrictionPunishment();
+
+            //invitee-accesabilityRestriction
+            fitness -= InviteesAccessabilityRestrictionPunishment();
+
+            //limit of amount of invitees per table
+            fitness -= AmountOfInviteesPerTablePunishment();
+
+            if (fitness < 0)
+                return 0;
             return fitness;
         }
 
@@ -102,6 +114,50 @@ namespace SitPlanner.Algo
             return gen;
         }
 
-       
+        private int InviteesExistensePunishment()
+        {
+            int punishment = 0;
+            for (int i = 0; i<gens.Length; i++)
+            {
+                foreach (var invitee in algoDb.invitees)
+                {
+                    if (!(invitee.Id == gens[i].InviteeId))
+                    {
+                        punishment -= AlgoConsts.punishOnMissingInvitee; 
+                    }
+                }
+            }
+            return punishment;
+        }
+
+        //TODO - need to implement
+        private int InviteesPersonalRestrictionPunishment()
+        {
+            int punishment = 0;
+            return punishment;
+        }
+
+        //TODO - need to implement
+        private int InviteesAccessabilityRestrictionPunishment()
+        {
+            int punishment = 0;
+            return punishment;
+        }
+
+        //TODO - need to implement
+        private int AmountOfInviteesPerTablePunishment()
+        {
+            int punishment = 0;
+            return punishment;
+        }
+
+        //TODO - need to implement
+        private int InviteesCategoriesPunishment()
+        {
+            int punishment = 0;
+            //for the same table id (god knows how to do that), check if all invitees have same category.
+
+            return punishment;
+        }
     }
 }
