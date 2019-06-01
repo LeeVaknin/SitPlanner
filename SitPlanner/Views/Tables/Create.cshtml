@@ -12,7 +12,7 @@
     <br />
     <h4 style="color:#F3969A">Create Table</h4>
     <hr />
-    <div style="color:#56CC9D" class="row">
+    <div style="color:#56CC9D">
         <div class="row">
             <div class="col-md-4">
                 <form asp-action="Create">
@@ -46,7 +46,8 @@
         <div>
             <a asp-action="Index">Back to List</a>
         </div>
-        </div>
+</>
         @section Scripts {
             @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
         }
+   
