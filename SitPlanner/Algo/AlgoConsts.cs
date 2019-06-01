@@ -26,6 +26,8 @@ namespace SitPlanner.Algo
         public const int fitnessWorstResult = 0;
         public const int fitnessBestResult = 10000;
         public const int punishOnMissingInvitee = 1000;
+        public const int punishmentOnOverBookingInviteeForTable = 1000;
+        public const int punishmentOnUnderBookingInviteeForTable = 100;
 
         #endregion
     }

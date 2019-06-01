@@ -10,6 +10,7 @@ namespace SitPlanner.Models
 {
     public class Invitee
     {
+
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Please provide first name")]

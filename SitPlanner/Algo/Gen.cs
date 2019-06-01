@@ -2,26 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using  SitPlanner.Models;
 
 namespace SitPlanner.Algo
 {
     public class Gen
     {
-        public int InviteeId { get; set; }
+        public Invitee invitee { get; set; }
 
-        public int TableId { get; set; }
+        public Table table { get; set; }
 
         //Gen constructor
-        public Gen(int InviteeId, int TableId)
+        public Gen(Invitee invitee, Table table)
         {
-                this.InviteeId = InviteeId;
-                this.TableId = TableId;
+                this.invitee = invitee;
+                this.table = table;
         }
 
         public Gen(Gen copyGen)
         {
-            this.InviteeId = copyGen.InviteeId;
-            this.TableId = copyGen.TableId;
+            this.invitee = copyGen.invitee;
+            this.table = copyGen.table;
         }
 
     }

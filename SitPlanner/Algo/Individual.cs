@@ -109,7 +109,7 @@ namespace SitPlanner.Algo
         {
             int ran = algoUtils.AlgoRandom(tablesAmount);
 
-            Gen gen = new Gen(invitees[i].Id, tables[ran].Id);
+            Gen gen = new Gen(invitees[i], tables[ran]);
 
             return gen;
         }
@@ -117,17 +117,21 @@ namespace SitPlanner.Algo
         private int InviteesExistensePunishment()
         {
             int punishment = 0;
-            for (int i = 0; i<gens.Length; i++)
+            int missingInvitee = 0; 
+
+            foreach (var invitee in invitees)
             {
-                foreach (var invitee in this.invitees)
+                for (int i = 0; i < gens.Length; i++)
                 {
-                    if (!(invitee.Id == gens[i].InviteeId))
+                    if (invitee == gens[i].invitee)
                     {
-                        punishment += AlgoConsts.punishOnMissingInvitee; 
+                        break;
                     }
-                }
+                    if (gens[gens.Length-1].invitee != invitee)
+                        missingInvitee++; 
+                } 
             }
-            return punishment;
+            return (punishment = missingInvitee * AlgoConsts.punishOnMissingInvitee);
         }
 
         //TODO - need to implement
@@ -144,12 +148,34 @@ namespace SitPlanner.Algo
             return punishment;
         }
 
-        //TODO - need to implement
+        
         private int AmountOfInviteesPerTablePunishment()
         {
             int punishment = 0;
-            
+            int tableCounter = 0;
+            int inviteeExceeded = 0; 
+            //for each table from the DB, we will check if the table capacity fit the amount of invitees per table
+            foreach (var table in tables)
+            {
+                inviteeExceeded = 0;
+                tableCounter = 0;
+                //count the amount of invitees per table in Individual (gens[]) 
+                for (int i = 0; i < gens.Length; i++)
+                {
+                    if (table.Id == gens[i].table.Id)
+                        tableCounter++;
+                }
+                
+                //if the amount of of invtees per table > capacity, than the inviteeEcceeded > 0
+                inviteeExceeded = tableCounter - table.CapacityOfPeople;
 
+                //punishment for overBooking for a specific table, punishment will increase
+                if (inviteeExceeded > 0)
+                    punishment += inviteeExceeded * AlgoConsts.punishmentOnOverBookingInviteeForTable;
+                //punishment for under booking on a table . the punishment will increase 
+                else
+                    punishment += Math.Abs(inviteeExceeded) * AlgoConsts.punishmentOnUnderBookingInviteeForTable;
+            }
 
             return punishment;
         }
