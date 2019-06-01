@@ -4,45 +4,49 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Create</h2>
-
-<h4>Table</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CapacityOfPeople" class="control-label"></label>
-                <input asp-for="CapacityOfPeople" class="form-control" />
-                <span asp-validation-for="CapacityOfPeople" class="text-danger"></span>
-            </div>
-            @*<div class="form-group">
-                    <label asp-for="TableType" class="control-label"></label>
-                    <select asp-for="TableType" class="form-control" asp-items="ViewBag.TableType"></select>
-                    <span asp-validation-for="TableType" class="text-danger"></span>
-            </div>*@
-    <div>
-    <label for="TableType">TableType</label>
-
-    @Html.DropDownList("EnumDropDown", ViewBag.EnumList as SelectList)
-
-    </div>
-    <div class="form-group">
-        <label asp-for="EventId" class="control-label"></label>
-        <select asp-for="EventId" class="form-control" asp-items="ViewBag.EventId"></select>
-    </div>
-    <div class="form-group">
-        <input type="submit" value="Create" class="btn btn-default" />
-    </div>
-    </form>
-</div>
-</div>
-
 <div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    </div>
+    <br />
+    <h4 style="color:#F3969A">Create Table</h4>
+    <hr />
+    <div style="color:#56CC9D" class="row">
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="CapacityOfPeople" class="control-label"></label>
+                        <input asp-for="CapacityOfPeople" class="form-control" />
+                        <span asp-validation-for="CapacityOfPeople" class="text-danger"></span>
+                    </div>
+                    @*<div class="form-group">
+                                <label asp-for="TableType" class="control-label"></label>
+                                <select asp-for="TableType" class="form-control" asp-items="ViewBag.TableType"></select>
+                                <span asp-validation-for="TableType" class="text-danger"></span>
+                        </div>*@
+                    <div>
+                        <label for="TableType">TableType</label>
+
+                        @Html.DropDownList("EnumDropDown", ViewBag.EnumList as SelectList)
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EventId" class="control-label"></label>
+                        <select asp-for="EventId" class="form-control" asp-items="ViewBag.EventId"></select>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-default" style="background-color: #56CC9D;" />
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
+        </div>
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }

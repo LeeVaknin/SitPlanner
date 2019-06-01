@@ -43,7 +43,7 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
 
-            return View(table);
+            return PartialView(table);
         }
 
         // GET: Tables/Create
@@ -60,7 +60,7 @@ namespace SitPlanner.Controllers
             
 
 
-            return View();
+            return PartialView();
         }
 
         // POST: Tables/Create
@@ -94,7 +94,7 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", table.EventId);
-            return View(table);
+            return PartialView(table);
         }
 
         // POST: Tables/Edit/5
@@ -149,7 +149,7 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
 
-            return View(table);
+            return PartialView(table);
         }
 
         // POST: Tables/Delete/5
