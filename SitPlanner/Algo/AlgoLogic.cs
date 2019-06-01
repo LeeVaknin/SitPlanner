@@ -10,11 +10,11 @@ namespace SitPlanner.Algo
     public class AlgoLogic
     {
         AlgoUtils algoUtils = new AlgoUtils();
+        AlgoDb algoDb;
         Individual[] topXIndividuals = new Individual[AlgoConsts.topXAmount];
         int iterations = 0;
         int iterationsWithoutTopXChange = 0;
         private List<Individual[]> parentsCouplesList = new List<Individual[]>();
-        AlgoDb algoDb;
 
         public AlgoLogic()
         {
@@ -24,8 +24,9 @@ namespace SitPlanner.Algo
         public Individual RunAlgo(AlgoDb algoDb)
         {
 
+            this.algoDb = algoDb;
             //Initialize population
-            Population population = new Population(algoDb.invitees, algoDb.tables);
+            Population population = new Population(algoDb);
             population.initializePopulation(AlgoConsts.populationLength);
 
 
@@ -41,6 +42,7 @@ namespace SitPlanner.Algo
                 //Do selection
                 parentsCouplesList = Selection(population);
 
+                //TODO - population includes population which doesnt include algoDB! to fix! 
                 //Do crossover - get list of paretns - return new pointer for population
                 population = CrossOver(parentsCouplesList);
 
@@ -140,7 +142,7 @@ namespace SitPlanner.Algo
                 }
             }
 
-            return new Population(newChildrenArray);
+            return new Population(newChildrenArray, this.algoDb);
         }
 
         private Individual[] Create2ChildrenFrom2ParentsWithCrossOver(Individual[] individuals)
@@ -148,8 +150,8 @@ namespace SitPlanner.Algo
             //initial children array
             Individual[] children = new Individual[2];
             int gensAmount = individuals[0].getGens().Length;
-            children[0] = new Individual(gensAmount);
-            children[1] = new Individual(gensAmount);
+            children[0] = new Individual(gensAmount, this.algoDb);
+            children[1] = new Individual(gensAmount, this.algoDb);
 
             //on each child copy parent half gens into a child
             children[0].updateGensByIndex(individuals[0].getGens(), 0, gensAmount / 2);

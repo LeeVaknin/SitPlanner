@@ -18,37 +18,38 @@ namespace SitPlanner.Algo
         private int tablesAmount;
         public Gen[] gens;
         AlgoDb algoDb;
+        
 
 
 
-        public Individual(int gensSize)
+        public Individual(int gensSize, AlgoDb algoDb)
         {
+            this.algoDb = algoDb;
             gens = new Gen[gensSize];
         }
 
-        public Individual(Individual copyIndividual)
+        public Individual(Individual copyIndividual, AlgoDb algoDb)
         {
+            this.algoDb = algoDb;
             cloneGens(copyIndividual.getGens());
+            this.invitees = copyIndividual.invitees;
+            this.tables = copyIndividual.tables;
         }
 
-        public Individual(Gen[] gens)
-        {
-            cloneGens(gens);
-        }
-
-        public Individual(List<Invitee> invitees, List<Table> tables)
+        public Individual(AlgoDb algoDb)
         {
             //initialize 
-            this.invitees = new List<Invitee>(invitees);
-            this.tables = new List<Table>(tables);
+            this.algoDb = algoDb;
+            this.invitees = new List<Invitee>(algoDb.invitees);
+            this.tables = new List<Table>(algoDb.tables);
             this.invitessAmount = invitees.Count;
             this.tablesAmount = tables.Count;
-            gens = new Gen[invitessAmount - 1];
+            gens = new Gen[invitessAmount];
 
             //generate gens list - all invitess with random tables
             for (int i = 0; i < gens.Length; i++)
             {
-                gens[i] = generateRandomGen(i + 1);
+                gens[i] = generateRandomGen(i);
             }
         }
 
@@ -82,8 +83,9 @@ namespace SitPlanner.Algo
             //limit of amount of invitees per table
             fitness -= AmountOfInviteesPerTablePunishment();
 
-            //invitee-category --> at least 1 with the same category? ++points for more invitees with same category?
-            fitness -= InviteesCategoriesPunishment();
+            //invitee-category 
+            fitness -= MultipleCategoriesInTablePunishment();
+            fitness -= StandaloneInviteePerCategoryPunishment();
 
             //invitee-restriction (cannot)
             //invitee-restriction (must sit with) 
@@ -119,15 +121,15 @@ namespace SitPlanner.Algo
             int punishment = 0;
             int missingInvitee = 0; 
 
-            foreach (var invitee in invitees)
+            foreach (var invitee in algoDb.invitees)
             {
                 for (int i = 0; i < gens.Length; i++)
                 {
-                    if (invitee == gens[i].invitee)
+                    if (invitee.Id == gens[i].invitee.Id)
                     {
                         break;
                     }
-                    if (gens[gens.Length-1].invitee != invitee)
+                    if (gens.Length-1 == i)
                         missingInvitee++; 
                 } 
             }
@@ -180,13 +182,48 @@ namespace SitPlanner.Algo
             return punishment;
         }
 
-        //TODO - need to implement
-        private int InviteesCategoriesPunishment()
+        
+        private int StandaloneInviteePerCategoryPunishment()
         {
             int punishment = 0;
-            //for the same table id (god knows how to do that), check if all invitees have same category.
+            //for each invitee in gens, check if there is another invitee from the same table, with the same category. if not - punish
+            for (int i = 0; i < gens.Length; i++)
+            {
+                for (int j = 1; j < gens.Length; j++)
+                {
+                    if (gens[i].table.Id == gens[j].table.Id)
+                        if (gens[i].invitee.CategoryId == gens[j].invitee.CategoryId)
+                            break;
+                    if (j == gens.Length - 1)
+                        punishment++;
+                }
+            }
 
-            return punishment;
+            return punishment * AlgoConsts.punishmentOnSingleInviteeWithSameCategoryInTable;
+        }
+
+        private int MultipleCategoriesInTablePunishment()
+        {
+            //for the same table id (god knows how to do that), check if all invitees have same category.
+            int punishment = 0;
+            //for each table 
+            foreach (var table in algoDb.tables)
+            {
+                HashSet<int> categories = new HashSet<int>();
+                int numberOfCategoriesInTable = 0;
+                //run on all gens which has the same table, and add the categories into set
+                for (int i = 0; i < gens.Length; i++)
+                {
+                    if (gens[i].table.Id == table.Id)
+                        categories.Add(gens[i].invitee.CategoryId);
+                }
+                //the number of categories for a specific table
+                numberOfCategoriesInTable = categories.Count();
+                //punish on each multi categories which is bigger than 1
+                punishment += (numberOfCategoriesInTable - 1);
+            }
+
+            return punishment * AlgoConsts.punishmentOnMultiCategoriesInTable;
         }
     }
 }
