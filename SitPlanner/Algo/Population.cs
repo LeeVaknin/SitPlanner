@@ -29,7 +29,7 @@ namespace SitPlanner.Algo
         {
             for (int i = 0; i < population.Length; i++)
             {
-                population[i] = new Individual(invitees, tables);
+                population[i] = new Individual(this.invitees, this.tables);
             }
         }
 

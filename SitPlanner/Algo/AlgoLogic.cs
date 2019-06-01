@@ -14,6 +14,7 @@ namespace SitPlanner.Algo
         int iterations = 0;
         int iterationsWithoutTopXChange = 0;
         private List<Individual[]> parentsCouplesList = new List<Individual[]>();
+        AlgoDb algoDb;
 
         public AlgoLogic()
         {
@@ -22,6 +23,7 @@ namespace SitPlanner.Algo
 
         public Individual RunAlgo(AlgoDb algoDb)
         {
+
             //Initialize population
             Population population = new Population(algoDb.invitees, algoDb.tables);
             population.initializePopulation(AlgoConsts.populationLength);
@@ -98,7 +100,7 @@ namespace SitPlanner.Algo
         private bool breakCondition()
         {
 
-            return (iterationsWithoutTopXChange > AlgoConsts.NumIterationsWithoutChange ||
+            return (iterationsWithoutTopXChange > AlgoConsts.numIterationsWithoutChange ||
             GetIndividualWithBestResult().fitness == AlgoConsts.optimalResult ||
             iterations == AlgoConsts.maxIterationsCount);
         }

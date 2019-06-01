@@ -21,5 +21,6 @@ namespace SitPlanner.Algo
             this.personalRestrictions = new List<PersonalRestriction>(personalRestrictions);
             this.accessibilityRestrictions = new List<AccessibilityRestriction>(accessibilityRestrictions);
         }
+
     }
 }

@@ -11,7 +11,7 @@ namespace SitPlanner.Algo
     public class Individual
     {
         AlgoUtils algoUtils = new AlgoUtils();
-        public int fitness = -1;
+        public int fitness = AlgoConsts.fitnessBestResult;
         private List<Invitee> invitees;
         private List<Table> tables;
         private int invitessAmount;
@@ -75,11 +75,12 @@ namespace SitPlanner.Algo
         //calculate individual fitness
         public int CalculateFitness()
         {
-            int fitness = 0;
 
-            //per invitee
             //all invitees exist - MUST
             fitness -= InviteesExistensePunishment();
+
+            //limit of amount of invitees per table
+            fitness -= AmountOfInviteesPerTablePunishment();
 
             //invitee-category --> at least 1 with the same category? ++points for more invitees with same category?
             fitness -= InviteesCategoriesPunishment();
@@ -91,8 +92,7 @@ namespace SitPlanner.Algo
             //invitee-accesabilityRestriction
             fitness -= InviteesAccessabilityRestrictionPunishment();
 
-            //limit of amount of invitees per table
-            fitness -= AmountOfInviteesPerTablePunishment();
+            
 
             if (fitness < 0)
                 return 0;
@@ -119,11 +119,11 @@ namespace SitPlanner.Algo
             int punishment = 0;
             for (int i = 0; i<gens.Length; i++)
             {
-                foreach (var invitee in algoDb.invitees)
+                foreach (var invitee in this.invitees)
                 {
                     if (!(invitee.Id == gens[i].InviteeId))
                     {
-                        punishment -= AlgoConsts.punishOnMissingInvitee; 
+                        punishment += AlgoConsts.punishOnMissingInvitee; 
                     }
                 }
             }
@@ -148,6 +148,9 @@ namespace SitPlanner.Algo
         private int AmountOfInviteesPerTablePunishment()
         {
             int punishment = 0;
+            
+
+
             return punishment;
         }
 

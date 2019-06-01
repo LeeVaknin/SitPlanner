@@ -16,15 +16,15 @@ namespace SitPlanner.Algo
 
         #region Algo
 
-        public const int NumIterationsWithoutChange = 1000;
+        public const int numIterationsWithoutChange = 1000;
         public const int optimalResult = 0;
         public const int maxIterationsCount = 100;
 
         #endregion
 
         #region Fitness
-        public const int wrostResult = 0;
-        public const int bestResult = 10000;
+        public const int fitnessWorstResult = 0;
+        public const int fitnessBestResult = 10000;
         public const int punishOnMissingInvitee = 1000;
 
         #endregion
