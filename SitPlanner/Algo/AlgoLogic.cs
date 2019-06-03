@@ -42,7 +42,7 @@ namespace SitPlanner.Algo
                 //Do selection
                 parentsCouplesList = Selection(population);
 
-                //TODO - population includes population which doesnt include algoDB! to fix! 
+                //TODO - population includes individual which doesnt include algoDB! to fix! 
                 //Do crossover - get list of paretns - return new pointer for population
                 population = CrossOver(parentsCouplesList);
 
@@ -141,7 +141,7 @@ namespace SitPlanner.Algo
                     newChildrenArray[childCount-1] = coupleChildren[i];
                 }
             }
-
+            //why new?? might be the reson for the missing data!!!!!
             return new Population(newChildrenArray, this.algoDb);
         }
 

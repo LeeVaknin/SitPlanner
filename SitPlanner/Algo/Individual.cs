@@ -28,9 +28,9 @@ namespace SitPlanner.Algo
             gens = new Gen[gensSize];
         }
 
-        public Individual(Individual copyIndividual, AlgoDb algoDb)
+        public Individual(Individual copyIndividual)
         {
-            this.algoDb = algoDb;
+            this.algoDb = copyIndividual.algoDb;
             cloneGens(copyIndividual.getGens());
             this.invitees = copyIndividual.invitees;
             this.tables = copyIndividual.tables;
@@ -157,7 +157,7 @@ namespace SitPlanner.Algo
             int tableCounter = 0;
             int inviteeExceeded = 0; 
             //for each table from the DB, we will check if the table capacity fit the amount of invitees per table
-            foreach (var table in tables)
+            foreach (var table in algoDb.tables)
             {
                 inviteeExceeded = 0;
                 tableCounter = 0;

@@ -51,7 +51,7 @@ namespace SitPlanner.Algo
             Individual[] newIndividuals = new Individual[individuals.Length];
             for (int i = 0; i < individuals.Length; i++)
             {
-                newIndividuals[i] = new Individual(individuals[i], this.algoDb);
+                newIndividuals[i] = new Individual(individuals[i]);
             }
             this.population = newIndividuals;
         }
