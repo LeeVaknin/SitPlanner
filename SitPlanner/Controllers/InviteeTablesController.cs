@@ -55,7 +55,7 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
 
-            return View(inviteeTable);
+            return PartialView(inviteeTable);
         }
        
         // GET: InviteeTables/Create
@@ -66,14 +66,14 @@ namespace SitPlanner.Controllers
 
             foreach (var item in result)
             {
-                InviteeTable inviteeTable = new InviteeTable()
+                //InviteeTable inviteeTable = new InviteeTable()
             }
 
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
             ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id");
             ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName");
             ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id");
-            return View();
+            return PartialView();
         }
 
         // POST: InviteeTables/Create
@@ -113,7 +113,7 @@ namespace SitPlanner.Controllers
             ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id", inviteeTable.EventOptionId);
             ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", inviteeTable.InviteeId);
             ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id", inviteeTable.TableId);
-            return View(inviteeTable);
+            return PartialView(inviteeTable);
         }
 
         // POST: InviteeTables/Edit/5
@@ -174,7 +174,7 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
 
-            return View(inviteeTable);
+            return PartialView(inviteeTable);
         }
 
         // POST: InviteeTables/Delete/5
