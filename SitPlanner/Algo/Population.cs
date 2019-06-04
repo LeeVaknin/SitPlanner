@@ -8,27 +8,31 @@ namespace SitPlanner.Algo
 {
     public class Population
     {
+        AlgoUtils algoUtils = new AlgoUtils();
+        AlgoDb algoDb;
         List<Invitee> invitees;
         List<Table> tables;
         public Individual[] population = new Individual[AlgoConsts.populationLength];
         Individual[] topXIndividuals = new Individual[AlgoConsts.topXAmount];
 
-        public Population(Individual[] individuals)
+        public Population(Individual[] individuals, AlgoDb algoDb)
         {
             cloneIndividuals(individuals);
+            this.algoDb = algoDb;
         }
 
-        public Population(List<Invitee> invitees, List<Table> tables)
+        public Population(AlgoDb algoDb)
         {
-            this.invitees = new List<Invitee>(invitees);
-            this.tables = new List<Table>(tables);
+            this.algoDb = algoDb;
+            this.invitees = new List<Invitee>(algoDb.invitees);
+            this.tables = new List<Table>(algoDb.tables);
         }
 
         public void initializePopulation(int size)
         {
             for (int i = 0; i < population.Length; i++)
             {
-                population[i] = new Individual(invitees, tables);
+                population[i] = new Individual(algoDb);
             }
         }
 
@@ -47,7 +51,7 @@ namespace SitPlanner.Algo
             Individual[] newIndividuals = new Individual[individuals.Length];
             for (int i = 0; i < individuals.Length; i++)
             {
-                newIndividuals[0] = new Individual(individuals[0]);
+                newIndividuals[i] = new Individual(individuals[i]);
             }
             this.population = newIndividuals;
         }
