@@ -186,14 +186,25 @@ namespace SitPlanner.Algo
             }
             return -1;
         }
-        //TODO - need to implement
+        
         private int InviteesAccessabilityRestrictionPunishment()
         {
-            int punishment = 0;
-            return punishment;
+            int numOfpunished = 0;
+            int inviteeTable;
+            foreach (var accessibilityRestriction in algoDb.accessibilityRestrictions)
+            {
+                if (accessibilityRestriction.IsSittingAtTable == false)
+                {
+                    inviteeTable = GetInviteeTableIdFromGen(accessibilityRestriction.InviteeId);
+                    if (inviteeTable == accessibilityRestriction.TableId)
+                    {
+                        numOfpunished++;
+                    }
+                }
+            }
+            return numOfpunished * AlgoConsts.punishmentOnAccessibilityRestriction;
         }
 
-        
         private int AmountOfInviteesPerTablePunishment()
         {
             int punishment = 0;
