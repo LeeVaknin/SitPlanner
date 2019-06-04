@@ -18,9 +18,6 @@ namespace SitPlanner.Algo
         private int tablesAmount;
         public Gen[] gens;
         AlgoDb algoDb;
-        
-
-
 
         public Individual(int gensSize, AlgoDb algoDb)
         {
@@ -76,7 +73,6 @@ namespace SitPlanner.Algo
         //calculate individual fitness
         public int CalculateFitness()
         {
-
             //all invitees exist - MUST
             fitness -= InviteesExistensePunishment();
 
@@ -89,12 +85,13 @@ namespace SitPlanner.Algo
 
             //invitee-restriction (cannot)
             //invitee-restriction (must sit with) 
-            fitness -= InviteesPersonalRestrictionPunishment();
+            fitness -= InviteesPersonalNotSeatTogetherRestrictionPunishment();
+            fitness -= InviteesPersonalMustSeatTogetherRestrictionPunishment();
+
 
             //invitee-accesabilityRestriction
             fitness -= InviteesAccessabilityRestrictionPunishment();
 
-            
 
             if (fitness < 0)
                 return 0;
@@ -136,13 +133,59 @@ namespace SitPlanner.Algo
             return (punishment = missingInvitee * AlgoConsts.punishOnMissingInvitee);
         }
 
-        //TODO - need to implement
-        private int InviteesPersonalRestrictionPunishment()
+        private int InviteesPersonalNotSeatTogetherRestrictionPunishment()
         {
-            int punishment = 0;
-            return punishment;
+            int numOfpunished = 0;
+            int inviteeTable;
+            int inviteeTable2;
+
+            foreach (var personalRestriction in algoDb.personalRestrictions)
+            {
+                if(personalRestriction.IsSittingTogether == false)
+                {
+                    inviteeTable = GetInviteeTableIdFromGen(personalRestriction.MainInviteeId);
+                    inviteeTable2 = GetInviteeTableIdFromGen(personalRestriction.SecondaryInviteeId);
+                    if (inviteeTable == inviteeTable2) {
+                        numOfpunished++;
+                    }
+                }
+                
+            }
+            return numOfpunished * AlgoConsts.punishmentOnCannotSeatTogether;
         }
 
+        private int InviteesPersonalMustSeatTogetherRestrictionPunishment()
+        {
+            int numOfpunished = 0;
+            int inviteeTable;
+            int inviteeTable2;
+
+            foreach (var personalRestriction in algoDb.personalRestrictions)
+            {
+                if (personalRestriction.IsSittingTogether == true)
+                {
+                    inviteeTable = GetInviteeTableIdFromGen(personalRestriction.MainInviteeId);
+                    inviteeTable2 = GetInviteeTableIdFromGen(personalRestriction.SecondaryInviteeId);
+                    if (inviteeTable != inviteeTable2)
+                    {
+                        numOfpunished++;
+                    }
+                }
+
+            }
+            return numOfpunished * AlgoConsts.punishmentOnMustSeatTogether;
+        }
+
+        // Return invitee table id from gens array. if not exist return -1.
+        private int GetInviteeTableIdFromGen(int inviteeId)
+        {
+            foreach(Gen gen in gens)
+            {
+                if (gen.invitee.Id == inviteeId)
+                    return gen.table.Id;
+            }
+            return -1;
+        }
         //TODO - need to implement
         private int InviteesAccessabilityRestrictionPunishment()
         {
@@ -182,7 +225,6 @@ namespace SitPlanner.Algo
             return punishment;
         }
 
-        
         private int StandaloneInviteePerCategoryPunishment()
         {
             int punishment = 0;
@@ -204,9 +246,8 @@ namespace SitPlanner.Algo
 
         private int MultipleCategoriesInTablePunishment()
         {
-            //for the same table id (god knows how to do that), check if all invitees have same category.
             int punishment = 0;
-            //for each table 
+
             foreach (var table in algoDb.tables)
             {
                 HashSet<int> categories = new HashSet<int>();
