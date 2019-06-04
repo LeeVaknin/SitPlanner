@@ -8,6 +8,7 @@ namespace SitPlanner.Models
 {
     public class InviteeTable
     {
+
         public int Id { get; set; }
 
         public int InviteeId { get; set; }
