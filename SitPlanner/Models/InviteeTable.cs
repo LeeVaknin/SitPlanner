@@ -8,11 +8,6 @@ namespace SitPlanner.Models
 {
     public class InviteeTable
     {
-        public InviteeTable(Invitee invitee, Table table)
-        {
-            this.Invitee = invitee;
-            this.Table = table;
-        }
 
         public int Id { get; set; }
 
