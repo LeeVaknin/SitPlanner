@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SitPlanner.Models;
+using SitPlanner.Algo;
 
 namespace SitPlanner.Algo
 {
     public class AlgoLogic
     {
-
+        AlgoUtils algoUtils = new AlgoUtils();
+        AlgoDb algoDb;
         Individual[] topXIndividuals = new Individual[AlgoConsts.topXAmount];
         int iterations = 0;
         int iterationsWithoutTopXChange = 0;
@@ -19,10 +21,12 @@ namespace SitPlanner.Algo
 
         }
 
-        public Individual RunAlgo(List<Invitee> invitees, List<Table> tables)
+        public Individual RunAlgo(AlgoDb algoDb)
         {
+
+            this.algoDb = algoDb;
             //Initialize population
-            Population population = new Population(invitees, tables);
+            Population population = new Population(algoDb);
             population.initializePopulation(AlgoConsts.populationLength);
 
 
@@ -38,6 +42,7 @@ namespace SitPlanner.Algo
                 //Do selection
                 parentsCouplesList = Selection(population);
 
+                //TODO - population includes individual which doesnt include algoDB! to fix! 
                 //Do crossover - get list of paretns - return new pointer for population
                 population = CrossOver(parentsCouplesList);
 
@@ -97,23 +102,18 @@ namespace SitPlanner.Algo
         private bool breakCondition()
         {
 
-            return (iterationsWithoutTopXChange > AlgoConsts.NumIterationsWithoutChange ||
+            return (iterationsWithoutTopXChange > AlgoConsts.numIterationsWithoutChange ||
             GetIndividualWithBestResult().fitness == AlgoConsts.optimalResult ||
             iterations == AlgoConsts.maxIterationsCount);
         }
 
         private List<Individual[]> Selection(Population population)
-        {
-            
+        {            
             List<Individual[]> parentsList = new List<Individual[]>();
 
-            //TODO - need to implement the randomization here
             for (int i = 0; i < population.population.Length ; i = i+2)
             {
-                Individual[] parents = new Individual[2];
-                parents[0] = population.population[i];
-                parents[1] = population.population[i + 1];
-                parentsList.Add(parents);
+                parentsList.Add(getCoupleParents(population));
             }
 
             return parentsList;
@@ -141,8 +141,8 @@ namespace SitPlanner.Algo
                     newChildrenArray[childCount-1] = coupleChildren[i];
                 }
             }
-
-            return new Population(newChildrenArray);
+            //why new?? might be the reson for the missing data!!!!!
+            return new Population(newChildrenArray, this.algoDb);
         }
 
         private Individual[] Create2ChildrenFrom2ParentsWithCrossOver(Individual[] individuals)
@@ -150,16 +150,47 @@ namespace SitPlanner.Algo
             //initial children array
             Individual[] children = new Individual[2];
             int gensAmount = individuals[0].getGens().Length;
-            children[0] = new Individual(gensAmount);
-            children[1] = new Individual(gensAmount);
+            children[0] = new Individual(gensAmount, this.algoDb);
+            children[1] = new Individual(gensAmount, this.algoDb);
 
             //on each child copy parent half gens into a child
             children[0].updateGensByIndex(individuals[0].getGens(), 0, gensAmount / 2);
             children[0].updateGensByIndex(individuals[1].getGens(), gensAmount / 2, gensAmount);
             children[1].updateGensByIndex(individuals[1].getGens(), 0, gensAmount / 2);
-            children[1].updateGensByIndex(individuals[1].getGens(), gensAmount / 2, gensAmount);
+            children[1].updateGensByIndex(individuals[0].getGens(), gensAmount / 2, gensAmount);
 
             return children;
+        }
+
+
+        private Individual findlIndividualByRandom(int random, Population population)
+        {
+            int localSum = 0;
+
+            for (int i = 0; i < population.population.Length; i++)
+            {
+                localSum += population.population[i].fitness;
+                if (localSum >= random)
+                {
+                    return population.population[i];
+                }
+            }
+            return population.population[population.population.Length-1];
+        }
+
+        private Individual[] getCoupleParents(Population population)
+        {
+            int sumFitness = 0;
+            for (int i = 0; i < population.population.Length; i++)
+            {
+                sumFitness += population.population[i].fitness;
+            }
+
+            Individual[] parents = new Individual[2];
+            parents[0] = findlIndividualByRandom(algoUtils.AlgoRandom(sumFitness), population);
+            parents[1] = findlIndividualByRandom(algoUtils.AlgoRandom(sumFitness), population);
+
+            return parents;
         }
     }
 }
