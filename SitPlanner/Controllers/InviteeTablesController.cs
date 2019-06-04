@@ -66,7 +66,7 @@ namespace SitPlanner.Controllers
 
             foreach (var item in result)
             {
-                //Save the list of gens (inviteeTable) into DB
+                InviteeTable inviteeTable = new InviteeTable()
             }
 
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
