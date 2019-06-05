@@ -10,6 +10,8 @@ namespace SitPlanner.Algo
 {
     public class Individual
     {
+        #region data members and constructors
+
         AlgoUtils algoUtils = new AlgoUtils();
         public int fitness = AlgoConsts.fitnessBestResult;
         private List<Invitee> invitees;
@@ -50,26 +52,17 @@ namespace SitPlanner.Algo
             }
         }
 
-        public void cloneGens(Gen[] gens)
-        {
-            Gen[] newGens = new Gen[gens.Length];
-            for (int i = 0; i < gens.Length; i++)
-            {
-                newGens[i] = new Gen(gens[i]);
-            }
+        #endregion
 
-            this.gens = newGens;
+        #region setters and getters
+        public Gen[] getGens()
+        {
+            return gens;
         }
 
-        public void updateGensByIndex(Gen[] gens, int startIndex, int endIndex)
-        {
-            for (int i = startIndex; i < endIndex; i++)
-            {
-                this.gens[i] = gens[i];
-            }
+        #endregion
 
-        }
-
+        #region fitness function
         //calculate individual fitness
         public int CalculateFitness()
         {
@@ -98,21 +91,9 @@ namespace SitPlanner.Algo
             return fitness;
         }
 
-        public Gen[] getGens()
-        {
-            return gens;
-        }
+        #endregion
 
-        //random Gen will create Gen with the invitee id by i, and random table
-        private Gen generateRandomGen(int i)
-        {
-            int ran = algoUtils.AlgoRandom(tablesAmount);
-
-            Gen gen = new Gen(invitees[i], tables[ran]);
-
-            return gen;
-        }
-
+        #region punishment functions
         private int InviteesExistensePunishment()
         {
             int punishment = 0;
@@ -174,17 +155,6 @@ namespace SitPlanner.Algo
 
             }
             return numOfpunished * AlgoConsts.punishmentOnMustSeatTogether;
-        }
-
-        // Return invitee table id from gens array. if not exist return -1.
-        private int GetInviteeTableIdFromGen(int inviteeId)
-        {
-            foreach(Gen gen in gens)
-            {
-                if (gen.invitee.Id == inviteeId)
-                    return gen.table.Id;
-            }
-            return -1;
         }
         
         private int InviteesAccessabilityRestrictionPunishment()
@@ -277,5 +247,50 @@ namespace SitPlanner.Algo
 
             return punishment * AlgoConsts.punishmentOnMultiCategoriesInTable;
         }
+
+        #endregion
+
+        #region  utils
+
+        //random Gen will create Gen with the invitee id by i, and random table
+        private Gen generateRandomGen(int i)
+        {
+            int ran = algoUtils.AlgoRandom(tablesAmount);
+
+            Gen gen = new Gen(invitees[i], tables[ran]);
+
+            return gen;
+        }
+        public void cloneGens(Gen[] gens)
+        {
+            Gen[] newGens = new Gen[gens.Length];
+            for (int i = 0; i < gens.Length; i++)
+            {
+                newGens[i] = new Gen(gens[i]);
+            }
+            this.gens = newGens;
+        }
+
+        public void updateGensByIndex(Gen[] gens, int startIndex, int endIndex)
+        {
+            for (int i = startIndex; i < endIndex; i++)
+            {
+                this.gens[i] = gens[i];
+            }
+
+        }
+
+        // Return invitee table id from gens array. if not exist return -1.
+        private int GetInviteeTableIdFromGen(int inviteeId)
+        {
+            foreach (Gen gen in gens)
+            {
+                if (gen.invitee.Id == inviteeId)
+                    return gen.table.Id;
+            }
+            return -1;
+        }
+
+        #endregion
     }
 }
