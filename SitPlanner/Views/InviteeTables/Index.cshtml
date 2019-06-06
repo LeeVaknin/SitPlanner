@@ -95,40 +95,47 @@
                 @Html.DisplayNameFor(model => model.Invitee)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Invitee.Category)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Table)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EventOption)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Event)
-            </th>
+            @Html.DisplayNameFor(model => model.EventOption)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Event)
+        </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Invitee.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Table.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EventOption.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Event.Name)
-                </td>
-                <td>
-                    <button style="border-radius: 12px; border: 2px solid #F3969A;background-color: #fff;" id="Edit" value="@item.Id">Edit</button>
-                    <button style="border-radius: 12px; border: 2px solid #d198ea;background-color: #fff;" id="Details" value="@item.Id">Details</button>
-                    <button style="border-radius: 12px; border: 2px solid #b22d38;background-color: #fff;" id="Delete" value="@item.Id">Delete</button>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Invitee.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Invitee.Category.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Table.Id)
+            </td>
 
-                </td>
-            </tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventOption.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Event.Name)
+            </td>
+            <td>
+                <button style="border-radius: 12px; border: 2px solid #F3969A;background-color: #fff;" id="Edit" value="@item.Id">Edit</button>
+                <button style="border-radius: 12px; border: 2px solid #d198ea;background-color: #fff;" id="Details" value="@item.Id">Details</button>
+                <button style="border-radius: 12px; border: 2px solid #b22d38;background-color: #fff;" id="Delete" value="@item.Id">Delete</button>
+
+            </td>
+        </tr>
         }
     </tbody>
 </table>

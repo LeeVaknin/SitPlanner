@@ -31,8 +31,8 @@ namespace SitPlanner.Controllers
         // GET: InviteeTables
         public async Task<IActionResult> Index()
         {
-            var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee).Include(i => i.Table);
-
+            var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table);
+            var b = await sitPlannerContext.ToListAsync();
             return View(await sitPlannerContext.ToListAsync());
         }
 
