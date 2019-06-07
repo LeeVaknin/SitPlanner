@@ -104,7 +104,8 @@ namespace SitPlanner.Controllers
             ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id");
             ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName");
             ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id");
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index","InviteeTables");
+            //return RedirectToAction(nameof(Index));
             //return View(nameof(Index));
         }
 
