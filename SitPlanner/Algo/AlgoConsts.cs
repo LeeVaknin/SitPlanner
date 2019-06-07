@@ -29,6 +29,9 @@ namespace SitPlanner.Algo
         public const int punishmentOnOverBookingInviteeForTable = 1000;
         public const int punishmentOnUnderBookingInviteeForTable = 100;
         public const int punishmentOnMultiCategoriesInTable = 100;
+        public const int punishmentOnCannotSeatTogether = 100;
+        public const int punishmentOnMustSeatTogether = 100;
+        public const int punishmentOnAccessibilityRestriction = 100;
         public const int punishmentOnSingleInviteeWithSameCategoryInTable = 500;
 
         #endregion

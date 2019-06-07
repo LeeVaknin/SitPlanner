@@ -10,6 +10,8 @@ namespace SitPlanner.Algo
 {
     public class Individual
     {
+        #region data members and constructors
+
         AlgoUtils algoUtils = new AlgoUtils();
         public int fitness = AlgoConsts.fitnessBestResult;
         private List<Invitee> invitees;
@@ -18,9 +20,6 @@ namespace SitPlanner.Algo
         private int tablesAmount;
         public Gen[] gens;
         AlgoDb algoDb;
-        
-
-
 
         public Individual(int gensSize, AlgoDb algoDb)
         {
@@ -53,30 +52,20 @@ namespace SitPlanner.Algo
             }
         }
 
-        public void cloneGens(Gen[] gens)
-        {
-            Gen[] newGens = new Gen[gens.Length];
-            for (int i = 0; i < gens.Length; i++)
-            {
-                newGens[i] = new Gen(gens[i]);
-            }
+        #endregion
 
-            this.gens = newGens;
+        #region setters and getters
+        public Gen[] getGens()
+        {
+            return gens;
         }
 
-        public void updateGensByIndex(Gen[] gens, int startIndex, int endIndex)
-        {
-            for (int i = startIndex; i < endIndex; i++)
-            {
-                this.gens[i] = gens[i];
-            }
+        #endregion
 
-        }
-
+        #region fitness function
         //calculate individual fitness
         public int CalculateFitness()
         {
-
             //all invitees exist - MUST
             fitness -= InviteesExistensePunishment();
 
@@ -89,33 +78,22 @@ namespace SitPlanner.Algo
 
             //invitee-restriction (cannot)
             //invitee-restriction (must sit with) 
-            fitness -= InviteesPersonalRestrictionPunishment();
+            fitness -= InviteesPersonalNotSeatTogetherRestrictionPunishment();
+            fitness -= InviteesPersonalMustSeatTogetherRestrictionPunishment();
+
 
             //invitee-accesabilityRestriction
             fitness -= InviteesAccessabilityRestrictionPunishment();
 
-            
 
             if (fitness < 0)
                 return 0;
             return fitness;
         }
 
-        public Gen[] getGens()
-        {
-            return gens;
-        }
+        #endregion
 
-        //random Gen will create Gen with the invitee id by i, and random table
-        private Gen generateRandomGen(int i)
-        {
-            int ran = algoUtils.AlgoRandom(tablesAmount);
-
-            Gen gen = new Gen(invitees[i], tables[ran]);
-
-            return gen;
-        }
-
+        #region punishment functions
         private int InviteesExistensePunishment()
         {
             int punishment = 0;
@@ -136,21 +114,67 @@ namespace SitPlanner.Algo
             return (punishment = missingInvitee * AlgoConsts.punishOnMissingInvitee);
         }
 
-        //TODO - need to implement
-        private int InviteesPersonalRestrictionPunishment()
+        private int InviteesPersonalNotSeatTogetherRestrictionPunishment()
         {
-            int punishment = 0;
-            return punishment;
+            int numOfpunished = 0;
+            int inviteeTable;
+            int inviteeTable2;
+
+            foreach (var personalRestriction in algoDb.personalRestrictions)
+            {
+                if(personalRestriction.IsSittingTogether == false)
+                {
+                    inviteeTable = GetInviteeTableIdFromGen(personalRestriction.MainInviteeId);
+                    inviteeTable2 = GetInviteeTableIdFromGen(personalRestriction.SecondaryInviteeId);
+                    if (inviteeTable == inviteeTable2) {
+                        numOfpunished++;
+                    }
+                }
+                
+            }
+            return numOfpunished * AlgoConsts.punishmentOnCannotSeatTogether;
         }
 
-        //TODO - need to implement
+        private int InviteesPersonalMustSeatTogetherRestrictionPunishment()
+        {
+            int numOfpunished = 0;
+            int inviteeTable;
+            int inviteeTable2;
+
+            foreach (var personalRestriction in algoDb.personalRestrictions)
+            {
+                if (personalRestriction.IsSittingTogether == true)
+                {
+                    inviteeTable = GetInviteeTableIdFromGen(personalRestriction.MainInviteeId);
+                    inviteeTable2 = GetInviteeTableIdFromGen(personalRestriction.SecondaryInviteeId);
+                    if (inviteeTable != inviteeTable2)
+                    {
+                        numOfpunished++;
+                    }
+                }
+
+            }
+            return numOfpunished * AlgoConsts.punishmentOnMustSeatTogether;
+        }
+        
         private int InviteesAccessabilityRestrictionPunishment()
         {
-            int punishment = 0;
-            return punishment;
+            int numOfpunished = 0;
+            int inviteeTable;
+            foreach (var accessibilityRestriction in algoDb.accessibilityRestrictions)
+            {
+                if (accessibilityRestriction.IsSittingAtTable == false)
+                {
+                    inviteeTable = GetInviteeTableIdFromGen(accessibilityRestriction.InviteeId);
+                    if (inviteeTable == accessibilityRestriction.TableId)
+                    {
+                        numOfpunished++;
+                    }
+                }
+            }
+            return numOfpunished * AlgoConsts.punishmentOnAccessibilityRestriction;
         }
 
-        
         private int AmountOfInviteesPerTablePunishment()
         {
             int punishment = 0;
@@ -182,7 +206,6 @@ namespace SitPlanner.Algo
             return punishment;
         }
 
-        
         private int StandaloneInviteePerCategoryPunishment()
         {
             int punishment = 0;
@@ -204,9 +227,8 @@ namespace SitPlanner.Algo
 
         private int MultipleCategoriesInTablePunishment()
         {
-            //for the same table id (god knows how to do that), check if all invitees have same category.
             int punishment = 0;
-            //for each table 
+
             foreach (var table in algoDb.tables)
             {
                 HashSet<int> categories = new HashSet<int>();
@@ -225,5 +247,50 @@ namespace SitPlanner.Algo
 
             return punishment * AlgoConsts.punishmentOnMultiCategoriesInTable;
         }
+
+        #endregion
+
+        #region  utils
+
+        //random Gen will create Gen with the invitee id by i, and random table
+        private Gen generateRandomGen(int i)
+        {
+            int ran = algoUtils.AlgoRandom(tablesAmount);
+
+            Gen gen = new Gen(invitees[i], tables[ran]);
+
+            return gen;
+        }
+        public void cloneGens(Gen[] gens)
+        {
+            Gen[] newGens = new Gen[gens.Length];
+            for (int i = 0; i < gens.Length; i++)
+            {
+                newGens[i] = new Gen(gens[i]);
+            }
+            this.gens = newGens;
+        }
+
+        public void updateGensByIndex(Gen[] gens, int startIndex, int endIndex)
+        {
+            for (int i = startIndex; i < endIndex; i++)
+            {
+                this.gens[i] = gens[i];
+            }
+
+        }
+
+        // Return invitee table id from gens array. if not exist return -1.
+        private int GetInviteeTableIdFromGen(int inviteeId)
+        {
+            foreach (Gen gen in gens)
+            {
+                if (gen.invitee.Id == inviteeId)
+                    return gen.table.Id;
+            }
+            return -1;
+        }
+
+        #endregion
     }
 }

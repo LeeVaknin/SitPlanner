@@ -1,8 +1,9 @@
-﻿@model List<IGrouping<int, InviteeTable>>
+﻿@model IEnumerable<SitPlanner.Models.PersonalRestriction>
 
 @{
     ViewData["Title"] = "Index";
 }
+
 
 @section scripts
     {
@@ -10,9 +11,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
-        var TeamDetailPostBackURL = '/InviteeTables/Create';
+        var TeamDetailPostBackURL = '/PersonalRestrictions/Create';
         $(function () {
-            $("#createinviteetable").click(function () {
+            $("#createpersonalrestrication").click(function () {
                 var $buttonClicked = $(this);
                 var id = $buttonClicked.attr('data-id');
                 var options = { keyboard: true };
@@ -42,7 +43,7 @@
         });
     </script>
     <script>
-        var InviteeTablesDeletePostBackURL = '/InviteeTables/';
+        var PersonalResrtictionsDeletePostBackURL = '/PersonalRestrictions/';
         $(function () {
             $(":button")
                 .click(function () {
@@ -57,7 +58,7 @@
                     var options = { keyboard: true };
                     $.ajax({
                         type: "GET",
-                        url: InviteeTablesDeletePostBackURL + action + "/" + $buttonClicked.val().toString(),
+                        url: PersonalResrtictionsDeletePostBackURL + action + "/" + $buttonClicked.val().toString(),
                         contentType: "application/json; charset=utf-8",
                         data: { "Id": id },
                         datatype: "json",
@@ -81,72 +82,66 @@
         });
     </script>
 }
-    </br>
-<h3 style="color:#F3969A">Table Arrangment</h3>
+
+<br>
+<h2 style="color:#F3969A">Personal Restrictions</h2>
 
 <p>
-    <button style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" id="createinviteetable">Create New InviteeTable</button>
+    <button style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" id="createpersonalrestrication">Create something</button>
+</p>
 
-</p>
-<p>
-    <div style="float: right">
-        <button style="border-radius: 12px; border: 4px solid #F3969A;background-color: #fff;" id="createinviteetable">SeatMe :)</button>
-    </div>
-</p>
-@foreach (var invtable in Model)
-{
-    <br />
-    <h2 style="color:#56CC9D">Table @invtable.Key</h2>
-    <table style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" class="table">
+    <table class="table">
         <thead>
             <tr>
                 <th>
-                    Name
+                    @Html.DisplayNameFor(model => model.MainInvitee)
                 </th>
                 <th>
-                    Category
+                    @Html.DisplayNameFor(model => model.SecondaryInvitee)
                 </th>
                 <th>
-                    Event Option
+                    @Html.DisplayNameFor(model => model.IsSittingTogether)
                 </th>
                 <th>
-                    Event
+                    @Html.DisplayNameFor(model => model.Event)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EventOption)
                 </th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in invtable)
+            @foreach (var item in Model)
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Invitee.FirstName) @Html.DisplayFor(modelItem => item.Invitee.LastName)
+                        @Html.DisplayFor(modelItem => item.MainInvitee.FirstName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Invitee.Category.Name)
+                        @Html.DisplayFor(modelItem => item.SecondaryInvitee.FirstName)
                     </td>
-
                     <td>
-                        @Html.DisplayFor(modelItem => item.EventOption.Id)
+                        @Html.DisplayFor(modelItem => item.IsSittingTogether)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Event.Name)
                     </td>
                     <td>
+                        @Html.DisplayFor(modelItem => item.EventOption.Id)
+                    </td>
+                    <td>
                         <button style="border-radius: 12px; border: 2px solid #F3969A;background-color: #fff;" id="Edit" value="@item.Id">Edit</button>
                         <button style="border-radius: 12px; border: 2px solid #d198ea;background-color: #fff;" id="Details" value="@item.Id">Details</button>
                         <button style="border-radius: 12px; border: 2px solid #b22d38;background-color: #fff;" id="Delete" value="@item.Id">Delete</button>
-
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-}
-<div id='myModal' class='modal'>
-    <div class="modal-dialog">
-        <div class="modal-content" style="width:700">
-            <div id='myModalContent' style="width: auto;margin-left: 50px;"></div>
+    <div id='myModal' class='modal'>
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:700">
+                <div id='myModalContent' style="width: auto;margin-left: 50px;"></div>
+            </div>
         </div>
-    </div>
-</div>
