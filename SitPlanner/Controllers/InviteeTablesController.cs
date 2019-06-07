@@ -38,6 +38,15 @@ namespace SitPlanner.Controllers
             return View(await sitPlannerContext.ToListAsync());
         }
 
+        public async Task<IActionResult> Index(int optionId)
+        {
+            var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
+                .Where(i => i.EventOptionId == optionId)
+                .OrderBy(i => i.TableId).GroupBy(i => i.TableId);
+            List<IGrouping<int, InviteeTable>> b = await sitPlannerContext.ToListAsync();
+            return View(await sitPlannerContext.ToListAsync());
+        }
+
         // GET: InviteeTables/Details/5
         public async Task<IActionResult> Details(int? id)
         {
