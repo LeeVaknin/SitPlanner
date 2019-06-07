@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SitPlanner.Data;
 using SitPlanner.Models;
+using SitPlanner.csv;
 
 namespace SitPlanner.Controllers
 {
@@ -26,6 +27,35 @@ namespace SitPlanner.Controllers
             var categories = _context.Category.Include(c => c.Event);
             var tuple = new Tuple<IEnumerable<Invitee>, IEnumerable<Category>>(invitees, categories);
             return View(tuple);
+        }
+
+        public async Task<IActionResult> fromCsv()
+        {
+            Csv csv = new Csv();
+            var result = csv.read(@"C:\tmp\inv.csv");
+            //foreach (var complete in result)
+            //{
+            //    Console.WriteLine("{0} {1} {2} {3} {4} {5} {6}",
+            //        complete.Item1, complete.Item2, complete.Item3, complete.Item4,
+            //        complete.Item5, complete.Item6, complete.Item7);
+            //}
+            //Console.ReadKey();
+            ////implement import
+            return NotFound();
+        }
+
+        public async Task<IActionResult> exportCsv()
+        {
+            List<Tuple<string, string, int, string, string, int, string>> newData =
+                new List<Tuple<string, string, int, string, string, int, string>>();
+            newData.Add(Tuple.Create("evg", "spe", 4, "0528966993", "ha yarkon", 3, "hatan"));
+            newData.Add(Tuple.Create("talia", "mazor", 4, "0524748061", "ha yarkon", 2, "kala"));
+            newData.Add(Tuple.Create("lee", "vak", 2, "053", "bazra", 12, "haverim"));
+            newData.Add(Tuple.Create("inbal", "mizels", 2, "054", "tlv", 2, "haverim"));
+            newData.Add(Tuple.Create("kuskush", "mazor", 4, "057", "tlv", 2, "haverim"));
+            Csv csv = new Csv();
+            csv.write(@"C:\tmp\inv_write.csv", newData);
+            return NotFound();
         }
 
         //[HttpPost]
@@ -51,8 +81,8 @@ namespace SitPlanner.Controllers
         //    return View(await result.ToListAsync());
         //}
 
-// GET: Invitees/Details/5
-public async Task<IActionResult> Details(int? id)
+        // GET: Invitees/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
