@@ -41,6 +41,40 @@
             });
         });
     </script>
+
+    <script>
+        var TeamDetailPostBackURL = '/InviteeTables/RunAlgo';
+        $(function () {
+            $("#runalgoinviteetable").click(function () {
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: TeamDetailPostBackURL,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "Id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        $('#myModalContent').html(data);
+                        $('#myModal').modal(options);
+                        $('#myModal').modal('show');
+
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+            //$("#closebtn").on('click',function(){
+            //    $('#myModal').modal('hide');
+
+            $("#closbtn").click(function () {
+                $('#myModal').modal('hide');
+            });
+        });
+    </script>
+
     <script>
         var InviteeTablesDeletePostBackURL = '/InviteeTables/';
         $(function () {
@@ -90,7 +124,7 @@
 </p>
 <p>
     <div style="float: right">
-        <button style="border-radius: 12px; border: 4px solid #F3969A;background-color: #fff;" id="createinviteetable">SeatMe :)</button>
+        <button style="border-radius: 12px; border: 4px solid #F3969A;background-color: #fff;" id="runalgoinviteetable">SeatMe :)</button>
     </div>
 </p>
 @foreach (var invtable in Model)

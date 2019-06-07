@@ -26,6 +26,19 @@ namespace SitPlanner.Controllers
         }
 
         // GET: Events/Details/5
+        public Event GetEventByID(int? id)
+        {
+            if (id == null)
+            {
+                return null;
+            }
+
+            var item = _context.Event.FirstOrDefault(i => i.Id == id);
+
+            return item;
+        }
+
+        // GET: Events/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
