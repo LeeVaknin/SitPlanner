@@ -85,6 +85,29 @@ namespace SitPlanner.Controllers
         }
 
         // GET: InviteeTables/Create
+        public async Task<IActionResult> RunAlgo()
+        {
+
+            result = algo.RunAlgo(AlgoDbCreation()).getGens().ToList();
+            //EventOption eventOption()
+
+            foreach (var item in result)
+            {
+                InviteeTable inviteeTable = new InviteeTable(item.invitee, item.table, GetEventOptionByID(1), GetEventByID(1));
+                var result = _context.Add(inviteeTable);
+            }
+
+            var result2 = await _context.SaveChangesAsync();
+
+            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
+            ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id");
+            ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName");
+            ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id");
+            return RedirectToAction(nameof(Index));
+            //return View(nameof(Index));
+        }
+
+        // GET: InviteeTables/Create
         public async Task<IActionResult> Create()
         {
 
