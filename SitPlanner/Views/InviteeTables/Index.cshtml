@@ -13,6 +13,7 @@
         var TeamDetailPostBackURL = '/InviteeTables/Create';
         $(function () {
             $("#createinviteetable").click(function () {
+               
                 var $buttonClicked = $(this);
                 var id = $buttonClicked.attr('data-id');
                 var options = { keyboard: true };
@@ -43,15 +44,16 @@
     </script>
 
     <script>
-        var TeamDetailPostBackURL = '/InviteeTables/RunAlgo';
+        var RunAlgoURL = '/InviteeTables/RunAlgo';
         $(function () {
             $("#runalgoinviteetable").click(function () {
+              
                 var $buttonClicked = $(this);
                 var id = $buttonClicked.attr('data-id');
                 var options = { keyboard: true };
                 $.ajax({
                     type: "GET",
-                    url: TeamDetailPostBackURL,
+                    url: RunAlgoURL,
                     contentType: "application/json; charset=utf-8",
                     data: { "Id": id },
                     datatype: "json",
@@ -80,7 +82,7 @@
         $(function () {
             $(":button")
                 .click(function () {
-
+                   
                     var $buttonClicked = $(this);
                     var action = $buttonClicked.attr('id');
                     var possibleActions = ['Delete', 'Edit', 'Details'];
@@ -117,7 +119,7 @@
 
 
     <script>
-        var TeamDetailPostBackURL = '/EventOptions/Delete';
+        var EventOptionPostBackURL = '/EventOptions/Delete';
         $(function () {
             $("#deleteEventOption").click(function () {
                 var $buttonClicked = $(this);
@@ -125,7 +127,7 @@
                 var options = { keyboard: true };
                 $.ajax({
                     type: "GET",
-                    url: TeamDetailPostBackURL,
+                    url: EventOptionPostBackURL,
                     contentType: "application/json; charset=utf-8",
                     data: { "Id": id },
                     datatype: "json",
