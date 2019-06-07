@@ -87,61 +87,61 @@
 <h2 style="color:#F3969A">Personal Restrictions</h2>
 
 <p>
-    <button style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" id="createpersonalrestrication">Create New Restriction</button>
-
+    <button style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" id="createpersonalrestrication">Create something</button>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.MainInvitee)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SecondaryInvitee)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsSittingTogether)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Event)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EventOption)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MainInvitee.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SecondaryInvitee.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsSittingTogether)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Event.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EventOption.Id)
-                </td>
-                <td>
-                    <button style="border-radius: 12px; border: 2px solid #F3969A;background-color: #fff;" id="Edit" value="@item.Id">Edit</button>
-                    <button style="border-radius: 12px; border: 2px solid #d198ea;background-color: #fff;" id="Details" value="@item.Id">Details</button>
-                    <button style="border-radius: 12px; border: 2px solid #b22d38;background-color: #fff;" id="Delete" value="@item.Id">Delete</button>
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.MainInvitee)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SecondaryInvitee)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsSittingTogether)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Event)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EventOption)
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
-<div id='myModal' class='modal'>
-    <div class="modal-dialog">
-        <div class="modal-content" style="width:700">
-            <div id='myModalContent' style="width: auto;margin-left: 50px;"></div>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MainInvitee.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SecondaryInvitee.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsSittingTogether)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Event.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EventOption.Id)
+                    </td>
+                    <td>
+                        <button style="border-radius: 12px; border: 2px solid #F3969A;background-color: #fff;" id="Edit" value="@item.Id">Edit</button>
+                        <button style="border-radius: 12px; border: 2px solid #d198ea;background-color: #fff;" id="Details" value="@item.Id">Details</button>
+                        <button style="border-radius: 12px; border: 2px solid #b22d38;background-color: #fff;" id="Delete" value="@item.Id">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div id='myModal' class='modal'>
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:700">
+                <div id='myModalContent' style="width: auto;margin-left: 50px;"></div>
+            </div>
         </div>
-    </div>
