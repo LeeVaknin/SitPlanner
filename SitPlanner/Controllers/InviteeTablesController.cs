@@ -89,11 +89,12 @@ namespace SitPlanner.Controllers
         {
 
             result = algo.RunAlgo(AlgoDbCreation()).getGens().ToList();
-            //EventOption eventOption()
+
+            EventOption eventOption = new EventOption(GetEventByID(1));
 
             foreach (var item in result)
             {
-                InviteeTable inviteeTable = new InviteeTable(item.invitee, item.table, GetEventOptionByID(1), GetEventByID(1));
+                InviteeTable inviteeTable = new InviteeTable(item.invitee, item.table, eventOption, GetEventByID(1));
                 var result = _context.Add(inviteeTable);
             }
 
