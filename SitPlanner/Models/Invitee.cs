@@ -10,6 +10,7 @@ namespace SitPlanner.Models
 {
     public class Invitee
     {
+
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Please provide first name")]
@@ -38,6 +39,9 @@ namespace SitPlanner.Models
 
         public int EventId { get; set; }
         public virtual Event Event { get; set; }
+
+        public int CategoryId { get; set; }
+        public virtual Category Category { get; set; }
 
     }
 }

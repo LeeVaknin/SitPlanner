@@ -1,0 +1,325 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using SitPlanner.Algo;
+using SitPlanner.Models;
+
+namespace SitPlanner.Algo
+{
+    public class Individual
+    {
+        #region data members and constructors
+
+        AlgoUtils algoUtils = new AlgoUtils();
+        public int fitness = AlgoConsts.fitnessBestResult;
+        private List<Invitee> invitees;
+        private List<Table> tables;
+        private int invitessAmount;
+        private int tablesAmount;
+        public Gen[] gens;
+        AlgoDb algoDb;
+
+        public Individual(int gensSize, AlgoDb algoDb)
+        {
+            this.algoDb = algoDb;
+            gens = new Gen[gensSize];
+        }
+
+        public Individual(Individual copyIndividual)
+        {
+            this.algoDb = copyIndividual.algoDb;
+            cloneGens(copyIndividual.getGens());
+            this.invitees = copyIndividual.invitees;
+            this.tables = copyIndividual.tables;
+        }
+
+        public Individual(AlgoDb algoDb)
+        {
+            //initialize 
+            this.algoDb = algoDb;
+            this.invitees = new List<Invitee>(algoDb.invitees);
+            this.tables = new List<Table>(algoDb.tables);
+            this.invitessAmount = invitees.Count;
+            this.tablesAmount = tables.Count;
+            gens = new Gen[invitessAmount];
+
+            //generate gens list - all invitess with random tables
+            for (int i = 0; i < gens.Length; i++)
+            {
+                gens[i] = generateRandomGen(i);
+            }
+        }
+
+        #endregion
+
+        #region setters and getters
+        public Gen[] getGens()
+        {
+            return gens;
+        }
+
+        #endregion
+
+        #region fitness function
+        //calculate individual fitness
+        public int CalculateFitness()
+        {
+            //all invitees exist - MUST
+            fitness -= InviteesExistensePunishment();
+
+            //limit of amount of invitees per table
+            fitness -= AmountOfInviteesPerTablePunishment();
+
+            //invitee-category 
+            fitness -= MultipleCategoriesInTablePunishment();
+            fitness -= StandaloneInviteePerCategoryPunishment();
+
+            //invitee-restriction (cannot)
+            //invitee-restriction (must sit with) 
+            fitness -= InviteesPersonalRestrictionNotSeatTogetherPunishment();
+            fitness -= InviteesPersonalRestrictionMustSeatTogetherPunishment();
+
+
+            //invitee-accesabilityRestriction
+            fitness -= InviteesAccessabilityRestrictionPunishment();
+
+
+            if (fitness < 0)
+                return 0;
+            return fitness;
+        }
+
+        #endregion
+
+        #region punishment functions
+        private int InviteesExistensePunishment()
+        {
+            int missingInvitee = 0; 
+
+            foreach (var invitee in algoDb.invitees)
+            {
+                for (int i = 0; i < gens.Length; i++)
+                {
+                    if (invitee.Id == gens[i].invitee.Id)
+                    {
+                        break;
+                    }
+                    if (gens.Length-1 == i)
+                        missingInvitee++; 
+                } 
+            }
+            return (missingInvitee * AlgoConsts.punishOnMissingInvitee);
+        }
+
+        private int InviteesPersonalRestrictionNotSeatTogetherPunishment()
+        {
+            int numOfpunished = 0;
+            int inviteeTable;
+            int inviteeTable2;
+
+            foreach (var personalRestriction in algoDb.personalRestrictions)
+            {
+                if(personalRestriction.IsSittingTogether == false)
+                {
+                    inviteeTable = GetInviteeTableIdFromGen(personalRestriction.MainInviteeId);
+                    inviteeTable2 = GetInviteeTableIdFromGen(personalRestriction.SecondaryInviteeId);
+                    if (inviteeTable == inviteeTable2) {
+                        numOfpunished++;
+                    }
+                }
+                
+            }
+            return numOfpunished * AlgoConsts.punishmentOnCannotSeatTogether;
+        }
+
+        private int InviteesPersonalRestrictionMustSeatTogetherPunishment()
+        {
+            int numOfpunished = 0;
+            int inviteeTable;
+            int inviteeTable2;
+
+            foreach (var personalRestriction in algoDb.personalRestrictions)
+            {
+                if (personalRestriction.IsSittingTogether == true)
+                {
+                    inviteeTable = GetInviteeTableIdFromGen(personalRestriction.MainInviteeId);
+                    inviteeTable2 = GetInviteeTableIdFromGen(personalRestriction.SecondaryInviteeId);
+                    if (inviteeTable != inviteeTable2)
+                    {
+                        numOfpunished++;
+                    }
+                }
+
+            }
+            return numOfpunished * AlgoConsts.punishmentOnMustSeatTogether;
+        }
+        
+        private int InviteesAccessabilityRestrictionPunishment()
+        {
+            int numOfpunished = 0;
+            int inviteeTable;
+            foreach (var accessibilityRestriction in algoDb.accessibilityRestrictions)
+            {
+                if (accessibilityRestriction.IsSittingAtTable == false)
+                {
+                    inviteeTable = GetInviteeTableIdFromGen(accessibilityRestriction.InviteeId);
+                    if (inviteeTable == accessibilityRestriction.TableId)
+                    {
+                        numOfpunished++;
+                    }
+                }
+            }
+            return numOfpunished * AlgoConsts.punishmentOnAccessibilityRestriction;
+        }
+
+        private int AmountOfInviteesPerTablePunishment()
+        {
+            int punishment = 0;
+            int tableCounter = 0;
+            int inviteeExceeded = 0; 
+            //for each table from the DB, we will check if the table capacity fit the amount of invitees per table
+            foreach (var table in algoDb.tables)
+            {
+                inviteeExceeded = 0;
+                tableCounter = 0;
+                //count the amount of invitees per table in Individual (gens[]) 
+                foreach(Gen gen in gens)
+                {
+                    if (table.Id == gen.table.Id)
+                        tableCounter++;
+                }
+                
+                inviteeExceeded = tableCounter - table.CapacityOfPeople;
+
+                //punishment for overBooking for a specific table
+                if (inviteeExceeded > 0)
+                    punishment += inviteeExceeded * AlgoConsts.punishmentOnOverBookingInviteeForTable;
+                //punishment for under booking on a table
+                else
+                    punishment += Math.Abs(inviteeExceeded) * AlgoConsts.punishmentOnUnderBookingInviteeForTable;
+            }
+            return punishment;
+        }
+
+        private int StandaloneInviteePerCategoryPunishmentOrg()
+        {
+            int punishment = 0;
+            //for each invitee in gens, check if there is another invitee at the same table, with the same category. if not - punish
+            for (int i = 0; i < gens.Length; i++)
+            {
+                for (int j = 1; j < gens.Length; j++)
+                {
+                    if (gens[i].table.Id == gens[j].table.Id)
+                        if (gens[i].invitee.CategoryId == gens[j].invitee.CategoryId)
+                            break;
+                    if (j == gens.Length - 1)
+                        punishment++;
+                }
+            }
+
+            return punishment * AlgoConsts.punishmentOnSingleInviteeWithSameCategoryInTable;
+        }
+
+        private int StandaloneInviteePerCategoryPunishment()
+        {
+            int numOfSittingAlone = 0;
+            foreach(Table table in algoDb.tables)
+            {
+                List<Invitee> inviteesAroundTable = GetInviteesAroundTable(table.Id);
+
+                foreach (Invitee invitee in inviteesAroundTable)
+                {
+                    int inviteeCategory = invitee.CategoryId;
+                    for (int j = 0; j < inviteesAroundTable.Count; j++)
+                    {
+                        if (inviteeCategory == inviteesAroundTable[j].CategoryId && invitee.Id != inviteesAroundTable[j].Id)
+                            break;
+                    }
+                    numOfSittingAlone++;
+                }
+            }
+            return numOfSittingAlone * AlgoConsts.punishmentOnSingleInviteeWithSameCategoryInTable;
+        }
+
+        private int MultipleCategoriesInTablePunishment()
+        {
+            int punishment = 0;
+
+            foreach (var table in algoDb.tables)
+            {
+                HashSet<int> categories = new HashSet<int>();
+                int numberOfCategoriesInTable = 0;
+                List<Invitee> inviteesArountTable = GetInviteesAroundTable(table.Id);
+
+                foreach(Invitee inviteeTable in inviteesArountTable)
+                { 
+                        categories.Add(inviteeTable.CategoryId);
+                }
+                //the number of categories for a specific table
+                numberOfCategoriesInTable = categories.Count;
+                //punish on each multi categories which is bigger than 1
+                punishment += (numberOfCategoriesInTable - 1);
+            }
+            return punishment * AlgoConsts.punishmentOnMultiCategoriesInTable;
+        }
+
+        #endregion
+
+        #region  utils
+
+        //random Gen will create Gen with the invitee id by i, and random table
+        private Gen generateRandomGen(int i)
+        {
+            int ran = algoUtils.AlgoRandom(tablesAmount);
+
+            Gen gen = new Gen(invitees[i], tables[ran]);
+
+            return gen;
+        }
+        public void cloneGens(Gen[] gens)
+        {
+            Gen[] newGens = new Gen[gens.Length];
+            for (int i = 0; i < gens.Length; i++)
+            {
+                newGens[i] = new Gen(gens[i]);
+            }
+            this.gens = newGens;
+        }
+
+        public void updateGensByIndex(Gen[] gens, int startIndex, int endIndex)
+        {
+            for (int i = startIndex; i < endIndex; i++)
+            {
+                this.gens[i] = gens[i];
+            }
+
+        }
+
+        // Return invitee tableId, according to the given inviteeId, from gens array. if not exist return -1.
+        private int GetInviteeTableIdFromGen(int inviteeId)
+        {
+            foreach (Gen gen in gens)
+            {
+                if (gen.invitee.Id == inviteeId)
+                    return gen.table.Id;
+            }
+            return -1;
+        }
+
+        // Return list of all invitees id's around the given table
+        private List<Invitee> GetInviteesAroundTable(int tableId)
+        {
+            List<Invitee> inviteesTable = new List<Invitee>();
+            foreach(Gen gen in gens)
+            {
+                if (gen.table.Id == tableId)
+                    inviteesTable.Add(gen.invitee);
+            }
+            return inviteesTable;
+        }
+
+        #endregion
+    }
+}

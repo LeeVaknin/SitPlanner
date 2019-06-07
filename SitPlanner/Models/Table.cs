@@ -16,12 +16,26 @@ namespace SitPlanner.Models
         [Display(Name = "Tabale capacity")]
         public int CapacityOfPeople { get; set; }
 
-        
+        // TODO: how to impliment - hard coded? or let the user decide on each table?
+        //public int MinCapacityOfPeople => CapacityOfPeople - 2;
+
+        //TODO: ************I put it in comment to avoid the error- Temporary*********
+       // public int MinCapacityOfPeople { get; set; }
+
         [Display(Name = "Tabale type")]
-        public TableType TableType { get; set; }
+        public TableTypeEnum TableType { get; set; }
 
         public int EventId { get; set; }
         public virtual Event Event { get; set; }
+
+        public enum TableTypeEnum
+        {
+            High,
+            Low,
+            Square,
+            Round,
+            Rectangle
+        }
 
     }
 }

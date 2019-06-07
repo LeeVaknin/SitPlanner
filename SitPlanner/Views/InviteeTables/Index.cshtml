@@ -1,0 +1,186 @@
+﻿@model List<IGrouping<int, InviteeTable>>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section scripts
+    {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        var TeamDetailPostBackURL = '/InviteeTables/Create';
+        $(function () {
+            $("#createinviteetable").click(function () {
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: TeamDetailPostBackURL,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "Id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        $('#myModalContent').html(data);
+                        $('#myModal').modal(options);
+                        $('#myModal').modal('show');
+
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+            //$("#closebtn").on('click',function(){
+            //    $('#myModal').modal('hide');
+
+            $("#closbtn").click(function () {
+                $('#myModal').modal('hide');
+            });
+        });
+    </script>
+
+    <script>
+        var TeamDetailPostBackURL = '/InviteeTables/RunAlgo';
+        $(function () {
+            $("#runalgoinviteetable").click(function () {
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: TeamDetailPostBackURL,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "Id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        $('#myModalContent').html(data);
+                        $('#myModal').modal(options);
+                        $('#myModal').modal('show');
+
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+            //$("#closebtn").on('click',function(){
+            //    $('#myModal').modal('hide');
+
+            $("#closbtn").click(function () {
+                $('#myModal').modal('hide');
+            });
+        });
+    </script>
+
+    <script>
+        var InviteeTablesDeletePostBackURL = '/InviteeTables/';
+        $(function () {
+            $(":button")
+                .click(function () {
+
+                    var $buttonClicked = $(this);
+                    var action = $buttonClicked.attr('id');
+                    var possibleActions = ['Delete', 'Edit', 'Details'];
+                    if (possibleActions.indexOf(action) < 0) {
+                        return;
+                    }
+                    var id = $buttonClicked.attr('data-id');
+                    var options = { keyboard: true };
+                    $.ajax({
+                        type: "GET",
+                        url: InviteeTablesDeletePostBackURL + action + "/" + $buttonClicked.val().toString(),
+                        contentType: "application/json; charset=utf-8",
+                        data: { "Id": id },
+                        datatype: "json",
+                        success: function (data) {
+                            $('#myModalContent').html(data);
+                            $('#myModal').modal(options);
+                            $('#myModal').modal('show');
+
+                        },
+                        error: function () {
+                            alert("Dynamic content load failed.");
+                        }
+                    });
+                });
+            //$("#closebtn").on('click',function(){
+            //    $('#myModal').modal('hide');
+
+            $("#closbtn").click(function () {
+                $('#myModal').modal('hide');
+            });
+        });
+    </script>
+}
+    </br>
+<h3 style="color:#F3969A">Table Arrangment</h3>
+
+<p>
+    <button style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" id="createinviteetable">Create New InviteeTable</button>
+
+</p>
+<p>
+    <div style="float: right">
+        <button style="border-radius: 12px; border: 4px solid #F3969A;background-color: #fff;" id="runalgoinviteetable">SeatMe :)</button>
+    </div>
+</p>
+@foreach (var invtable in Model)
+{
+    <br />
+    <h2 style="color:#56CC9D">Table @invtable.Key</h2>
+    <table style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" class="table">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Category
+                </th>
+                <th>
+                    Event Option
+                </th>
+                <th>
+                    Event
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in invtable)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Invitee.FirstName) @Html.DisplayFor(modelItem => item.Invitee.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Invitee.Category.Name)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EventOption.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Event.Name)
+                    </td>
+                    <td>
+                        <button style="border-radius: 12px; border: 2px solid #F3969A;background-color: #fff;" id="Edit" value="@item.Id">Edit</button>
+                        <button style="border-radius: 12px; border: 2px solid #d198ea;background-color: #fff;" id="Details" value="@item.Id">Details</button>
+                        <button style="border-radius: 12px; border: 2px solid #b22d38;background-color: #fff;" id="Delete" value="@item.Id">Delete</button>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<div id='myModal' class='modal'>
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:700">
+            <div id='myModalContent' style="width: auto;margin-left: 50px;"></div>
+        </div>
+    </div>
+</div>

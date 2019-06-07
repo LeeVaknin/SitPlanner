@@ -27,7 +27,6 @@ namespace SitPlanner.Data
 
         public DbSet<SitPlanner.Models.AccessibilityRestriction> AccessibilityRestriction { get; set; }
 
-        public DbSet<SitPlanner.Models.InviteeCategory> InviteeCategory { get; set; }
 
         public DbSet<SitPlanner.Models.InviteeTable> InviteeTable { get; set; }
 

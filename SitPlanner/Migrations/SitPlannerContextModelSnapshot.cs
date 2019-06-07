@@ -15,7 +15,7 @@ namespace SitPlanner.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
+                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -274,6 +274,8 @@ namespace SitPlanner.Migrations
 
                     b.Property<string>("Address");
 
+                    b.Property<int>("CategoryId");
+
                     b.Property<string>("Comment");
 
                     b.Property<int>("EventId");
@@ -292,36 +294,11 @@ namespace SitPlanner.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EventId");
-
-                    b.ToTable("Invitee");
-                });
-
-            modelBuilder.Entity("SitPlanner.Models.InviteeCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CategoryId");
-
-                    b.Property<int>("EventId");
-
-                    b.Property<int>("EventOptionId");
-
-                    b.Property<int>("InviteeId");
-
-                    b.HasKey("Id");
-
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("EventId");
 
-                    b.HasIndex("EventOptionId");
-
-                    b.HasIndex("InviteeId");
-
-                    b.ToTable("InviteeCategory");
+                    b.ToTable("Invitee");
                 });
 
             modelBuilder.Entity("SitPlanner.Models.InviteeTable", b =>
@@ -556,32 +533,14 @@ namespace SitPlanner.Migrations
 
             modelBuilder.Entity("SitPlanner.Models.Invitee", b =>
                 {
-                    b.HasOne("SitPlanner.Models.Event", "Event")
-                        .WithMany("Invitees")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SitPlanner.Models.InviteeCategory", b =>
-                {
                     b.HasOne("SitPlanner.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SitPlanner.Models.Event", "Event")
-                        .WithMany()
+                        .WithMany("Invitees")
                         .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SitPlanner.Models.EventOption", "EventOption")
-                        .WithMany("InviteeCategories")
-                        .HasForeignKey("EventOptionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SitPlanner.Models.Invitee", "Invitee")
-                        .WithMany()
-                        .HasForeignKey("InviteeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -1,0 +1,51 @@
+﻿@model SitPlanner.Models.InviteeTable
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    </div>
+    <br />
+    <h2 style="color:#F3969A">Delete InviteeTable</h2>
+    <hr />
+
+    <h3 style="color:#5b8d7f; font-size:1.1rem;">Are you sure you want to delete this?</h3>
+    <div>
+        <dl style="color:#56CC9D" class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Invitee)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Invitee.FirstName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Table)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Table.Id)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.EventOption)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.EventOption.Id)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Event)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Event.Name)
+            </dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <input type="submit" value="Delete" class="btn btn-default" style="background-color:#b22d38;" />
+            </div>
+            <a asp-action="Index">Back to List</a>
+        </form>
+    </div>

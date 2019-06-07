@@ -17,6 +17,7 @@ namespace SitPlanner.Models
         public int TableId { get; set; }
         public virtual Table Table { get; set; }
 
+        // False in case invitee can NOT seat at the table
         public bool IsSittingAtTable { get; set; }
 
         public int EventOptionId { get; set; }

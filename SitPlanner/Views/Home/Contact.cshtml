@@ -1,17 +1,48 @@
 ﻿@{
-    ViewData["Title"] = "Contact";
+    ViewData["Title"] = "SeatMe - Contact Us";
 }
+<style>
+    .transition_div {
+        width: 15px;
+        height: 15px;
+        background: #1E90FF;
+        transition: width 2s;
+    }
+
+        .transition_div:hover {
+            width: 575px;
+        }
+
+    h2 {
+        text-shadow: 2px 2px 8px #F3969A;
+        font-family: Roboto;
+    }
+
+    .contacts {
+        padding: 10px;
+    }
+
+    .container_row_well_well_lg {
+        font-family: Roboto;
+        font-size: 15px;
+        column-count: 2;
+        column-gap: 40px;
+        column-rule: 1px solid #3CB371;
+    }
+</style>
+</br>
 <h2>@ViewData["Title"]</h2>
-<h3>@ViewData["Message"]</h3>
+
 
 <address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
+    <p>@ViewData["Message"] </p>
+    Eli Vizel 1<br />
+    Rishon Lezion, Israel<br />
+    <span>Phone: </span>
+    03-3333555
 </address>
 
 <address>
-    <strong>Support:</strong> <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
+    <strong>Support:</strong> <a href="mailto:Support@seatme.com">Support@seatme.com</a><br />
+    <strong>Marketing:</strong> <a href="mailto:Marketing@seatme.com">Marketing@seatme.com</a>
 </address>

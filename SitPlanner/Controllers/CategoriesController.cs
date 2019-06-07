@@ -42,14 +42,14 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
 
-            return View(category);
+            return PartialView(category);
         }
 
         // GET: Categories/Create
         public IActionResult Create()
         {
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
-            return View();
+            return PartialView("_Create");
         }
 
         // POST: Categories/Create
@@ -83,7 +83,7 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", category.EventId);
-            return View(category);
+            return PartialView(category);
         }
 
         // POST: Categories/Edit/5
@@ -138,7 +138,7 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
 
-            return View(category);
+            return PartialView(category);
         }
 
         // POST: Categories/Delete/5

@@ -26,6 +26,19 @@ namespace SitPlanner.Controllers
         }
 
         // GET: Events/Details/5
+        public Event GetEventByID(int? id)
+        {
+            if (id == null)
+            {
+                return null;
+            }
+
+            var item = _context.Event.FirstOrDefault(i => i.Id == id);
+
+            return item;
+        }
+
+        // GET: Events/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -40,13 +53,13 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
 
-            return View(@event);
+            return PartialView(@event);
         }
 
         // GET: Events/Create
         public IActionResult Create()
         {
-            return View();
+            return PartialView("_Create");
         }
 
         // POST: Events/Create
@@ -78,7 +91,7 @@ namespace SitPlanner.Controllers
             {
                 return NotFound();
             }
-            return View(@event);
+            return PartialView(@event);
         }
 
         // POST: Events/Edit/5
@@ -119,7 +132,7 @@ namespace SitPlanner.Controllers
         // GET: Events/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+                if (id == null)
             {
                 return NotFound();
             }
@@ -131,7 +144,7 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
 
-            return View(@event);
+            return PartialView(@event);
         }
 
         // POST: Events/Delete/5

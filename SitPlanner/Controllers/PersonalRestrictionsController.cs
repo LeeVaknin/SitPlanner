@@ -45,7 +45,7 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
 
-            return View(personalRestriction);
+            return PartialView(personalRestriction);
         }
 
         // GET: PersonalRestrictions/Create
@@ -55,7 +55,7 @@ namespace SitPlanner.Controllers
             ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id");
             ViewData["MainInviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName");
             ViewData["SecondaryInviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName");
-            return View();
+            return PartialView();
         }
 
         // POST: PersonalRestrictions/Create
@@ -95,7 +95,7 @@ namespace SitPlanner.Controllers
             ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id", personalRestriction.EventOptionId);
             ViewData["MainInviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", personalRestriction.MainInviteeId);
             ViewData["SecondaryInviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", personalRestriction.SecondaryInviteeId);
-            return View(personalRestriction);
+            return PartialView(personalRestriction);
         }
 
         // POST: PersonalRestrictions/Edit/5
@@ -156,7 +156,7 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
 
-            return View(personalRestriction);
+            return PartialView(personalRestriction);
         }
 
         // POST: PersonalRestrictions/Delete/5
