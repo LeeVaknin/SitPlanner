@@ -1,0 +1,50 @@
+﻿@model SitPlanner.Models.PersonalRestriction
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    </div>
+    <br />
+    <h4 style="color:#F3969A">Invitee Details</h4>
+    <hr />
+    <dl style="color:#56CC9D" class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.MainInvitee)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MainInvitee.FirstName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SecondaryInvitee)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SecondaryInvitee.FirstName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsSittingTogether)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsSittingTogether)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Event)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Event.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EventOption)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EventOption.Id)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
