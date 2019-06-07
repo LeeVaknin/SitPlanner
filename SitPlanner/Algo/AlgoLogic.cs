@@ -9,6 +9,8 @@ namespace SitPlanner.Algo
 {
     public class AlgoLogic
     {
+        #region data members and constructors
+
         AlgoUtils algoUtils = new AlgoUtils();
         AlgoDb algoDb;
         Individual[] topXIndividuals = new Individual[AlgoConsts.topXAmount];
@@ -21,14 +23,13 @@ namespace SitPlanner.Algo
 
         }
 
+        #endregion
         public Individual RunAlgo(AlgoDb algoDb)
         {
-
             this.algoDb = algoDb;
             //Initialize population
             Population population = new Population(algoDb);
             population.initializePopulation(AlgoConsts.populationLength);
-
 
             //Calculate fitness of each individual + update Top X
             population.CalculateIndividualsFitness();
