@@ -126,7 +126,7 @@
                     }
                     
                     if (action.includes("Category")) {
-                        PostBackURL = '/Categories/';
+                        PostBackURL = '/Invitees/';
                         action = action.replace("Category", "");
                     }
                     
@@ -177,9 +177,11 @@
 
 </p>
 <p>
-    <div style="float: right"; style="text-align:right">
-        <button style="border-radius: 12px ; border: 2px solid #F3969A;background-color: #fff;" id="create">Import from CSV</button>
-        </div>
+    <div style="float: right" ; style="text-align:right">
+        <button style="border-radius: 12px ; border: 2px solid #F3969A;background-color: #fff;" id="create">Import From CSV</button>
+        <button style="border-radius: 12px ; border: 2px solid #F3969A;background-color: #fff;" id="create">Export To CSV</button>
+
+    </div>
 </p>
 <table class="table">
     <thead>
