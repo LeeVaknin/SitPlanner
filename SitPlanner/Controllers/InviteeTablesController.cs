@@ -98,11 +98,12 @@ namespace SitPlanner.Controllers
         {
 
             result = algo.RunAlgo(AlgoDbCreation()).getGens().ToList();
-            //EventOption eventOption()
+
+            EventOption eventOption = new EventOption(GetEventByID(1));
 
             foreach (var item in result)
             {
-                InviteeTable inviteeTable = new InviteeTable(item.invitee, item.table, GetEventOptionByID(1), GetEventByID(1));
+                InviteeTable inviteeTable = new InviteeTable(item.invitee, item.table, eventOption, GetEventByID(1));
                 var result = _context.Add(inviteeTable);
             }
 
@@ -112,7 +113,8 @@ namespace SitPlanner.Controllers
             ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id");
             ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName");
             ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id");
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index","InviteeTables");
+            //return RedirectToAction(nameof(Index));
             //return View(nameof(Index));
         }
 
