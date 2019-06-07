@@ -11,6 +11,7 @@ using SitPlanner.Models;
 
 namespace SitPlanner.Controllers
 {
+    
     public class InviteeTablesController : Controller
     {
         private readonly SitPlannerContext _context;
@@ -57,23 +58,51 @@ namespace SitPlanner.Controllers
 
             return PartialView(inviteeTable);
         }
-       
-        // GET: InviteeTables/Create
-        public IActionResult Create()
+
+        public Event GetEventByID(int? id)
         {
-            
+            if (id == null)
+            {
+                return null;
+            }
+
+            var item = _context.Event.FirstOrDefault(i => i.Id == id);
+
+            return item;
+        }
+
+        public EventOption GetEventOptionByID(int? id)
+        {
+            if (id == null)
+            {
+                return null;
+            }
+
+            var item = _context.EventOption.FirstOrDefault(i => i.Id == id);
+
+            return item;
+        }
+
+        // GET: InviteeTables/Create
+        public async Task<IActionResult> Create()
+        {
+
             result = algo.RunAlgo(AlgoDbCreation()).getGens().ToList();
+            //EventOption eventOption()
 
             foreach (var item in result)
             {
-                //InviteeTable inviteeTable = new InviteeTable()
+                InviteeTable inviteeTable = new InviteeTable(item.invitee, item.table, GetEventOptionByID(1), GetEventByID(1));
+                var result = _context.Add(inviteeTable);
             }
+
+            var result2 = await _context.SaveChangesAsync();
 
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
             ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id");
             ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName");
             ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id");
-            return PartialView();
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: InviteeTables/Create
@@ -195,6 +224,7 @@ namespace SitPlanner.Controllers
 
         private AlgoDb AlgoDbCreation()
         {
+            
             var sitPlannerContextInvitees = _context.Invitee.Include(i => i.Category).Include(i => i.Event).ToList();
             invitees = new List<Invitee>(sitPlannerContextInvitees);
 
