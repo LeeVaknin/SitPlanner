@@ -59,10 +59,7 @@
                     data: { "Id": id },
                     datatype: "json",
                     success: function (data) {
-                        $('#myModalContent').html(data);
-                        $('#myModal').modal(options);
-                        $('#myModal').modal('show');
-
+                        window.location.reload(true); 
                     },
                     error: function () {
                         alert("Dynamic content load failed.");
@@ -152,6 +149,16 @@
         });
     </script>
 }
+<script>
+    function filter() {
+        var e = document.getElementById("Opts");
+        var val = e.options[e.selectedIndex].value;
+  
+        window.location.href = "https://" + window.location.host + window.location.pathname + '?id=' + val;
+        return false;
+    }
+</script>
+
     </br>
 <h3 style="color:#F3969A">Table Arrangment</h3>
 
@@ -159,7 +166,10 @@
     @using (Html.BeginForm("Index", "InviteeTables", FormMethod.Post))
     {
         <label>Choose your draft:</label> <br />
-        @*@Html.DropDownList("EventOptionId", ViewBag.List as SelectList)*@
+                    @Html.DropDownList("Opts", ViewBag.Opts as SelectList, new { @class = "form-control", style="width: 10%" })
+        <input id="btnfilter" type="submit" value="Filter" onclick="return filter();" onsubmit="return false;">
+
+        <br />
         <input id="input-h" type="search" name="id" maxlength="20" placeholder="Enter Option ID" style="width:205px;">
         <input id="btn-filter" type="submit" value="Search">
     }
