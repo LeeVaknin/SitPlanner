@@ -166,8 +166,7 @@
     @using (Html.BeginForm("Index", "InviteeTables", FormMethod.Post))
     {
         <label>Choose your draft:</label> <br />
-                    @Html.DropDownList("Opts", ViewBag.Opts as SelectList, new { @class = "form-control", style="width: 10%" })
-        <input id="btnfilter" type="submit" value="Filter" onclick="return filter();" onsubmit="return false;">
+        @Html.DropDownList("Opts", ViewBag.Opts as SelectList, new {onchange= "filter()", @class = "form-control", style = "width: 10%; border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" })
 
         <br />
         <input id="input-h" type="search" name="id" maxlength="20" placeholder="Enter Option ID" style="width:205px;">
@@ -175,10 +174,7 @@
     }
 </div>
 
-<p>
-    <button style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" id="createinviteetable">Create New InviteeTable</button>
 
-</p>
 <p>
     <div style="float: right">
         <button style="border-radius: 12px; border: 4px solid #F3969A;background-color: #fff;" id="runalgoinviteetable">SeatMe :)</button>
@@ -224,12 +220,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Event.Name)
                     </td>
-                    <td>
-                        <button style="border-radius: 12px; border: 2px solid #F3969A;background-color: #fff;" id="Edit" value="@item.Id">Edit</button>
-                        <button style="border-radius: 12px; border: 2px solid #d198ea;background-color: #fff;" id="Details" value="@item.Id">Details</button>
-                        <button style="border-radius: 12px; border: 2px solid #b22d38;background-color: #fff;" id="Delete" value="@item.Id">Delete</button>
-
-                    </td>
+                    <td></td>
                 </tr>
             }
         </tbody>
