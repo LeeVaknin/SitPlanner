@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    @ViewBag.Message
 }
 
 @section scripts
@@ -13,7 +14,7 @@
         var TeamDetailPostBackURL = '/InviteeTables/Create';
         $(function () {
             $("#createinviteetable").click(function () {
-               
+
                 var $buttonClicked = $(this);
                 var id = $buttonClicked.attr('data-id');
                 var options = { keyboard: true };
@@ -47,7 +48,7 @@
         var RunAlgoURL = '/InviteeTables/RunAlgo';
         $(function () {
             $("#runalgoinviteetable").click(function () {
-              
+
                 var $buttonClicked = $(this);
                 var id = $buttonClicked.attr('data-id');
                 var options = { keyboard: true };
@@ -82,7 +83,7 @@
         $(function () {
             $(":button")
                 .click(function () {
-                   
+
                     var $buttonClicked = $(this);
                     var action = $buttonClicked.attr('id');
                     var possibleActions = ['Delete', 'Edit', 'Details'];
@@ -153,6 +154,16 @@
 }
     </br>
 <h3 style="color:#F3969A">Table Arrangment</h3>
+
+<div id="filter-blog">
+    @using (Html.BeginForm("Index", "InviteeTables", FormMethod.Post))
+    {
+        <label>Choose your draft:</label> <br />
+        @*@Html.DropDownList("EventOptionId", ViewBag.List as SelectList)*@
+        <input id="input-h" type="search" name="id" maxlength="20" placeholder="Enter Option ID" style="width:205px;">
+        <input id="btn-filter" type="submit" value="Search">
+    }
+</div>
 
 <p>
     <button style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" id="createinviteetable">Create New InviteeTable</button>
