@@ -7,17 +7,24 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SitPlanner.Data;
 using SitPlanner.Models;
+using SitPlanner.csv;
 
 namespace SitPlanner.Controllers
 {
     public class InviteesController : Controller
     {
+        
+        
         private readonly SitPlannerContext _context;
 
         public InviteesController(SitPlannerContext context)
         {
             _context = context;
         }
+
+
+        //InviteeTablesController inviteeTablesController = new InviteeTablesController(_context);
+        //CategoriesController categoriesController = new CategoriesController(_context);
 
         // GET: Invitees
         public async Task<IActionResult> Index()
@@ -26,6 +33,72 @@ namespace SitPlanner.Controllers
             var categories = _context.Category.Include(c => c.Event);
             var tuple = new Tuple<IEnumerable<Invitee>, IEnumerable<Category>>(invitees, categories);
             return View(tuple);
+        }
+
+        public Category GetCategoryByName(string name)
+        {
+            var item = _context.Category.FirstOrDefault(i => i.Name == name);
+
+            return item;
+        }
+        public Event GetEventByID(int? id)
+        {
+            if (id == null)
+            {
+                return null;
+            }
+
+            var item = _context.Event.FirstOrDefault(i => i.Id == id);
+
+            return item;
+        }
+
+
+        public async Task<IActionResult> fromCsv()
+        {
+            Csv csv = new Csv();
+            Category cat;
+            var result = csv.read(@"csv\inv.csv");
+            //var result = csv.read(@"C:\tmp\inv.csv");
+            foreach (var complete in result)
+            {
+                var firstName = complete.Item1;
+                var lastName = complete.Item2;
+                int numShouldCome = complete.Item3;
+                var phoneNumber = complete.Item4;
+                var address = complete.Item5;
+                int numIsComing = complete.Item6;
+                var category = complete.Item7;
+
+
+                if (GetCategoryByName(category) == null)
+                {
+                    cat = new Category(category, GetEventByID(1));
+                }
+                else
+                    cat = GetCategoryByName(category);
+
+                Invitee inv = new Invitee(firstName, lastName, phoneNumber, address, numIsComing, GetEventByID(1),cat);
+                _context.Add(inv);
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Invitees");
+        }
+
+        public async Task<IActionResult> exportCsv()
+        {
+            List<Tuple<string, string, int, string, string, int, string>> newData =
+                new List<Tuple<string, string, int, string, string, int, string>>();
+            newData.Add(Tuple.Create("evg", "spe", 4, "0528966993", "ha yarkon", 3, "hatan"));
+            newData.Add(Tuple.Create("talia", "mazor", 4, "0524748061", "ha yarkon", 2, "kala"));
+            newData.Add(Tuple.Create("lee", "vak", 2, "053", "bazra", 12, "haverim"));
+            newData.Add(Tuple.Create("inbal", "mizels", 2, "054", "tlv", 2, "haverim"));
+            newData.Add(Tuple.Create("kuskush", "mazor", 4, "057", "tlv", 2, "haverim"));
+            Csv csv = new Csv();
+            csv.write(@"C:\tmp\inv_write.csv", newData);
+
+
+            return RedirectToAction("Index", "Invitees");
         }
 
         //[HttpPost]
@@ -51,8 +124,8 @@ namespace SitPlanner.Controllers
         //    return View(await result.ToListAsync());
         //}
 
-// GET: Invitees/Details/5
-public async Task<IActionResult> Details(int? id)
+        // GET: Invitees/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
