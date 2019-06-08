@@ -13,7 +13,7 @@ namespace SitPlanner.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Please provide table capacity")]
-        [Display(Name = "Tabale capacity")]
+        [Display(Name = "Table capacity")]
         public int CapacityOfPeople { get; set; }
 
         // TODO: how to impliment - hard coded? or let the user decide on each table?
@@ -22,7 +22,7 @@ namespace SitPlanner.Models
         //TODO: ************I put it in comment to avoid the error- Temporary*********
        // public int MinCapacityOfPeople { get; set; }
 
-        [Display(Name = "Tabale type")]
+        [Display(Name = "Table type")]
         public TableTypeEnum TableType { get; set; }
 
         public int EventId { get; set; }

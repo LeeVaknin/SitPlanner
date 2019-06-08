@@ -94,6 +94,14 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", table.EventId);
+
+            var enumData = from Table.TableTypeEnum e in Enum.GetValues(typeof(Table.TableTypeEnum))
+                           select new
+                           {
+                               TableTypeEnum = e,
+                           };
+            ViewData["TableType"] = new SelectList(enumData, "TableTypeEnum", "TableTypeEnum");
+
             return PartialView(table);
         }
 
