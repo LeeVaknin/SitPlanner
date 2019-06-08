@@ -9,12 +9,12 @@ namespace SitPlanner.csv
     public class Csv
     {
         //first name,last name,num of planned to come,phoneNumber,address,num of coming,category
-        public List<Tuple<string, string, int, string, string, int, string>> read(String csv_path)
+        public List<Tuple<string, string, int, int, string, int, string>> read(String csv_path)
         {
             using (var reader = new StreamReader(csv_path))
             {
-                List<Tuple<string, string, int, string, string, int, string>> completeList =
-                    new List<Tuple<string, string, int, string, string, int, string>>();
+                List<Tuple<string, string, int, int, string, int, string>> completeList =
+                    new List<Tuple<string, string, int, int, string, int, string>>();
                 reader.ReadLine();//to skip the headline
                 while (!reader.EndOfStream)
                 {
@@ -24,7 +24,7 @@ namespace SitPlanner.csv
                     var firstName = values[0];
                     var lastName = values[1];
                     int numShouldCome = Int32.Parse(values[2]);
-                    var phoneNumber = values[3];
+                    var phoneNumber = Int32.Parse(values[3]);
                     var address = values[4];
                     int numIsComing = Int32.Parse(values[5]);
                     var category = values[6];

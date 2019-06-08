@@ -19,6 +19,13 @@ namespace SitPlanner.Controllers
             _context = context;
         }
 
+        public Category GetCategoryByName(string name)
+        {
+            var item = _context.Category.FirstOrDefault(i => i.Name == name);
+
+            return item;
+        }
+
         // GET: Categories
         public async Task<IActionResult> Index()
         {

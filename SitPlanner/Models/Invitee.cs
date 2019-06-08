@@ -1,6 +1,7 @@
 ﻿using SitPlanner.Models.Enums;
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -10,6 +11,24 @@ namespace SitPlanner.Models
 {
     public class Invitee
     {
+        public Invitee()
+        {
+
+        }
+
+        //first name,last name,num of planned to come,phoneNumber,address,num of coming,category
+        public Invitee(string firstName, string lastName, 
+            int phoneNumber, string address, int numOfComing, Event @event, Category category)
+        {
+            this.FirstName = firstName;
+            this.LastName = lastName;
+            this.PhoneNumber = phoneNumber;
+            this.Address = address;
+            this.Event = @event;
+            this.Category = category;
+        }
+
+        public Invitee([Bind("FirstName,LastName,PhoneNumber,Address,Event, Category")] Invitee invitee){ }
 
         public int Id { get; set; }
 
