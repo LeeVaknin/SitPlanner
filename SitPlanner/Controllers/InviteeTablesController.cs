@@ -37,7 +37,7 @@ namespace SitPlanner.Controllers
         //    List<IGrouping<int, InviteeTable> > b = await sitPlannerContext.ToListAsync();
         //    return View(await sitPlannerContext.ToListAsync());
         //}
-
+        [HttpPost]
         // GET: InviteeTables/optionId
         public async Task<IActionResult> Index(int? id)
         {
@@ -46,9 +46,15 @@ namespace SitPlanner.Controllers
                 var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
                .OrderBy(i => i.TableId).GroupBy(i => i.TableId);
                 List<IGrouping<int, InviteeTable>> b = await sitPlannerContext.ToListAsync();
+
+                var list = (from e in _context.InviteeTable
+                            select e.EventOptionId).Distinct();
+
+                IEnumerable<SelectListItem> selectListItems = new SelectList(list, "EventOptionId", "EventOptionId");
+
                 return View(await sitPlannerContext.ToListAsync());
             }
-            else 
+            else
             {
                 var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
                     .Where(i => i.EventOptionId.Equals(id))
@@ -58,6 +64,17 @@ namespace SitPlanner.Controllers
             }
         }
 
+        // GET: InviteeTables/optionId
+        public async Task<IActionResult> Index()
+        {            
+                var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
+               .OrderBy(i => i.TableId).GroupBy(i => i.TableId);
+                List<IGrouping<int, InviteeTable>> b = await sitPlannerContext.ToListAsync();
+
+                return View(await sitPlannerContext.ToListAsync());
+           
+        }
+        
         // GET: InviteeTables/Details/5
         public async Task<IActionResult> Details(int? id)
         {
