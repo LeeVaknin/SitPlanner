@@ -40,6 +40,13 @@ namespace SitPlanner.Controllers
         // GET: InviteeTables/optionId
         public async Task<IActionResult> Index(int? id)
         {
+
+            // Filter for the first ID, if there's any- 
+            if (id == null && _context.EventOption.Any())
+            {
+                id = _context.EventOption.First().Id;
+            }
+
             var optionIdsList = new List<SelectListItem>();
             foreach (var opt in _context.EventOption)
             {
@@ -47,10 +54,12 @@ namespace SitPlanner.Controllers
                 {
                     Text = opt.Id.ToString(),
                     Value = opt.Id.ToString(),
+                    Selected = opt.Id == id
                 });
             }
+          
             ViewData["Opts"] = optionIdsList;
-
+            ViewData["Id"] = id;
             if (id == null)
             {
                 var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
