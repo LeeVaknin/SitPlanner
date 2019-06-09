@@ -68,11 +68,13 @@ namespace SitPlanner.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(category);
-                await _context.SaveChangesAsync();
+                if (!CategoryExists(category.Name))
+                {
+                    _context.Add(category);
+                    await _context.SaveChangesAsync();
+                }
                 //return RedirectToAction(nameof(Index))
                 return RedirectToAction("Index" , "Invitees");
-
             }
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", category.EventId);
             return View(category);
@@ -116,7 +118,7 @@ namespace SitPlanner.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoryExists(category.Id))
+                    if (!CategoryExists(category.Name))
                     {
                         return NotFound();
                     }
@@ -161,9 +163,9 @@ namespace SitPlanner.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CategoryExists(int id)
+        private bool CategoryExists(string name)
         {
-            return _context.Category.Any(e => e.Id == id);
+            return _context.Category.Any(e => e.Name == name);
         }
     }
 }

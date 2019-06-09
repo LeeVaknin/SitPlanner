@@ -11,7 +11,7 @@ namespace SitPlanner.Models
     {
         public Category() { }
 
-        public Category(string name,Event @event)
+        public Category(string name, Event @event)
         {
             this.Name = name;
             this.Event = @event;
