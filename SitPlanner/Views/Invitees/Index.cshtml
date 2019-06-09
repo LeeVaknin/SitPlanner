@@ -252,7 +252,7 @@
 <div id="filter-blog">
     @using (Html.BeginForm("Index", "Invitees", FormMethod.Post))
     {
-        <label>Invitee's category:</label>
+        <label>Invitee's category</label>
         @Html.DropDownList("Categories", ViewBag.Categories as SelectList, new { onchange = "filter()", @class = "form-control", style = "width: 10%; border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" })
         
     }

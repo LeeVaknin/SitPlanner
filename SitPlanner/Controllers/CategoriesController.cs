@@ -127,7 +127,9 @@ namespace SitPlanner.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Invitees");
+
             }
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", category.EventId);
             return View(category);
@@ -160,7 +162,9 @@ namespace SitPlanner.Controllers
             var category = await _context.Category.FindAsync(id);
             _context.Category.Remove(category);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            // return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Invitees");
+
         }
 
         private bool CategoryExists(string name)
