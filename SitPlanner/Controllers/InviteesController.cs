@@ -13,14 +13,15 @@ namespace SitPlanner.Controllers
 {
     public class InviteesController : Controller
     {
-        
-        
         private readonly SitPlannerContext _context;
 
         public InviteesController(SitPlannerContext context)
         {
             _context = context;
         }
+
+        //InviteeTablesController inviteeTablesController = new InviteeTablesController(_context);
+        //CategoriesController categoriesController = new CategoriesController(_context);
 
         // GET: Invitees
         public async Task<IActionResult> Index(string category)
@@ -76,6 +77,11 @@ namespace SitPlanner.Controllers
 
         public Category GetCategoryByName(string name)
         {
+            if(name == null)
+            {
+                return null;
+            }
+
             var item = _context.Category.FirstOrDefault(i => i.Name == name);
 
             return item;
@@ -91,7 +97,6 @@ namespace SitPlanner.Controllers
 
             return item;
         }
-
 
         public async Task<IActionResult> fromCsv()
         {
@@ -109,13 +114,12 @@ namespace SitPlanner.Controllers
                 int numIsComing = complete.Item6;
                 var category = complete.Item7;
 
+                cat = GetCategoryByName(category);
 
-                if (GetCategoryByName(category) == null)
+                if (cat == null)
                 {
                     cat = new Category(category, GetEventByID(1));
-                }
-                else
-                    cat = GetCategoryByName(category);
+                }   
 
                 Invitee inv = new Invitee(firstName, lastName, phoneNumber, address, numIsComing, GetEventByID(1),cat);
                 _context.Add(inv);
