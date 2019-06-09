@@ -24,13 +24,56 @@ namespace SitPlanner.Controllers
         //CategoriesController categoriesController = new CategoriesController(_context);
 
         // GET: Invitees
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string category)
         {
-            var invitees = _context.Invitee.Include(i => i.Category).Include(i => i.Event);
-            var categories = _context.Category.Include(c => c.Event);
-            var tuple = new Tuple<IEnumerable<Invitee>, IEnumerable<Category>>(invitees, categories);
-            return View(tuple);
+            // If no such  category exists
+            if (!_context.Category.Where(i => i.Name == category).Any())
+            {
+                category = null;
+            }
+
+            if (category == null && _context.Invitee.Any())
+            {
+                category = "Any";
+            }
+
+            var categoriesList = new List<SelectListItem>();
+            categoriesList.Add(new SelectListItem()
+            {
+                Text = "Any",
+                Value = "Any",
+                Selected = category == "Any"
+            });
+
+            foreach (var opt in _context.Category)
+            {
+                categoriesList.Add(new SelectListItem()
+                {
+                    Text = opt.Name,
+                    Value = opt.Name,
+                    Selected = opt.Name == category
+                });
+            }
+            ViewData["Categories"] = categoriesList;
+            ViewData["Id"] = category;
+
+            if (category == "Any")
+            {
+                var invitees = _context.Invitee.Include(i => i.Category).Include(i => i.Event);
+                var categories = _context.Category.Include(c => c.Event);
+                var tuple = new Tuple<IEnumerable<Invitee>, IEnumerable<Category>>(invitees, categories);
+                return View(tuple);
+            }
+            else
+            {
+                var invitees = _context.Invitee.Include(i => i.Category).Include(i => i.Event).Where(i => i.Category.Name == category);
+                var categories = _context.Category.Include(c => c.Event);
+                var tuple = new Tuple<IEnumerable<Invitee>, IEnumerable<Category>>(invitees, categories);
+                return View(tuple);
+            }
+           
         }
+
 
         public Category GetCategoryByName(string name)
         {

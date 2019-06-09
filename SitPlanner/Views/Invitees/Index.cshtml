@@ -221,6 +221,17 @@
         });
     </script>
 }
+
+    <script>
+        function filter() {
+            var e = document.getElementById("Categories");
+            var val = e.options[e.selectedIndex].value;
+
+            window.location.href = "https://" + window.location.host + window.location.pathname + '?category=' + val;
+            return false;
+        }
+    </script>
+
 </br>
 <h2 style="color:#F3969A">Invitee</h2>
 
@@ -238,6 +249,14 @@
     <button style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" id="create">Create New Invitee</button>
 
 </p>
+<div id="filter-blog">
+    @using (Html.BeginForm("Index", "Invitees", FormMethod.Post))
+    {
+        <label>Invitee's category:</label>
+        @Html.DropDownList("Categories", ViewBag.Categories as SelectList, new { onchange = "filter()", @class = "form-control", style = "width: 10%; border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" })
+        
+    }
+</div>
 <p>
     <div style="float: right" ; style="text-align:right">
         <button style="border-radius: 12px ; border: 2px solid #F3969A;background-color: #fff;" id="importfromcsv">Import From CSV</button>
