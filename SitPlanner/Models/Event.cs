@@ -10,17 +10,17 @@ namespace SitPlanner.Models
 {
     public class Event
     {
-        Event() { }
-        Event(string name, DateTime date,IList<Invitee> invitees, IList<Table> tables,
-            IList<Category> categories, IList<EventOption> eventOptions)
-        {
-            this.Name = name;
-            this.Date = date;
-            this.Invitees = invitees;
-            this.Tables = tables;
-            this.Categories = categories;
-            this.EventOptions = eventOptions;
-        }
+        //Event() { }
+        //Event(string name, DateTime date,IList<Invitee> invitees, IList<Table> tables,
+        //    IList<Category> categories, IList<EventOption> eventOptions)
+        //{
+        //    this.Name = name;
+        //    this.Date = date;
+        //    this.Invitees = invitees;
+        //    this.Tables = tables;
+        //    this.Categories = categories;
+        //    this.EventOptions = eventOptions;
+        //}
 
         public int Id { get; set; }
 
