@@ -22,18 +22,6 @@ namespace SitPlanner.Controllers
             _context = context;
         }
 
-
-        //InviteeTablesController inviteeTablesController = new InviteeTablesController(_context);
-        //CategoriesController categoriesController = new CategoriesController(_context);
-
-        //// GET: Invitees
-        //public async Task<IActionResult> Index()
-        //{
-        //    var invitees = _context.Invitee.Include(i => i.Category).Include(i => i.Event);
-        //    var categories = _context.Category.Include(c => c.Event);
-        //    var tuple = new Tuple<IEnumerable<Invitee>, IEnumerable<Category>>(invitees, categories);
-        //    return View(tuple);
-        //}
         // GET: Invitees
         public async Task<IActionResult> Index(string category)
         {
