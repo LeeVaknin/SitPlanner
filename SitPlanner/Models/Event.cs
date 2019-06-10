@@ -10,8 +10,8 @@ namespace SitPlanner.Models
 {
     public class Event
     {
-        Event() { }
-        Event(string name, DateTime date,IList<Invitee> invitees, IList<Table> tables,
+        public Event() { }
+        public Event(string name, DateTime date,IList<Invitee> invitees, IList<Table> tables,
             IList<Category> categories, IList<EventOption> eventOptions)
         {
             this.Name = name;

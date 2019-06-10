@@ -96,19 +96,24 @@ namespace SitPlanner.Algo
         #region punishment functions
         private int InviteesExistensePunishment()
         {
-            int missingInvitee = 0; 
+            int missingInvitee = 0;
+            bool isExist = false;
 
             foreach (var invitee in algoDb.invitees)
             {
-                for (int i = 0; i < gens.Length; i++)
-                {
-                    if (invitee.Id == gens[i].invitee.Id)
+                foreach(Gen gen in gens)
+                { 
+                    if (invitee.Id == gen.invitee.Id)
                     {
+                        isExist = true;
                         break;
                     }
-                    if (gens.Length-1 == i)
-                        missingInvitee++; 
                 } 
+                if(!isExist)
+                {
+                    missingInvitee++;
+                    isExist = false;
+                }
             }
             return (missingInvitee * AlgoConsts.punishOnMissingInvitee);
         }
@@ -178,18 +183,14 @@ namespace SitPlanner.Algo
         {
             int punishment = 0;
             int tableCounter = 0;
+            List<Invitee> inviteesAroundTable = new List<Invitee>();
             int inviteeExceeded = 0; 
-            //for each table from the DB, we will check if the table capacity fit the amount of invitees per table
+            
             foreach (var table in algoDb.tables)
             {
                 inviteeExceeded = 0;
-                tableCounter = 0;
-                //count the amount of invitees per table in Individual (gens[]) 
-                foreach(Gen gen in gens)
-                {
-                    if (table.Id == gen.table.Id)
-                        tableCounter++;
-                }
+                inviteesAroundTable = GetInviteesAroundTable(table.Id);
+                tableCounter = inviteesAroundTable.Count;
                 
                 inviteeExceeded = tableCounter - table.CapacityOfPeople;
 

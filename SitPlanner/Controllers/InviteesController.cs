@@ -119,6 +119,7 @@ namespace SitPlanner.Controllers
                 if (cat == null)
                 {
                     cat = new Category(category, GetEventByID(1));
+                    _context.Add(cat);
                 }   
 
                 Invitee inv = new Invitee(firstName, lastName, phoneNumber, address, numIsComing, GetEventByID(1),cat);
