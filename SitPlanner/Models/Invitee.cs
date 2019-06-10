@@ -11,10 +11,7 @@ namespace SitPlanner.Models
 {
     public class Invitee
     {
-        public Invitee()
-        {
-
-        }
+        public Invitee() { }
 
         //first name,last name,num of planned to come,phoneNumber,address,num of coming,category
         public Invitee(string firstName, string lastName, 
