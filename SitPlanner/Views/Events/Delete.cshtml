@@ -27,12 +27,14 @@
                 @Html.DisplayFor(model => model.Date)
             </dd>
         </dl>
-        <div class="form-group">
-            <input type="submit" value="Delete" class="btn btn-default" style="background-color:#b22d38;" />
-        </div>
-        <div>
-            <a asp-action="Index">Back to List</a>
-        </div>
+        <form asp-action="Delete">
+            <div class="form-group">
+                <input type="submit" value="Delete" class="btn btn-default" style="background-color:#b22d38;" />
+            </div>
+            <div>
+                <a asp-action="Index">Back to List</a>
+            </div>
+            </form>
 
     </div>
 </div>
