@@ -78,9 +78,7 @@ namespace SitPlanner.Algo
 
             //invitee-restriction (cannot)
             //invitee-restriction (must sit with) 
-            fitness -= InviteesPersonalRestrictionNotSeatTogetherPunishment();
-            fitness -= InviteesPersonalRestrictionMustSeatTogetherPunishment();
-
+            fitness -= InviteesPersonalRestrictionPunishment();
 
             //invitee-accesabilityRestriction
             fitness -= InviteesAccessabilityRestrictionPunishment();
@@ -118,48 +116,33 @@ namespace SitPlanner.Algo
             return (missingInvitee * AlgoConsts.punishOnMissingInvitee);
         }
 
-        private int InviteesPersonalRestrictionNotSeatTogetherPunishment()
+        private int InviteesPersonalRestrictionPunishment()
         {
-            int numOfpunished = 0;
+            int totalPunished = 0;
+            int notSittingTogetherPunishment = 0;
+            int mustSittingTogetherPunishment = 0;
             int inviteeTable;
             int inviteeTable2;
 
             foreach (var personalRestriction in algoDb.personalRestrictions)
             {
+                inviteeTable = GetInviteeTableIdFromGen(personalRestriction.MainInviteeId);
+                inviteeTable2 = GetInviteeTableIdFromGen(personalRestriction.SecondaryInviteeId);
+                bool sammeTable = (inviteeTable == inviteeTable2);
+
                 if (personalRestriction.IsSittingTogether == false)
                 {
-                    inviteeTable = GetInviteeTableIdFromGen(personalRestriction.MainInviteeId);
-                    inviteeTable2 = GetInviteeTableIdFromGen(personalRestriction.SecondaryInviteeId);
-                    if (inviteeTable == inviteeTable2)
-                    {
-                        numOfpunished++;
-                    }
+                    if (sammeTable)
+                        notSittingTogetherPunishment++;
                 }
-
-            }
-            return numOfpunished * AlgoConsts.punishmentOnCannotSeatTogether;
-        }
-
-        private int InviteesPersonalRestrictionMustSeatTogetherPunishment()
-        {
-            int numOfpunished = 0;
-            int inviteeTable;
-            int inviteeTable2;
-
-            foreach (var personalRestriction in algoDb.personalRestrictions)
-            {
-                if (personalRestriction.IsSittingTogether == true)
+                else
                 {
-                    inviteeTable = GetInviteeTableIdFromGen(personalRestriction.MainInviteeId);
-                    inviteeTable2 = GetInviteeTableIdFromGen(personalRestriction.SecondaryInviteeId);
-                    if (inviteeTable != inviteeTable2)
-                    {
-                        numOfpunished++;
-                    }
+                    if (!sammeTable)
+                        mustSittingTogetherPunishment++;
                 }
-
             }
-            return numOfpunished * AlgoConsts.punishmentOnMustSeatTogether;
+            totalPunished = (notSittingTogetherPunishment * AlgoConsts.punishmentOnCannotSitTogether) + (mustSittingTogetherPunishment * AlgoConsts.punishmentOnMustSitTogether);
+            return totalPunished;
         }
 
         private int InviteesAccessabilityRestrictionPunishment()
