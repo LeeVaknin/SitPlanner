@@ -101,15 +101,15 @@ namespace SitPlanner.Algo
 
             foreach (var invitee in algoDb.invitees)
             {
-                foreach(Gen gen in gens)
-                { 
+                foreach (Gen gen in gens)
+                {
                     if (invitee.Id == gen.invitee.Id)
                     {
                         isExist = true;
                         break;
                     }
-                } 
-                if(!isExist)
+                }
+                if (!isExist)
                 {
                     missingInvitee++;
                     isExist = false;
@@ -126,15 +126,16 @@ namespace SitPlanner.Algo
 
             foreach (var personalRestriction in algoDb.personalRestrictions)
             {
-                if(personalRestriction.IsSittingTogether == false)
+                if (personalRestriction.IsSittingTogether == false)
                 {
                     inviteeTable = GetInviteeTableIdFromGen(personalRestriction.MainInviteeId);
                     inviteeTable2 = GetInviteeTableIdFromGen(personalRestriction.SecondaryInviteeId);
-                    if (inviteeTable == inviteeTable2) {
+                    if (inviteeTable == inviteeTable2)
+                    {
                         numOfpunished++;
                     }
                 }
-                
+
             }
             return numOfpunished * AlgoConsts.punishmentOnCannotSeatTogether;
         }
@@ -160,7 +161,7 @@ namespace SitPlanner.Algo
             }
             return numOfpunished * AlgoConsts.punishmentOnMustSeatTogether;
         }
-        
+
         private int InviteesAccessabilityRestrictionPunishment()
         {
             int numOfpunished = 0;
@@ -184,20 +185,21 @@ namespace SitPlanner.Algo
             int punishment = 0;
             int tableCounter = 0;
             List<Invitee> inviteesAroundTable = new List<Invitee>();
-            int inviteeExceeded = 0; 
-            
+            int inviteeExceeded = 0;
+
             foreach (var table in algoDb.tables)
             {
                 inviteeExceeded = 0;
                 inviteesAroundTable = GetInviteesAroundTable(table.Id);
                 tableCounter = inviteesAroundTable.Count;
-                
+
                 inviteeExceeded = tableCounter - table.CapacityOfPeople;
 
                 //punishment for overBooking for a specific table
                 if (inviteeExceeded > 0)
                     punishment += inviteeExceeded * AlgoConsts.punishmentOnOverBookingInviteeForTable;
                 //punishment for under booking on a table
+                // TODO: Change this punishment to check if we exccede min capacity per table
                 else
                     punishment += Math.Abs(inviteeExceeded) * AlgoConsts.punishmentOnUnderBookingInviteeForTable;
             }
@@ -226,19 +228,24 @@ namespace SitPlanner.Algo
         private int StandaloneInviteePerCategoryPunishment()
         {
             int numOfSittingAlone = 0;
-            foreach(Table table in algoDb.tables)
+            foreach (Table table in algoDb.tables)
             {
                 List<Invitee> inviteesAroundTable = GetInviteesAroundTable(table.Id);
 
                 foreach (Invitee invitee in inviteesAroundTable)
                 {
+                    bool isAlone = true;
                     int inviteeCategory = invitee.CategoryId;
                     for (int j = 0; j < inviteesAroundTable.Count; j++)
                     {
                         if (inviteeCategory == inviteesAroundTable[j].CategoryId && invitee.Id != inviteesAroundTable[j].Id)
+                        {
+                            isAlone = false;
                             break;
+                        }
                     }
-                    numOfSittingAlone++;
+                    if (isAlone)
+                        numOfSittingAlone++;
                 }
             }
             return numOfSittingAlone * AlgoConsts.punishmentOnSingleInviteeWithSameCategoryInTable;
@@ -254,13 +261,13 @@ namespace SitPlanner.Algo
                 int numberOfCategoriesInTable = 0;
                 List<Invitee> inviteesArountTable = GetInviteesAroundTable(table.Id);
 
-                foreach(Invitee inviteeTable in inviteesArountTable)
-                { 
-                        categories.Add(inviteeTable.CategoryId);
+                foreach (Invitee inviteeTable in inviteesArountTable)
+                {
+                    categories.Add(inviteeTable.CategoryId);
                 }
-                //the number of categories for a specific table
+                // The number of categories for a specific table
                 numberOfCategoriesInTable = categories.Count;
-                //punish on each multi categories which is bigger than 1
+                // Punish on each multi categories which is bigger than 1
                 punishment += (numberOfCategoriesInTable - 1);
             }
             return punishment * AlgoConsts.punishmentOnMultiCategoriesInTable;
@@ -313,7 +320,7 @@ namespace SitPlanner.Algo
         private List<Invitee> GetInviteesAroundTable(int tableId)
         {
             List<Invitee> inviteesTable = new List<Invitee>();
-            foreach(Gen gen in gens)
+            foreach (Gen gen in gens)
             {
                 if (gen.table.Id == tableId)
                     inviteesTable.Add(gen.invitee);
