@@ -22,7 +22,7 @@ namespace SitPlanner.Controllers
         // GET: PersonalRestrictions
         public async Task<IActionResult> Index()
         {
-            var sitPlannerContext = _context.PersonalRestriction.Include(p => p.Event).Include(p => p.EventOption).Include(p => p.MainInvitee).Include(p => p.SecondaryInvitee);
+            var sitPlannerContext = _context.PersonalRestriction.Include(p => p.Event).Include(p => p.MainInvitee).Include(p => p.SecondaryInvitee);
             return View(await sitPlannerContext.ToListAsync());
         }
 
@@ -36,7 +36,6 @@ namespace SitPlanner.Controllers
 
             var personalRestriction = await _context.PersonalRestriction
                 .Include(p => p.Event)
-                .Include(p => p.EventOption)
                 .Include(p => p.MainInvitee)
                 .Include(p => p.SecondaryInvitee)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -72,7 +71,6 @@ namespace SitPlanner.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", personalRestriction.EventId);
-            ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id", personalRestriction.EventOptionId);
             ViewData["MainInviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", personalRestriction.MainInviteeId);
             ViewData["SecondaryInviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", personalRestriction.SecondaryInviteeId);
             return View(personalRestriction);
@@ -92,7 +90,6 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", personalRestriction.EventId);
-            ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id", personalRestriction.EventOptionId);
             ViewData["MainInviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", personalRestriction.MainInviteeId);
             ViewData["SecondaryInviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", personalRestriction.SecondaryInviteeId);
             return PartialView(personalRestriction);
@@ -131,7 +128,6 @@ namespace SitPlanner.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", personalRestriction.EventId);
-            ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id", personalRestriction.EventOptionId);
             ViewData["MainInviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", personalRestriction.MainInviteeId);
             ViewData["SecondaryInviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", personalRestriction.SecondaryInviteeId);
             return View(personalRestriction);
@@ -147,7 +143,6 @@ namespace SitPlanner.Controllers
 
             var personalRestriction = await _context.PersonalRestriction
                 .Include(p => p.Event)
-                .Include(p => p.EventOption)
                 .Include(p => p.MainInvitee)
                 .Include(p => p.SecondaryInvitee)
                 .FirstOrDefaultAsync(m => m.Id == id);

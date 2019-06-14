@@ -202,25 +202,6 @@ namespace SitPlanner.Algo
             return punishment;
         }
 
-        private int StandaloneInviteePerCategoryPunishmentOrg()
-        {
-            int punishment = 0;
-            //for each invitee in gens, check if there is another invitee at the same table, with the same category. if not - punish
-            for (int i = 0; i < gens.Length; i++)
-            {
-                for (int j = 1; j < gens.Length; j++)
-                {
-                    if (gens[i].table.Id == gens[j].table.Id)
-                        if (gens[i].invitee.CategoryId == gens[j].invitee.CategoryId)
-                            break;
-                    if (j == gens.Length - 1)
-                        punishment++;
-                }
-            }
-
-            return punishment * AlgoConsts.punishmentOnSingleInviteeWithSameCategoryInTable;
-        }
-
         private int StandaloneInviteePerCategoryPunishment()
         {
             int numOfSittingAlone = 0;
@@ -291,7 +272,6 @@ namespace SitPlanner.Algo
             }
             this.gens = newGens;
         }
-
         public void updateGensByIndex(Gen[] gens, int startIndex, int endIndex)
         {
             for (int i = startIndex; i < endIndex; i++)
@@ -300,7 +280,6 @@ namespace SitPlanner.Algo
             }
 
         }
-
         // Return invitee tableId, according to the given inviteeId, from gens array. if not exist return -1.
         private int GetInviteeTableIdFromGen(int inviteeId)
         {
@@ -311,7 +290,6 @@ namespace SitPlanner.Algo
             }
             return -1;
         }
-
         // Return list of all invitees id's around the given table
         private List<Invitee> GetInviteesAroundTable(int tableId)
         {
