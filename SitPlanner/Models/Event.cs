@@ -30,8 +30,8 @@ namespace SitPlanner.Models
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [EventValidate]
         public DateTime Date { get; set; }
-
 
         //public List<User> Users { get; set; }
 
@@ -49,6 +49,20 @@ namespace SitPlanner.Models
 
         public IList<EventOption> EventOptions { get; set; }
 
+        public class EventValidate : ValidationAttribute
+        {
+            protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+            {
+                DateTime CurrentDate = DateTime.Now;
+                string Message = string.Empty;
 
+                if (Convert.ToDateTime(value) < CurrentDate)
+                {
+                    Message = "Event Date cannot be less than current date";
+                    return new ValidationResult(Message);
+                }
+                return ValidationResult.Success;
+            }
+        }
     }
 }
