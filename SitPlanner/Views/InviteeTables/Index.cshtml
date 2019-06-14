@@ -194,13 +194,6 @@
                 <th>
                     Category
                 </th>
-                <th>
-                    Event Option
-                </th>
-                <th>
-                    Event
-                </th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -213,14 +206,6 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Invitee.Category.Name)
                     </td>
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EventOption.Id)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Event.Name)
-                    </td>
-                    <td></td>
                 </tr>
             }
         </tbody>
