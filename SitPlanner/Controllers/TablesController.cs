@@ -58,8 +58,6 @@ namespace SitPlanner.Controllers
                            };
             ViewBag.EnumList = new SelectList(enumData, "TableTypeEnum", "TableTypeEnum");
             
-
-
             return PartialView();
         }
 
@@ -68,7 +66,7 @@ namespace SitPlanner.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CapacityOfPeople,TableType,EventId")] Table table)
+        public async Task<IActionResult> Create([Bind("Id,CapacityOfPeople,MinCapacityOfPeople,TableType,EventId")] Table table)
         {
             if (ModelState.IsValid)
             {
@@ -110,7 +108,7 @@ namespace SitPlanner.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CapacityOfPeople,TableType,EventId")] Table table)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CapacityOfPeople,MinCapacityOfPeople,TableType,EventId")] Table table)
         {
             if (id != table.Id)
             {

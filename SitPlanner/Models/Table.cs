@@ -19,7 +19,8 @@ namespace SitPlanner.Models
         public int CapacityOfPeople { get; set; }
 
         //[Range(0,CapacityOfPeople,ErrorMessage ="")]
-        //public int MinCapacityOfPeople { get; set; }
+        [Display(Name = "Minimum people around table")]
+        public int MinCapacityOfPeople { get; set; }
 
         [Display(Name = "Table type")]
         public TableTypeEnum TableType { get; set; }
