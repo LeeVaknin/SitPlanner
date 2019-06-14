@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,14 +14,12 @@ namespace SitPlanner.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Please provide table capacity")]
+        [Range(0,Int32.MaxValue,ErrorMessage = "Table capacity should be greater than or equal to 1")]
         [Display(Name = "Table capacity")]
         public int CapacityOfPeople { get; set; }
 
-        // TODO: how to impliment - hard coded? or let the user decide on each table?
-        //public int MinCapacityOfPeople => CapacityOfPeople - 2;
-
-        //TODO: ************I put it in comment to avoid the error- Temporary*********
-       // public int MinCapacityOfPeople { get; set; }
+        //[Range(0,CapacityOfPeople,ErrorMessage ="")]
+        //public int MinCapacityOfPeople { get; set; }
 
         [Display(Name = "Table type")]
         public TableTypeEnum TableType { get; set; }
