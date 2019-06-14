@@ -189,18 +189,14 @@ namespace SitPlanner.Algo
 
             foreach (var table in algoDb.tables)
             {
-                inviteeExceeded = 0;
                 inviteesAroundTable = GetInviteesAroundTable(table.Id);
                 tableCounter = inviteesAroundTable.Count;
 
-                inviteeExceeded = tableCounter - table.CapacityOfPeople;
-
                 //punishment for overBooking for a specific table
-                if (inviteeExceeded > 0)
+                if (tableCounter > table.CapacityOfPeople)
                     punishment += inviteeExceeded * AlgoConsts.punishmentOnOverBookingInviteeForTable;
                 //punishment for under booking on a table
-                // TODO: Change this punishment to check if we exccede min capacity per table
-                else
+                else if (tableCounter < table.MinCapacityOfPeople)
                     punishment += Math.Abs(inviteeExceeded) * AlgoConsts.punishmentOnUnderBookingInviteeForTable;
             }
             return punishment;
