@@ -188,8 +188,8 @@ namespace SitPlanner.Algo
             }
 
             Individual[] parents = new Individual[2];
-            parents[0] = findlIndividualByRandom(algoUtils.AlgoRandom(sumFitness), population);
-            parents[1] = findlIndividualByRandom(algoUtils.AlgoRandom(sumFitness), population);
+            parents[0] = findlIndividualByRandom(algoUtils.AlgoRandom(sumFitness+1), population);
+            parents[1] = findlIndividualByRandom(algoUtils.AlgoRandom(sumFitness+1), population);
 
             return parents;
         }

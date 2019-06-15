@@ -64,29 +64,30 @@ namespace SitPlanner.Algo
 
         #region fitness function
         //calculate individual fitness
-        public int CalculateFitness()
+        public void CalculateFitness()
         {
+            int totalPunishment = 0;
             //all invitees exist - MUST
-            fitness -= InviteesExistensePunishment();
+            totalPunishment += InviteesExistensePunishment();
 
             //limit of amount of invitees per table
-            fitness -= AmountOfInviteesPerTablePunishment();
+            totalPunishment += AmountOfInviteesPerTablePunishment();
 
             //invitee-category 
-            fitness -= MultipleCategoriesInTablePunishment();
-            fitness -= StandaloneInviteePerCategoryPunishment();
+            totalPunishment += MultipleCategoriesInTablePunishment();
+            totalPunishment += StandaloneInviteePerCategoryPunishment();
 
             //invitee-restriction (cannot)
             //invitee-restriction (must sit with) 
-            fitness -= InviteesPersonalRestrictionPunishment();
+            totalPunishment += InviteesPersonalRestrictionPunishment();
 
             //invitee-accesabilityRestriction
-            fitness -= InviteesAccessabilityRestrictionPunishment();
+            totalPunishment += InviteesAccessabilityRestrictionPunishment();
 
-
-            if (fitness < 0)
-                return 0;
-            return fitness;
+            if (totalPunishment > this.fitness)
+                this.fitness = 0;
+            else
+                this.fitness -= totalPunishment;
         }
 
         #endregion
