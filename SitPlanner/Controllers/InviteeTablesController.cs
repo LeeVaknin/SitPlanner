@@ -82,18 +82,60 @@ namespace SitPlanner.Controllers
                 return View(await sitPlannerContext.ToListAsync());
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> Index(string value, int? id)
+        {
+            // Filter for the first ID, if there's any- 
+            if ((id == null && _context.EventOption.Any()) && (value == null))
+            {
+                id = _context.EventOption.Last().Id;
+            }
 
-        //// GET: InviteeTables/optionId
-        //public async Task<IActionResult> Index()
-        //{            
-        //        var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
-        //       .OrderBy(i => i.TableId).GroupBy(i => i.TableId);
-        //        List<IGrouping<int, InviteeTable>> b = await sitPlannerContext.ToListAsync();
+            var optionIdsList = new List<SelectListItem>();
+            foreach (var opt in _context.EventOption)
+            {
+                optionIdsList.Add(new SelectListItem()
+                {
+                    Text = opt.Id.ToString(),
+                    Value = opt.Id.ToString(),
+                    Selected = opt.Id == id
+                });
+            }
 
-        //        return View(await sitPlannerContext.ToListAsync());
-           
-        //}
-        
+            ViewData["Opts"] = optionIdsList;
+            ViewData["Id"] = id;
+            if (id == null && value == null)
+            {
+                var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
+               .OrderBy(i => i.TableId).GroupBy(i => i.TableId);
+                List<IGrouping<int, InviteeTable>> b = await sitPlannerContext.ToListAsync();
+
+                var list = (from e in _context.InviteeTable
+                            select e.EventOptionId).Distinct();
+
+                IEnumerable<SelectListItem> selectListItems = new SelectList(list, "EventOptionId", "EventOptionId");
+
+                return View(await sitPlannerContext.ToListAsync());
+            }
+            else if(value == null && id != null)
+            {
+                var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
+                    .Where(i => i.EventOptionId.Equals(id))
+                    .OrderBy(i => i.TableId).GroupBy(i => i.TableId);
+                List<IGrouping<int, InviteeTable>> b = await sitPlannerContext.ToListAsync();
+                return View(await sitPlannerContext.ToListAsync());
+            }
+            
+            else
+            {
+                var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
+                    .Where(i => i.Invitee.FullName.Contains(value))
+                    .OrderBy(i => i.TableId).GroupBy(i => i.TableId);
+                List<IGrouping<int, InviteeTable>> b = await sitPlannerContext.ToListAsync();
+                return View(await sitPlannerContext.ToListAsync());
+            }
+        }
+
         // GET: InviteeTables/Details/5
         public async Task<IActionResult> Details(int? id)
         {

@@ -16,9 +16,9 @@ namespace SitPlanner.Algo
 
         #region Algo
 
-        public const int numIterationsWithoutChange = 1000;
+        public const int numIterationsWithoutChange = 10000;
         public const int optimalResult = fitnessBestResult;
-        public const int maxIterationsCount = 10000;
+        public const int maxIterationsCount = 100000;
 
         #endregion
 
@@ -29,8 +29,8 @@ namespace SitPlanner.Algo
         public const int punishmentOnOverBookingInviteeForTable = 6000;
         public const int punishmentOnUnderBookingInviteeForTable = 700;
         public const int punishmentOnMultiCategoriesInTable = 400;
-        public const int punishmentOnCannotSitTogether = 200;
-        public const int punishmentOnMustSitTogether = 200;
+        public const int punishmentOnCannotSitTogether = 1300;
+        public const int punishmentOnMustSitTogether = 1000;
         public const int punishmentOnAccessibilityRestriction = 100;
         public const int punishmentOnSingleInviteeWithSameCategoryInTable = 800;
 
