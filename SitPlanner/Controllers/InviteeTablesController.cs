@@ -44,7 +44,7 @@ namespace SitPlanner.Controllers
             // Filter for the first ID, if there's any- 
             if (id == null && _context.EventOption.Any())
             {
-                id = _context.EventOption.First().Id;
+                id = _context.EventOption.Last().Id;
             }
 
             var optionIdsList = new List<SelectListItem>();
