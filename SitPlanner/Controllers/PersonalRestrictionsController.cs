@@ -52,8 +52,8 @@ namespace SitPlanner.Controllers
         {
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
             ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id");
-            ViewData["MainInviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName");
-            ViewData["SecondaryInviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName");
+            ViewData["MainInviteeId"] = new SelectList(_context.Invitee, "Id", "FullName");
+            ViewData["SecondaryInviteeId"] = new SelectList(_context.Invitee, "Id", "FullName");
             return PartialView();
         }
 
