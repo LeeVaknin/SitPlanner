@@ -100,9 +100,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.TableType)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Event)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -117,9 +114,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TableType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Event.Name)
             </td>
             <td>
                 <button style="border-radius: 12px; border: 2px solid #F3969A;background-color: #fff;" id="Edit" value="@item.Id">Edit</button>
