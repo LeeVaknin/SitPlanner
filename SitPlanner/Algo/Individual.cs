@@ -64,29 +64,30 @@ namespace SitPlanner.Algo
 
         #region fitness function
         //calculate individual fitness
-        public int CalculateFitness()
+        public void CalculateFitness()
         {
+            int totalPunishment = 0;
             //all invitees exist - MUST
-            fitness -= InviteesExistensePunishment();
+            totalPunishment += InviteesExistensePunishment();
 
             //limit of amount of invitees per table
-            fitness -= AmountOfInviteesPerTablePunishment();
+            totalPunishment += AmountOfInviteesPerTablePunishment();
 
             //invitee-category 
-            fitness -= MultipleCategoriesInTablePunishment();
-            fitness -= StandaloneInviteePerCategoryPunishment();
+            totalPunishment += MultipleCategoriesInTablePunishment();
+            totalPunishment += StandaloneInviteePerCategoryPunishment();
 
             //invitee-restriction (cannot)
             //invitee-restriction (must sit with) 
-            fitness -= InviteesPersonalRestrictionPunishment();
+            totalPunishment += InviteesPersonalRestrictionPunishment();
 
             //invitee-accesabilityRestriction
-            fitness -= InviteesAccessabilityRestrictionPunishment();
+            totalPunishment += InviteesAccessabilityRestrictionPunishment();
 
-
-            if (fitness < 0)
-                return 0;
-            return fitness;
+            if (totalPunishment > this.fitness)
+                this.fitness = AlgoConsts.fitnessWorstResult;
+            else
+                this.fitness -= totalPunishment;
         }
 
         #endregion
@@ -177,10 +178,16 @@ namespace SitPlanner.Algo
 
                 //punishment for overBooking for a specific table
                 if (tableCounter > table.CapacityOfPeople)
+                {
+                    inviteeExceeded = tableCounter - table.CapacityOfPeople;
                     punishment += inviteeExceeded * AlgoConsts.punishmentOnOverBookingInviteeForTable;
+                }
                 //punishment for under booking on a table
                 else if (tableCounter < table.MinCapacityOfPeople)
+                {
+                    inviteeExceeded = table.MinCapacityOfPeople - tableCounter;
                     punishment += Math.Abs(inviteeExceeded) * AlgoConsts.punishmentOnUnderBookingInviteeForTable;
+                }
             }
             return punishment;
         }
@@ -198,7 +205,7 @@ namespace SitPlanner.Algo
                     int inviteeCategory = invitee.CategoryId;
                     for (int j = 0; j < inviteesAroundTable.Count; j++)
                     {
-                        if (inviteeCategory == inviteesAroundTable[j].CategoryId && invitee.Id != inviteesAroundTable[j].Id)
+                        if ((inviteeCategory == inviteesAroundTable[j].CategoryId) && (invitee.Id != inviteesAroundTable[j].Id))
                         {
                             isAlone = false;
                             break;
