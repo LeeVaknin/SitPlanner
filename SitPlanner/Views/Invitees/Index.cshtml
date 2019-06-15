@@ -286,9 +286,6 @@
                 @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().Comment)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().Event)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().Category)
             </th>
             <th></th>
@@ -317,9 +314,6 @@
                     @Html.DisplayFor(modelItem => item.Comment)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Event.Name)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.Category.Name)
                 </td>
                 <td>
@@ -341,8 +335,6 @@
                     @Html.DisplayNameFor(model => model.Item2.FirstOrDefault().Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Item2.FirstOrDefault().Event)
-                </th>
                 <th></th>
             </tr>
         </thead>
@@ -352,9 +344,6 @@
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Event.Name)
                     </td>
                     <td>
                         <button style="border-radius: 12px; border: 2px solid #F3969A;background-color: #fff;" id="EditCategory" value="@item.Id">Edit</button>
