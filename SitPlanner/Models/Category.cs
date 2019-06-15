@@ -26,6 +26,7 @@ namespace SitPlanner.Models
 
         public int EventId { get; set; }
 
+        [Display(Name = "Event name")]
         public virtual Event Event { get; set; }
 
     }

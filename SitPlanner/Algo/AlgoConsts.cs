@@ -27,10 +27,10 @@ namespace SitPlanner.Algo
         public const int fitnessBestResult = 10000;
         public const int punishOnMissingInvitee = 1000;
         public const int punishmentOnOverBookingInviteeForTable = 1000;
-        public const int punishmentOnUnderBookingInviteeForTable = 100;
+        public const int punishmentOnUnderBookingInviteeForTable = 400;
         public const int punishmentOnMultiCategoriesInTable = 100;
-        public const int punishmentOnCannotSeatTogether = 100;
-        public const int punishmentOnMustSeatTogether = 100;
+        public const int punishmentOnCannotSitTogether = 200;
+        public const int punishmentOnMustSitTogether = 200;
         public const int punishmentOnAccessibilityRestriction = 100;
         public const int punishmentOnSingleInviteeWithSameCategoryInTable = 500;
 

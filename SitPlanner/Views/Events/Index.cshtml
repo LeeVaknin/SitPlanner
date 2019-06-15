@@ -44,33 +44,33 @@
         var EventDeletePostBackURL = '/Events/';
         $(function () {
             $(":button")
-  .click(function () {
-                
-      var $buttonClicked = $(this);
-      var action = $buttonClicked.attr('id');
-      var possibleActions = ['Delete', 'Edit', 'Details'];
-      if (possibleActions.indexOf(action) < 0) {
-          return;
-      }
-      var id = $buttonClicked.attr('data-id');
-                var options = { keyboard: true };
-                $.ajax({
-                    type: "GET",
-                    url: EventDeletePostBackURL + action + "/" + $buttonClicked.val().toString(),
-                    contentType: "application/json; charset=utf-8",
-                    data: { "Id": id },
-                    datatype: "json",
-                    success: function (data) {
-                        $('#myModalContent').html(data);
-                        $('#myModal').modal(options);
-                        $('#myModal').modal('show');
+                .click(function () {
 
-                    },
-                    error: function () {
-                        alert("Dynamic content load failed.");
+                    var $buttonClicked = $(this);
+                    var action = $buttonClicked.attr('id');
+                    var possibleActions = ['Delete', 'Edit', 'Details'];
+                    if (possibleActions.indexOf(action) < 0) {
+                        return;
                     }
+                    var id = $buttonClicked.attr('data-id');
+                    var options = { keyboard: true };
+                    $.ajax({
+                        type: "GET",
+                        url: EventDeletePostBackURL + action + "/" + $buttonClicked.val().toString(),
+                        contentType: "application/json; charset=utf-8",
+                        data: { "Id": id },
+                        datatype: "json",
+                        success: function (data) {
+                            $('#myModalContent').html(data);
+                            $('#myModal').modal(options);
+                            $('#myModal').modal('show');
+
+                        },
+                        error: function () {
+                            alert("Dynamic content load failed.");
+                        }
+                    });
                 });
-            });
             //$("#closebtn").on('click',function(){
             //    $('#myModal').modal('hide');
 
@@ -87,6 +87,8 @@
     <button style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" id="createevent">Create New Event</button>
 
 </p>
+<input id="input-h" type="search" name="id" maxlength="20" placeholder="Enter Option ID" style="width:205px;">
+<input id="btn-filter" type="submit" value="Search">
 <div class="row fadeIn" id="productAdd">
 
     <span class="glyphicon glyphicon-plus"></span>
@@ -117,7 +119,7 @@
                     <button style="border-radius: 12px; border: 2px solid #F3969A;background-color: #fff;" id="Edit" value="@item.Id">Edit</button>
                     <button style="border-radius: 12px; border: 2px solid #d198ea;background-color: #fff;" id="Details" value="@item.Id">Details</button>
                     <button style="border-radius: 12px; border: 2px solid #b22d38;background-color: #fff;" id="Delete" value="@item.Id">Delete</button>
-    
+
                 </td>
             </tr>
         }
