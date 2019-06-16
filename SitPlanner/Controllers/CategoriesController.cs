@@ -72,12 +72,22 @@ namespace SitPlanner.Controllers
                 {
                     _context.Add(category);
                     await _context.SaveChangesAsync();
+                } else
+                {
+                    return PartialView("AlreadyExistError");
                 }
                 //return RedirectToAction(nameof(Index))
                 return RedirectToAction("Index" , "Invitees");
             }
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", category.EventId);
             return View(category);
+        }
+
+        [Route("Categories/CategoryExists")]
+        [HttpGet]
+        public async Task<IActionResult> CategoryExistsRequest(string name)
+        {
+            return (Content(CategoryExists(name) ? "true" : "false"));
         }
 
         // GET: Categories/Edit/5
