@@ -59,8 +59,8 @@ namespace SitPlanner.Controllers
 
             if (category == "Any")
             {
-                var invitees = _context.Invitee.Include(i => i.Category).Include(i => i.Event);
-                var categories = _context.Category.Include(c => c.Event);
+                var invitees = _context.Invitee.Include(i => i.Category).Include(i => i.Event).OrderBy(n => n.LastName);
+                var categories = _context.Category.Include(c => c.Event).OrderBy(e => e.Name);
                 var tuple = new Tuple<IEnumerable<Invitee>, IEnumerable<Category>>(invitees, categories);
                 return View(tuple);
             }
