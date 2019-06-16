@@ -21,10 +21,17 @@ namespace SitPlanner.Controllers
         }
 
         // GET: Tables
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            var sitPlannerContext = _context.Table.Include(t => t.Event);
-            return View(await sitPlannerContext.ToListAsync());
+            if (id == null)
+            {
+                var sitPlannerContext = _context.Table.Include(t => t.Event);
+                return View(await sitPlannerContext.ToListAsync());
+            }
+            var seatPlannerContext = _context.Table.Include(t => t.Event).Where(i => i.Id == id);
+            return View(await seatPlannerContext.ToListAsync());
+
+
         }
 
         // GET: Tables/Details/5
