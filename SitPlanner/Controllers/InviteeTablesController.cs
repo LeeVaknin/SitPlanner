@@ -38,9 +38,12 @@ namespace SitPlanner.Controllers
         //    return View(await sitPlannerContext.ToListAsync());
         //}
         // GET: InviteeTables/optionId
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? id, string name)
         {
-
+            if (name == null)
+            {
+                name = "";
+            }
             // Filter for the first ID, if there's any- 
             if (id == null && _context.EventOption.Any())
             {
@@ -76,8 +79,9 @@ namespace SitPlanner.Controllers
             else
             {
                 var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
-                    .Where(i => i.EventOptionId.Equals(id))
+                    .Where(i => i.EventOptionId.Equals(id)).Where(i=>i.Invitee.FirstName.ToLower().Contains(name.ToLower()) || i.Invitee.LastName.ToLower().Contains(name.ToLower()))
                     .OrderBy(i => i.TableId).GroupBy(i => i.TableId);
+             
                 List<IGrouping<int, InviteeTable>> b = await sitPlannerContext.ToListAsync();
                 return View(await sitPlannerContext.ToListAsync());
             }
