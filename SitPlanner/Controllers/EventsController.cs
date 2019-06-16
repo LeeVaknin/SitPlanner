@@ -22,7 +22,7 @@ namespace SitPlanner.Controllers
         // GET: Events
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Event.ToListAsync());
+            return View(await _context.Event.OrderBy(d => d.Date).ToListAsync());
         }
 
         // GET: Events/Details/5
