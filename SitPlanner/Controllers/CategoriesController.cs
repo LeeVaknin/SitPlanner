@@ -72,9 +72,6 @@ namespace SitPlanner.Controllers
                 {
                     _context.Add(category);
                     await _context.SaveChangesAsync();
-                } else
-                {
-                    return PartialView("AlreadyExistError");
                 }
                 //return RedirectToAction(nameof(Index))
                 return RedirectToAction("Index" , "Invitees");
