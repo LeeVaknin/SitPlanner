@@ -215,6 +215,20 @@ namespace SitPlanner.Controllers
             return View(invitee);
         }
 
+        [Route("Invitees/InviteeExist")]
+        [HttpGet]
+        public async Task<IActionResult> InviteeExistRequest(string firstName, String lastName, int phoneNumber)
+        {
+            
+            bool doesExist = _context.Invitee.Any(e => e.FirstName.ToLower() == firstName.ToLower() && e.LastName.ToLower() == lastName.ToLower() && e.PhoneNumber == phoneNumber);
+
+            if(doesExist)
+            {
+                return Content("true");
+            }
+            return Content("false");
+        }
+
         // GET: Invitees/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

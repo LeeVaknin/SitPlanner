@@ -26,6 +26,7 @@ namespace SitPlanner.Controllers
             return item;
         }
 
+
         // GET: Categories
         public async Task<IActionResult> Index()
         {
