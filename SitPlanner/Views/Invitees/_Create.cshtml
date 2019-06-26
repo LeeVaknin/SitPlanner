@@ -3,6 +3,52 @@
 @{
     ViewData["Title"] = "Create";
 }
+<script>
+    function onLabelChanged() {
+
+        if (document.getElementById("firstnamelabel").value === "") {
+            document.getElementById("submitbtn").disabled = true;
+            document.getElementById("error").innerHTML = "<font color=\"red\"> Please enter first name</font>";
+            return;
+        }
+        if (document.getElementById("lastnamelabel").value === "") {
+            document.getElementById("submitbtn").disabled = true;
+            document.getElementById("error").innerHTML = "<font color=\"red\"> Please enter last name</font>";
+            return;
+        }
+        if (document.getElementById("phonenumberlabel").value === "") {
+            document.getElementById("submitbtn").disabled = true;
+            document.getElementById("error").innerHTML = "<font color=\"red\"> Please enter phone number</font>";
+            return;
+        }
+        var TeamDetailPostBackURL = '/Invitees/InviteeExist?firstName=' + document.getElementById("firstnamelabel").value + '&lastName=' + document.getElementById("lastnamelabel").value + '&phoneNumber=' + document.getElementById("phonenumberlabel").value;
+        alert(TeamDetailPostBackURL);
+        var options = { keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: TeamDetailPostBackURL,
+            contentType: "application/json; charset=utf-8",
+            data: {},
+            datatype: "json",
+            success: function (data) {
+                if (data === "true") {
+                    document.getElementById("submitbtn").disabled = true;
+                    document.getElementById("error").innerHTML = "<font color=\"red\">Invitee already exists</font>";
+
+                } else {
+                    document.getElementById("submitbtn").disabled = false;
+                    document.getElementById("error").innerHTML = "<font color=\"blue\">Invitee details are valid   </font>";
+
+                }
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+
+    }
+</script>
 
 <div>
 
@@ -12,23 +58,24 @@
     <br />
     <h4 style="color:#F3969A">Create Invitee</h4>
     <hr />
+    <label id="error"><font color="red">Please enter first name</font></label>
     <div style="color:#56CC9D" class="row">
         <div class="col-md-4">
             <form asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="FirstName" class="control-label"></label>
-                    <input asp-for="FirstName" class="form-control" />
+                    <input asp-for="FirstName" class="form-control" onchange="onLabelChanged();" id="firstnamelabel" />
                     <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="LastName" class="control-label"></label>
-                    <input asp-for="LastName" class="form-control" />
+                    <input asp-for="LastName" class="form-control" onchange="onLabelChanged();" id="lastnamelabel" />
                     <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="PhoneNumber" class="control-label"></label>
-                    <input asp-for="PhoneNumber" class="form-control" />
+                    <input asp-for="PhoneNumber" class="form-control" onchange="onLabelChanged();" id="phonenumberlabel" />
                     <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -57,7 +104,7 @@
                     <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-default" style="background-color: #56CC9D;"/>
+                    <input type="submit" value="Create" class="btn btn-default" id="submitbtn" disabled="true" style="background-color: #56CC9D;" />
                 </div>
             </form>
         </div>

@@ -79,15 +79,28 @@
             });
         });
     </script>
-    }
-        
-    <br >
-            <h2 style="color:#F3969A">Tables</h2>
+    <script>
+        function filter() {
+            var val = document.getElementById("input-h").value;
 
-            <p>
-                <button style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" id="createtable">Create New Table</button>
+            window.location.href = "https://" + window.location.host + window.location.pathname + '?id=' + val;
+            return false;
+        }
+    </script>
+}
 
-            </p>
+<br>
+<h2 style="color:#F3969A">Tables</h2>
+
+<p>
+    <button style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" id="createtable">Create New Table</button>
+
+</p>
+<div id="filter-blog">
+    <input id="input-h" type="search" name="id" maxlength="20" placeholder="  Filter by table number" style="width:205px;width: 17%; border-radius: 12px; border: 2px solid #F3969A;background-color: #fff;">
+    <input id="btn-filter" type="submit" value="Search" onclick="filter()" style="width:205px;width: 7%; border-radius: 12px; border: 2px solid #F3969A;background-color: #F3969A;color:#fff">
+
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -100,35 +113,30 @@
             <th>
                 @Html.DisplayNameFor(model => model.TableType)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Event)
-            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CapacityOfPeople)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TableType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Event.Name)
-            </td>
-            <td>
-                <button style="border-radius: 12px; border: 2px solid #F3969A;background-color: #fff;" id="Edit" value="@item.Id">Edit</button>
-                <button style="border-radius: 12px; border: 2px solid #d198ea;background-color: #fff;" id="Details" value="@item.Id">Details</button>
-                <button style="border-radius: 12px; border: 2px solid #b22d38;background-color: #fff;" id="Delete" value="@item.Id">Delete</button>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CapacityOfPeople)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TableType)
+                </td>
+                <td>
+                    <button style="border-radius: 12px; border: 2px solid #F3969A;background-color: #fff;" id="Edit" value="@item.Id">Edit</button>
+                    <button style="border-radius: 12px; border: 2px solid #d198ea;background-color: #fff;" id="Details" value="@item.Id">Details</button>
+                    <button style="border-radius: 12px; border: 2px solid #b22d38;background-color: #fff;" id="Delete" value="@item.Id">Delete</button>
 
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 <div id='myModal' class='modal'>
@@ -137,4 +145,4 @@
             <div id='myModalContent' style="width: auto;margin-left: 50px;"></div>
         </div>
     </div>
-    </div>
+</div>

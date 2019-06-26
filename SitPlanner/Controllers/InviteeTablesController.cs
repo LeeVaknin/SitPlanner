@@ -30,14 +30,74 @@ namespace SitPlanner.Controllers
         }
 
         // GET: InviteeTables
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        //{
+        //    var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
+        //        .OrderBy(i=> i.TableId).GroupBy(i=> i.TableId);
+        //    List<IGrouping<int, InviteeTable> > b = await sitPlannerContext.ToListAsync();
+        //    return View(await sitPlannerContext.ToListAsync());
+        //}
+        // GET: InviteeTables/optionId
+        public async Task<IActionResult> Index(int? id, string name)
         {
-            var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
-                .OrderBy(i=> i.TableId).GroupBy(i=> i.TableId);
-            List<IGrouping<int, InviteeTable> > b = await sitPlannerContext.ToListAsync();
-            return View(await sitPlannerContext.ToListAsync());
+            if (name == null)
+            {
+                name = "";
+            }
+            // Filter for the first ID, if there's any- 
+            if (id == null && _context.EventOption.Any())
+            {
+                id = _context.EventOption.First().Id;
+            }
+
+            var optionIdsList = new List<SelectListItem>();
+            foreach (var opt in _context.EventOption)
+            {
+                optionIdsList.Add(new SelectListItem()
+                {
+                    Text = opt.Id.ToString(),
+                    Value = opt.Id.ToString(),
+                    Selected = opt.Id == id
+                });
+            }
+          
+            ViewData["Opts"] = optionIdsList;
+            ViewData["Id"] = id;
+            if (id == null)
+            {
+                var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
+               .OrderBy(i => i.TableId).GroupBy(i => i.TableId);
+                List<IGrouping<int, InviteeTable>> b = await sitPlannerContext.ToListAsync();
+
+                var list = (from e in _context.InviteeTable
+                            select e.EventOptionId).Distinct();
+
+                IEnumerable<SelectListItem> selectListItems = new SelectList(list, "EventOptionId", "EventOptionId");
+
+                return View(await sitPlannerContext.ToListAsync());
+            }
+            else
+            {
+                var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
+                    .Where(i => i.EventOptionId.Equals(id)).Where(i=>i.Invitee.FirstName.ToLower().Contains(name.ToLower()) || i.Invitee.LastName.ToLower().Contains(name.ToLower()))
+                    .OrderBy(i => i.TableId).GroupBy(i => i.TableId);
+             
+                List<IGrouping<int, InviteeTable>> b = await sitPlannerContext.ToListAsync();
+                return View(await sitPlannerContext.ToListAsync());
+            }
         }
 
+        //// GET: InviteeTables/optionId
+        //public async Task<IActionResult> Index()
+        //{            
+        //        var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
+        //       .OrderBy(i => i.TableId).GroupBy(i => i.TableId);
+        //        List<IGrouping<int, InviteeTable>> b = await sitPlannerContext.ToListAsync();
+
+        //        return View(await sitPlannerContext.ToListAsync());
+           
+        //}
+        
         // GET: InviteeTables/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -89,11 +149,12 @@ namespace SitPlanner.Controllers
         {
 
             result = algo.RunAlgo(AlgoDbCreation()).getGens().ToList();
-            //EventOption eventOption()
+
+            EventOption eventOption = new EventOption(GetEventByID(1));
 
             foreach (var item in result)
             {
-                InviteeTable inviteeTable = new InviteeTable(item.invitee, item.table, GetEventOptionByID(1), GetEventByID(1));
+                InviteeTable inviteeTable = new InviteeTable(item.invitee, item.table, eventOption, GetEventByID(1));
                 var result = _context.Add(inviteeTable);
             }
 
@@ -103,7 +164,8 @@ namespace SitPlanner.Controllers
             ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id");
             ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName");
             ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id");
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index","InviteeTables");
+            //return RedirectToAction(nameof(Index));
             //return View(nameof(Index));
         }
 

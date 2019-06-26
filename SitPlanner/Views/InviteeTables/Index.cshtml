@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    @ViewBag.Message
 }
 
 @section scripts
@@ -13,6 +14,7 @@
         var TeamDetailPostBackURL = '/InviteeTables/Create';
         $(function () {
             $("#createinviteetable").click(function () {
+
                 var $buttonClicked = $(this);
                 var id = $buttonClicked.attr('data-id');
                 var options = { keyboard: true };
@@ -43,23 +45,21 @@
     </script>
 
     <script>
-        var TeamDetailPostBackURL = '/InviteeTables/RunAlgo';
+        var RunAlgoURL = '/InviteeTables/RunAlgo';
         $(function () {
             $("#runalgoinviteetable").click(function () {
+
                 var $buttonClicked = $(this);
                 var id = $buttonClicked.attr('data-id');
                 var options = { keyboard: true };
                 $.ajax({
                     type: "GET",
-                    url: TeamDetailPostBackURL,
+                    url: RunAlgoURL,
                     contentType: "application/json; charset=utf-8",
                     data: { "Id": id },
                     datatype: "json",
                     success: function (data) {
-                        $('#myModalContent').html(data);
-                        $('#myModal').modal(options);
-                        $('#myModal').modal('show');
-
+                        window.location.reload(true); 
                     },
                     error: function () {
                         alert("Dynamic content load failed.");
@@ -114,17 +114,71 @@
             });
         });
     </script>
+
+
+    <script>
+        var EventOptionPostBackURL = '/EventOptions/Delete';
+        $(function () {
+            $("#deleteEventOption").click(function () {
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: EventOptionPostBackURL,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "Id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        $('#myModalContent').html(data);
+                        $('#myModal').modal(options);
+                        $('#myModal').modal('show');
+
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+            //$("#closebtn").on('click',function(){
+            //    $('#myModal').modal('hide');
+
+            $("#closbtn").click(function () {
+                $('#myModal').modal('hide');
+            });
+        });
+    </script>
 }
+<script>
+    function filter() {
+        var e = document.getElementById("Opts");
+        var val = e.options[e.selectedIndex].value;
+        var name = document.getElementById("input-h").value;
+
+        window.location.href = "https://" + window.location.host + window.location.pathname + '?id=' + val+"&name="+name;
+        return false;
+    }
+</script>
+
     </br>
 <h3 style="color:#F3969A">Table Arrangment</h3>
 
-<p>
-    <button style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" id="createinviteetable">Create New InviteeTable</button>
+<div id="filter-blog">
+ 
+        <label>Choose your draft:</label> <br />
+        @Html.DropDownList("Opts", ViewBag.Opts as SelectList, new {onchange= "filter()", @class = "form-control", style = "width: 10%; border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" })
 
-</p>
+        <br />
+        <input id="input-h" type="search" name="id" maxlength="20" placeholder="  Filter by name" style="width:205px;width: 12%; border-radius: 12px; border: 2px solid #F3969A;background-color: #fff;">
+        <input id="btn-filter" type="submit" value="Search" onclick="filter()" style="width:205px;width: 7%; border-radius: 12px; border: 2px solid #F3969A;background-color: #F3969A;color:#fff">
+    
+</div>
+
+
 <p>
     <div style="float: right">
         <button style="border-radius: 12px; border: 4px solid #F3969A;background-color: #fff;" id="runalgoinviteetable">SeatMe :)</button>
+        <button style="border-radius: 12px; border: 4px solid #b22d38;background-color: #fff;" id="deleteEventOption">Delete Arrangement</button>
     </div>
 </p>
 @foreach (var invtable in Model)
@@ -140,13 +194,6 @@
                 <th>
                     Category
                 </th>
-                <th>
-                    Event Option
-                </th>
-                <th>
-                    Event
-                </th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -158,19 +205,6 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Invitee.Category.Name)
-                    </td>
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EventOption.Id)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Event.Name)
-                    </td>
-                    <td>
-                        <button style="border-radius: 12px; border: 2px solid #F3969A;background-color: #fff;" id="Edit" value="@item.Id">Edit</button>
-                        <button style="border-radius: 12px; border: 2px solid #d198ea;background-color: #fff;" id="Details" value="@item.Id">Details</button>
-                        <button style="border-radius: 12px; border: 2px solid #b22d38;background-color: #fff;" id="Delete" value="@item.Id">Delete</button>
-
                     </td>
                 </tr>
             }

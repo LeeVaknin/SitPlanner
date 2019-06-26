@@ -3,6 +3,42 @@
 @{
     ViewData["Title"] = "Create";
 }
+<script>
+    function onLabelChanged() {
+
+        if (document.getElementById("namelabel").value === "") {
+            document.getElementById("submitbtn").disabled = true;
+            document.getElementById("error").innerHTML = "<font color=\"red\"> Please enter category name</font>";
+            return;
+        }
+        var TeamDetailPostBackURL = '/Categories/CategoryExists?name=' + document.getElementById("namelabel").value;
+        var options = { keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: TeamDetailPostBackURL,
+            contentType: "application/json; charset=utf-8",
+            data: {},
+            datatype: "json",
+            success: function (data) {
+                if (data === "true") {
+                    document.getElementById("submitbtn").disabled = true;
+                    document.getElementById("error").innerHTML = "<font color=\"red\">Category name already exists</font>";
+
+                } else {
+                    document.getElementById("submitbtn").disabled = false;
+                    document.getElementById("error").innerHTML = "<font color=\"blue\">Category name is valid   </font>";
+
+                }
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            }
+        });
+
+    }
+</script>
+
 <div>
 
     <div class="modal-header">
@@ -11,32 +47,28 @@
     <br />
     <h4 style="color:#F3969A">Create Category</h4>
     <hr />
+    <label id="error"><font color="red">Please enter category name</font></label>
     <div style="color:#56CC9D" class="row">
         <div class="col-md-4">
             <form asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="Name" class="control-label"></label>
-                    <input asp-for="Name" class="form-control" />
+                    <input asp-for="Name" class="form-control" onchange="onLabelChanged();" id="namelabel"/>
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="EventId" class="control-label"></label>
+                    <label asp-for="Event" class="control-label"></label>
                     <select asp-for="EventId" class="form-control" asp-items="ViewBag.EventId"></select>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-default" />
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-default" style="background-color: #56CC9D;" />
+                    <input type="submit" value="Create" class="btn btn-default" id="submitbtn" disabled="true" style="background-color: #56CC9D;" />
                 </div>
             </form>
         </div>
     </div>
 
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
+
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

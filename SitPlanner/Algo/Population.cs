@@ -8,6 +8,7 @@ namespace SitPlanner.Algo
 {
     public class Population
     {
+        #region data members and construcror
         AlgoUtils algoUtils = new AlgoUtils();
         AlgoDb algoDb;
         List<Invitee> invitees;
@@ -27,7 +28,7 @@ namespace SitPlanner.Algo
             this.invitees = new List<Invitee>(algoDb.invitees);
             this.tables = new List<Table>(algoDb.tables);
         }
-
+        #endregion
         public void initializePopulation(int size)
         {
             for (int i = 0; i < population.Length; i++)

@@ -1,10 +1,10 @@
-﻿@model Tuple<IEnumerable<SitPlanner.Models.Invitee>, IEnumerable < SitPlanner.Models.Category> >
+﻿@model Tuple<IEnumerable<SitPlanner.Models.Invitee>, IEnumerable<SitPlanner.Models.Category>>
 
 @{
-                ViewData["Title"] = "Index";
-            }
+    ViewData["Title"] = "Index";
+}
 
-            @section scripts
+@section scripts
     {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.js"></script>
@@ -13,9 +13,9 @@
         var inviteesCreatePostBackURL = '/Invitees/Create';
         $(function () {
             $("#create").click(function () {
-                        var $buttonClicked = $(this);
-                        var id = $buttonClicked.attr('data-id');
-                        var options = { keyboard: true };
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { keyboard: true };
                 $.ajax({
                     type: "GET",
                     url: inviteesCreatePostBackURL,
@@ -27,19 +27,19 @@
                         $('#myModal').modal(options);
                         $('#myModal').modal('show');
 
-                        },
+                    },
                     error: function () {
-                            alert("Dynamic content load failed.");
-                        }
-                    });
+                        alert("Dynamic content load failed.");
+                    }
                 });
+            });
             //$("#closebtn").on('click',function(){
             //    $('#myModal').modal('hide');
 
             $("#closbtn").click(function () {
                 $('#myModal').modal('hide');
-                });
             });
+        });
     </script>
     <script>
         var EventDeletePostBackURL = '/Invitees/';
@@ -56,7 +56,7 @@
                     var id = $buttonClicked.attr('data-id');
                     var options = { keyboard: true };
                     $.ajax({
-                type: "GET",
+                        type: "GET",
                         url: EventDeletePostBackURL + action + "/" + $buttonClicked.val().toString(),
                         contentType: "application/json; charset=utf-8",
                         data: { "Id": id },
@@ -66,12 +66,12 @@
                             $('#myModal').modal(options);
                             $('#myModal').modal('show');
 
-                    },
+                        },
                         error: function () {
-                        alert("Dynamic content load failed.");
-                    }
+                            alert("Dynamic content load failed.");
+                        }
+                    });
                 });
-            });
             //$("#closebtn").on('click',function(){
             //    $('#myModal').modal('hide');
 
@@ -84,11 +84,11 @@
         var categoriesCreatePostBackURL = '/Categories/Create';
         $(function () {
             $("#createcategory").click(function () {
-                    var $buttonClicked = $(this);
-                    var id = $buttonClicked.attr('data-id');
-                    var options = { keyboard: true };
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { keyboard: true };
                 $.ajax({
-                type: "GET",
+                    type: "GET",
                     url: categoriesCreatePostBackURL,
                     contentType: "application/json; charset=utf-8",
                     data: { "Id": id },
@@ -112,29 +112,91 @@
             });
         });
     </script>
+
+
+    <script>
+        var categoriesExportCSVPostBackURL = '/Invitees/exportCsv';
+        $(function () {
+            $("#exporttocsv").click(function () {
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: categoriesExportCSVPostBackURL,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "Id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        $('#myModalContent').html(data);
+                        $('#myModal').modal(options);
+                        $('#myModal').modal('show');
+
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+            $("#closbtn").click(function () {
+                $('#myModal').modal('hide');
+            });
+        });
+    </script>
+
+    <script>
+        var categoriesImprtCSVPostBackURL = '/Invitees/fromCsv';
+        $(function () {
+            $("#importfromcsv").click(function () {
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: categoriesImprtCSVPostBackURL,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "Id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        $('#myModalContent').html(data);
+                        $('#myModal').modal(options);
+                        $('#myModal').modal('show');
+
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+            $("#closbtn").click(function () {
+                $('#myModal').modal('hide');
+            });
+        });
+    </script>
+
     <script>
         var PostBackURL = '/Invitees/';
         $(function () {
             $(":button")
                 .click(function () {
-            var $buttonClicked = $(this);
-            var action = $buttonClicked.attr('id');
-            var possibleActionsInvitee = ['Delete', 'Edit', 'Details'];
-            var possibleActionsCategory = ['DeleteCategory', 'EditCategory', 'DetailsCategory'];
+                    var $buttonClicked = $(this);
+                    var action = $buttonClicked.attr('id');
+                    var possibleActionsInvitee = ['Delete', 'Edit', 'Details'];
+                    var possibleActionsCategory = ['DeleteCategory', 'EditCategory', 'DetailsCategory'];
                     if (possibleActionsInvitee.indexOf(action) < 0 && possibleActionsCategory.indexOf(action) < 0) {
-                return;
+                        return;
                     }
-                    
+
                     if (action.includes("Category")) {
-                        PostBackURL = '/Invitees/';
+                        PostBackURL = '/Categories/';
                         action = action.replace("Category", "");
                     }
-                    
 
-            var id = $buttonClicked.attr('data-id');
-            var options = { keyboard: true };
+
+                    var id = $buttonClicked.attr('data-id');
+                    var options = { keyboard: true };
                     $.ajax({
-        type: "GET",
+                        type: "GET",
                         url: PostBackURL + action + "/" + $buttonClicked.val().toString(),
                         contentType: "application/json; charset=utf-8",
                         data: { "Id": id },
@@ -144,21 +206,32 @@
                             $('#myModal').modal(options);
                             $('#myModal').modal('show');
 
-            },
+                        },
                         error: function () {
-                alert("Dynamic content load failed.");
-            }
-        });
+                            alert("Dynamic content load failed.");
+                        }
+                    });
                 });
             //$("#closebtn").on('click',function(){
             //    $('#myModal').modal('hide');
 
             $("#closbtn").click(function () {
                 $('#myModal').modal('hide');
-    });
+            });
         });
     </script>
 }
+
+    <script>
+        function filter() {
+            var e = document.getElementById("Categories");
+            var val = e.options[e.selectedIndex].value;
+
+            window.location.href = "https://" + window.location.host + window.location.pathname + '?category=' + val;
+            return false;
+        }
+    </script>
+
 </br>
 <h2 style="color:#F3969A">Invitee</h2>
 
@@ -176,10 +249,18 @@
     <button style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" id="create">Create New Invitee</button>
 
 </p>
+<div id="filter-blog">
+    @using (Html.BeginForm("Index", "Invitees", FormMethod.Post))
+    {
+        <label>Invitee's category</label>
+        @Html.DropDownList("Categories", ViewBag.Categories as SelectList, new { onchange = "filter()", @class = "form-control", style = "width: 10%; border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" })
+        
+    }
+</div>
 <p>
     <div style="float: right" ; style="text-align:right">
-        <button style="border-radius: 12px ; border: 2px solid #F3969A;background-color: #fff;" id="create">Import From CSV</button>
-        <button style="border-radius: 12px ; border: 2px solid #F3969A;background-color: #fff;" id="create">Export To CSV</button>
+        <button style="border-radius: 12px ; border: 2px solid #F3969A;background-color: #fff;" id="importfromcsv">Import From CSV</button>
+        <button style="border-radius: 12px ; border: 2px solid #F3969A;background-color: #fff;" id="exporttocsv">Export To CSV</button>
 
     </div>
 </p>
@@ -205,9 +286,6 @@
                 @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().Comment)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().Event)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().Category)
             </th>
             <th></th>
@@ -215,7 +293,7 @@
     </thead>
     <tbody>
         @foreach (var item in Model.Item1)
-{
+        {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.FirstName)
@@ -234,9 +312,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Comment)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Event.Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Category.Name)
@@ -260,18 +335,13 @@
                     @Html.DisplayNameFor(model => model.Item2.FirstOrDefault().Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Item2.FirstOrDefault().Event)
-                </th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model.Item2)
-{
+            {
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>

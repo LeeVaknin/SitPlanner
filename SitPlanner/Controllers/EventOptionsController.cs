@@ -138,7 +138,7 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
 
-            return View(eventOption);
+            return PartialView(eventOption);
         }
 
         // POST: EventOptions/Delete/5
@@ -146,10 +146,15 @@ namespace SitPlanner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            foreach (var inviteeTable in _context.InviteeTable)
+            {
+                if (inviteeTable.EventOptionId == id)
+                    _context.InviteeTable.Remove(inviteeTable);
+            }
             var eventOption = await _context.EventOption.FindAsync(id);
             _context.EventOption.Remove(eventOption);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "InviteeTables");
         }
 
         private bool EventOptionExists(int id)

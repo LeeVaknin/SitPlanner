@@ -21,10 +21,17 @@ namespace SitPlanner.Controllers
         }
 
         // GET: Tables
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            var sitPlannerContext = _context.Table.Include(t => t.Event);
-            return View(await sitPlannerContext.ToListAsync());
+            if (id == null)
+            {
+                var sitPlannerContext = _context.Table.Include(t => t.Event);
+                return View(await sitPlannerContext.ToListAsync());
+            }
+            var seatPlannerContext = _context.Table.Include(t => t.Event).Where(i => i.Id == id);
+            return View(await seatPlannerContext.ToListAsync());
+
+
         }
 
         // GET: Tables/Details/5
@@ -58,8 +65,6 @@ namespace SitPlanner.Controllers
                            };
             ViewBag.EnumList = new SelectList(enumData, "TableTypeEnum", "TableTypeEnum");
             
-
-
             return PartialView();
         }
 
@@ -68,7 +73,7 @@ namespace SitPlanner.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CapacityOfPeople,TableType,EventId")] Table table)
+        public async Task<IActionResult> Create([Bind("Id,CapacityOfPeople,MinCapacityOfPeople,TableType,EventId")] Table table)
         {
             if (ModelState.IsValid)
             {
@@ -94,6 +99,14 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", table.EventId);
+
+            var enumData = from Table.TableTypeEnum e in Enum.GetValues(typeof(Table.TableTypeEnum))
+                           select new
+                           {
+                               TableTypeEnum = e,
+                           };
+            ViewData["TableType"] = new SelectList(enumData, "TableTypeEnum", "TableTypeEnum");
+
             return PartialView(table);
         }
 
@@ -102,7 +115,7 @@ namespace SitPlanner.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CapacityOfPeople,TableType,EventId")] Table table)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CapacityOfPeople,MinCapacityOfPeople,TableType,EventId")] Table table)
         {
             if (id != table.Id)
             {

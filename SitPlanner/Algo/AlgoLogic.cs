@@ -163,7 +163,6 @@ namespace SitPlanner.Algo
             return children;
         }
 
-
         private Individual findlIndividualByRandom(int random, Population population)
         {
             int localSum = 0;
@@ -188,10 +187,20 @@ namespace SitPlanner.Algo
             }
 
             Individual[] parents = new Individual[2];
-            parents[0] = findlIndividualByRandom(algoUtils.AlgoRandom(sumFitness), population);
-            parents[1] = findlIndividualByRandom(algoUtils.AlgoRandom(sumFitness), population);
+            parents[0] = findlIndividualByRandom(algoUtils.AlgoRandom(sumFitness+1), population);
+            parents[1] = findlIndividualByRandom(algoUtils.AlgoRandom(sumFitness+1), population);
 
             return parents;
+        }
+
+        private Individual mutation(Individual individual)
+        {
+            int randomeGen = algoUtils.AlgoRandom(individual.gens.Length);
+            int randomeTable = algoUtils.AlgoRandom(algoDb.tables.Count);
+            Invitee genInvitee = individual.gens[randomeGen].invitee;
+            individual.gens[randomeGen] = new Gen(genInvitee, algoDb.tables[randomeTable]);
+
+            return individual;
         }
     }
 }

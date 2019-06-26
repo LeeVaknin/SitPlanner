@@ -22,7 +22,7 @@ namespace SitPlanner.Controllers
         // GET: Events
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Event.ToListAsync());
+            return View(await _context.Event.OrderBy(d => d.Date).ToListAsync());
         }
 
         // GET: Events/Details/5
@@ -78,6 +78,12 @@ namespace SitPlanner.Controllers
             return View(@event);
         }
 
+        [Route("Events/EventExists")]
+        [HttpGet]
+        public async Task<IActionResult> EventExistsRequest(string name)
+        {
+            return (Content(EventExistsByName(name) ? "true" : "false"));
+        }
         // GET: Events/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -161,6 +167,10 @@ namespace SitPlanner.Controllers
         private bool EventExists(int id)
         {
             return _context.Event.Any(e => e.Id == id);
+        }
+        private bool EventExistsByName(String name)
+        {
+            return _context.Event.Any(e => e.Name == name);
         }
     }
 }

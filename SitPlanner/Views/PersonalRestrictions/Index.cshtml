@@ -87,7 +87,7 @@
 <h2 style="color:#F3969A">Personal Restrictions</h2>
 
 <p>
-    <button style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" id="createpersonalrestrication">Create something</button>
+    <button style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" id="createpersonalrestrication">Create Restriction</button>
 </p>
 
     <table class="table">
@@ -101,12 +101,6 @@
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.IsSittingTogether)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Event)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.EventOption)
                 </th>
                 <th></th>
             </tr>
@@ -125,12 +119,6 @@
                         @Html.DisplayFor(modelItem => item.IsSittingTogether)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Event.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EventOption.Id)
-                    </td>
-                    <td>
                         <button style="border-radius: 12px; border: 2px solid #F3969A;background-color: #fff;" id="Edit" value="@item.Id">Edit</button>
                         <button style="border-radius: 12px; border: 2px solid #d198ea;background-color: #fff;" id="Details" value="@item.Id">Details</button>
                         <button style="border-radius: 12px; border: 2px solid #b22d38;background-color: #fff;" id="Delete" value="@item.Id">Delete</button>
@@ -145,3 +133,4 @@
                 <div id='myModalContent' style="width: auto;margin-left: 50px;"></div>
             </div>
         </div>
+    </div>

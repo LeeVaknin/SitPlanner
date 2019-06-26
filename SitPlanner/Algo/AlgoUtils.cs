@@ -10,7 +10,7 @@ namespace SitPlanner.Algo
         public int AlgoRandom(int limit)
         {
             Random rn = new Random();
-            int ran = Convert.ToInt32(Math.Abs(rn.NextDouble())) % limit;
+            int ran = rn.Next(0, limit);
 
             return ran;
         }
