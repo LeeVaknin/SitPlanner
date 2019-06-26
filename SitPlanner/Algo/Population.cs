@@ -46,6 +46,14 @@ namespace SitPlanner.Algo
             }
         }
 
+        public void runMutation()
+        {
+            int randomeIndividualId = algoUtils.AlgoRandom(this.population.Length);
+            int randomeGenId = algoUtils.AlgoRandom(this.population[randomeIndividualId].gens.Length);
+            int randomeTableId = algoUtils.AlgoRandom(algoDb.tables.Count);
+            Invitee genInvitee = this.population[randomeIndividualId].gens[randomeGenId].invitee;
+            this.population[randomeIndividualId].gens[randomeGenId] = new Gen(genInvitee, algoDb.tables[randomeTableId]);
+        }
 
         private void cloneIndividuals(Individual[] individuals)
         {

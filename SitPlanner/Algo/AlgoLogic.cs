@@ -35,10 +35,8 @@ namespace SitPlanner.Algo
             population.CalculateIndividualsFitness();
             updateTopX(population);
 
-            
             //While not break condition
-            while (!breakCondition())
-                
+            while (!breakCondition())             
             {
                 //Do selection
                 parentsCouplesList = Selection(population);
@@ -48,6 +46,10 @@ namespace SitPlanner.Algo
                 population = CrossOver(parentsCouplesList);
 
                 //Do mutation under a random probability
+                if (algoUtils.AlgoRandom(1000) < 5)
+                {
+                    population.runMutation();
+                }
 
                 //Calculate new fitness value + update top X
                 population.CalculateIndividualsFitness();
@@ -191,16 +193,6 @@ namespace SitPlanner.Algo
             parents[1] = findlIndividualByRandom(algoUtils.AlgoRandom(sumFitness+1), population);
 
             return parents;
-        }
-
-        private Individual mutation(Individual individual)
-        {
-            int randomeGen = algoUtils.AlgoRandom(individual.gens.Length);
-            int randomeTable = algoUtils.AlgoRandom(algoDb.tables.Count);
-            Invitee genInvitee = individual.gens[randomeGen].invitee;
-            individual.gens[randomeGen] = new Gen(genInvitee, algoDb.tables[randomeTable]);
-
-            return individual;
         }
     }
 }
