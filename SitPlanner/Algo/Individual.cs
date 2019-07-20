@@ -45,7 +45,17 @@ namespace SitPlanner.Algo
             this.tablesAmount = tables.Count;
             gens = new Gen[invitessAmount];
 
-            //generate gens list - all invitess with random tables
+      /*      //generate gens list - all invitess with random tables
+            Gen gen = null;
+            for (int i = 0; i < gens.Length; i++)
+            {
+                gen = generateRandomGen(i);
+                if(gen != null)
+                {
+                    gens[i] = gen;
+                }
+            }
+*/
             for (int i = 0; i < gens.Length; i++)
             {
                 gens[i] = generateRandomGen(i);
@@ -269,6 +279,15 @@ namespace SitPlanner.Algo
             Gen gen = new Gen(invitees[i], tables[ran]);
 
             return gen;
+
+/*          //Generate gens only with invitees that confirmed invatation
+                      if (invitees[i].IsComing)
+                      {
+                          return new Gen(invitees[i], tables[ran]);
+                      }
+
+                      return null;
+                      */
         }
         public void cloneGens(Gen[] gens)
         {
