@@ -45,7 +45,17 @@ namespace SitPlanner.Algo
             this.tablesAmount = tables.Count;
             gens = new Gen[invitessAmount];
 
-            //generate gens list - all invitess with random tables
+      /*      //generate gens list - all invitess with random tables
+            Gen gen = null;
+            for (int i = 0; i < gens.Length; i++)
+            {
+                gen = generateRandomGen(i);
+                if(gen != null)
+                {
+                    gens[i] = gen;
+                }
+            }
+*/
             for (int i = 0; i < gens.Length; i++)
             {
                 gens[i] = generateRandomGen(i);
@@ -83,6 +93,9 @@ namespace SitPlanner.Algo
 
             //invitee-accesabilityRestriction
             totalPunishment += InviteesAccessabilityRestrictionPunishment();
+
+            //invitee- is comming?
+           // totalPunishment += InviteeConfirmedInvatationPunishment();
 
             if (totalPunishment > this.fitness)
                 this.fitness = AlgoConsts.fitnessWorstResult;
@@ -240,6 +253,20 @@ namespace SitPlanner.Algo
             return punishment * AlgoConsts.punishmentOnMultiCategoriesInTable;
         }
 
+        private int InviteeConfirmedInvatationPunishment()
+        {
+            int punishment = 0;
+
+            foreach(Gen gen in gens)
+            {
+                if(!gen.invitee.IsComing)
+                {
+                    punishment++;
+                }
+            }
+            return punishment * AlgoConsts.punishmentOnIsComming;
+        }
+
         #endregion
 
         #region  utils
@@ -252,6 +279,15 @@ namespace SitPlanner.Algo
             Gen gen = new Gen(invitees[i], tables[ran]);
 
             return gen;
+
+/*          //Generate gens only with invitees that confirmed invatation
+                      if (invitees[i].IsComing)
+                      {
+                          return new Gen(invitees[i], tables[ran]);
+                      }
+
+                      return null;
+                      */
         }
         public void cloneGens(Gen[] gens)
         {

@@ -9,7 +9,7 @@ namespace SitPlanner.Algo
     {
         #region Population
 
-        public const int populationLength = 100;
+        public const int populationLength = 150;
         public const int topXAmount = 3;
 
         #endregion
@@ -18,7 +18,7 @@ namespace SitPlanner.Algo
 
         public const int numIterationsWithoutChange = 1000;
         public const int optimalResult = fitnessBestResult;
-        public const int maxIterationsCount = 10000;
+        public const int maxIterationsCount = 1000;
 
         #endregion
 
@@ -26,13 +26,14 @@ namespace SitPlanner.Algo
         public const int fitnessWorstResult = 0;
         public const int fitnessBestResult = 100000;
         public const int punishOnMissingInvitee = 10000;
-        public const int punishmentOnOverBookingInviteeForTable = 15000;
+        public const int punishmentOnOverBookingInviteeForTable = 90000;
         public const int punishmentOnUnderBookingInviteeForTable = 1000;
-        public const int punishmentOnMultiCategoriesInTable = 30000;
-        public const int punishmentOnSingleInviteeWithSameCategoryInTable = 20000;
+        public const int punishmentOnMultiCategoriesInTable = 95000;
+        public const int punishmentOnSingleInviteeWithSameCategoryInTable = 90000;
         public const int punishmentOnCannotSitTogether = 1200;
         public const int punishmentOnMustSitTogether = 1200;
         public const int punishmentOnAccessibilityRestriction = 200;
+        public const int punishmentOnIsComming = 200;
 
         #endregion
     }
