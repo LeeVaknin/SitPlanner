@@ -84,6 +84,9 @@ namespace SitPlanner.Algo
             //invitee-accesabilityRestriction
             totalPunishment += InviteesAccessabilityRestrictionPunishment();
 
+            //invitee- is comming?
+           // totalPunishment += InviteeConfirmedInvatationPunishment();
+
             if (totalPunishment > this.fitness)
                 this.fitness = AlgoConsts.fitnessWorstResult;
             else
