@@ -240,6 +240,20 @@ namespace SitPlanner.Algo
             return punishment * AlgoConsts.punishmentOnMultiCategoriesInTable;
         }
 
+        private int InviteeConfirmedInvatationPunishment()
+        {
+            int punishment = 0;
+
+            foreach(Gen gen in gens)
+            {
+                if(!gen.invitee.IsComing)
+                {
+                    punishment++;
+                }
+            }
+            return punishment * AlgoConsts.punishmentOnIsComming;
+        }
+
         #endregion
 
         #region  utils
