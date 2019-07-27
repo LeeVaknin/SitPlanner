@@ -22,7 +22,7 @@ namespace SitPlanner.Controllers
         // GET: AccessibilityRestrictions
         public async Task<IActionResult> Index()
         {
-            var sitPlannerContext = _context.AccessibilityRestriction.Include(a => a.Event).Include(a => a.Invitee).Include(a => a.Table);
+            var sitPlannerContext = _context.AccessibilityRestriction.Include(a => a.Event).Include(a => a.Invitee);
             return View(await sitPlannerContext.ToListAsync());
         }
 
@@ -37,7 +37,6 @@ namespace SitPlanner.Controllers
             var accessibilityRestriction = await _context.AccessibilityRestriction
                 .Include(a => a.Event)
                 .Include(a => a.Invitee)
-                .Include(a => a.Table)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (accessibilityRestriction == null)
             {
@@ -52,7 +51,7 @@ namespace SitPlanner.Controllers
         {
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
             ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FullName");
-            ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id");
+            //ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id");
 
             var enumData = from Table.TableTypeEnum e in Enum.GetValues(typeof(Table.TableTypeEnum))
                            select new
@@ -79,7 +78,7 @@ namespace SitPlanner.Controllers
             }
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", accessibilityRestriction.EventId);
             ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", accessibilityRestriction.InviteeId);
-            ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id", accessibilityRestriction.TableId);
+            //ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id", accessibilityRestriction.TableId);
             return View(accessibilityRestriction);
         }
 
@@ -98,8 +97,16 @@ namespace SitPlanner.Controllers
             }
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", accessibilityRestriction.EventId);
             ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", accessibilityRestriction.InviteeId);
-            ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id", accessibilityRestriction.TableId);
-            return View(accessibilityRestriction);
+            //ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id", accessibilityRestriction.TableId);
+
+            var enumData = from Table.TableTypeEnum e in Enum.GetValues(typeof(Table.TableTypeEnum))
+                           select new
+                           {
+                               TableTypeEnum = e,
+                           };
+            ViewData["TableType"] = new SelectList(enumData, "TableTypeEnum", "TableTypeEnum");
+
+            return PartialView(accessibilityRestriction);
         }
 
         // POST: AccessibilityRestrictions/Edit/5
@@ -136,7 +143,7 @@ namespace SitPlanner.Controllers
             }
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", accessibilityRestriction.EventId);
             ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", accessibilityRestriction.InviteeId);
-            ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id", accessibilityRestriction.TableId);
+            //ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id", accessibilityRestriction.TableId);
             return View(accessibilityRestriction);
         }
 
@@ -151,7 +158,6 @@ namespace SitPlanner.Controllers
             var accessibilityRestriction = await _context.AccessibilityRestriction
                 .Include(a => a.Event)
                 .Include(a => a.Invitee)
-                .Include(a => a.Table)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (accessibilityRestriction == null)
             {
