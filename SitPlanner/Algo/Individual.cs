@@ -144,7 +144,7 @@ namespace SitPlanner.Algo
                 inviteeTable2 = GetInviteeTableIdFromGen(personalRestriction.SecondaryInviteeId);
                 bool sammeTable = (inviteeTable == inviteeTable2);
 
-                if (personalRestriction.IsSittingTogether == false)
+                if (!personalRestriction.IsSittingTogether)
                 {
                     if (sammeTable)
                         notSittingTogetherPunishment++;
@@ -162,13 +162,15 @@ namespace SitPlanner.Algo
         private int InviteesAccessabilityRestrictionPunishment()
         {
             int numOfpunished = 0;
-            int inviteeTable;
+            int inviteeTableId;
             foreach (var accessibilityRestriction in algoDb.accessibilityRestrictions)
             {
-                if (accessibilityRestriction.IsSittingAtTable == false)
+                if (accessibilityRestriction.IsSittingAtTable)
                 {
-                    inviteeTable = GetInviteeTableIdFromGen(accessibilityRestriction.InviteeId);
-                    if (inviteeTable == accessibilityRestriction.TableId)
+                    inviteeTableId = GetInviteeTableIdFromGen(accessibilityRestriction.InviteeId);
+                    Table inviteeTable = GetTableByTableId(inviteeTableId);
+                   
+                    if (inviteeTable.TableType.ToString() == accessibilityRestriction.TableType.ToString())
                     {
                         numOfpunished++;
                     }
@@ -326,6 +328,18 @@ namespace SitPlanner.Algo
                     inviteesTable.Add(gen.invitee);
             }
             return inviteesTable;
+        }
+
+        private Table GetTableByTableId(int tableId)
+        {
+            foreach(Table table in tables)
+            {
+                if(table.Id == tableId)
+                {
+                    return table;
+                }
+            }
+            return null;
         }
 
         #endregion

@@ -317,7 +317,8 @@
                     @Html.DisplayFor(modelItem => item.Category.Name)
                 </td>
                 <td>
-                    <button style="border-radius: 12px; border: 2px solid #F3969A;background-color: #fff;" id="Edit" value="@item.Id">Edit</button>
+                    <button style="border-radius: 12px; border: 2px solid #F3969A;background-color: #fff;" id="Edit" value="@item.Id">
+                        <span class="glyphicon glyphicon-pencil"></span> Edit</button>
                     <button style="border-radius: 12px; border: 2px solid #d198ea;background-color: #fff;" id="Details" value="@item.Id">Details</button>
                     <button style="border-radius: 12px; border: 2px solid #b22d38;background-color: #fff;" id="Delete" value="@item.Id">Delete</button>
                 </td>

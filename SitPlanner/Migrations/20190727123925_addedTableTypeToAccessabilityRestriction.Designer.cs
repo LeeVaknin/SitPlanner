@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SitPlanner.Data;
 
 namespace SitPlanner.Migrations
 {
     [DbContext(typeof(SitPlannerContext))]
-    partial class SitPlannerContextModelSnapshot : ModelSnapshot
+    [Migration("20190727123925_addedTableTypeToAccessabilityRestriction")]
+    partial class addedTableTypeToAccessabilityRestriction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -192,7 +194,7 @@ namespace SitPlanner.Migrations
 
                     b.Property<int>("EventId");
 
-                    b.Property<int?>("EventOptionId");
+                    b.Property<int>("EventOptionId");
 
                     b.Property<int>("InviteeId");
 
@@ -496,9 +498,10 @@ namespace SitPlanner.Migrations
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("SitPlanner.Models.EventOption")
+                    b.HasOne("SitPlanner.Models.EventOption", "EventOption")
                         .WithMany("AccessibilityRestrictions")
-                        .HasForeignKey("EventOptionId");
+                        .HasForeignKey("EventOptionId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SitPlanner.Models.Invitee", "Invitee")
                         .WithMany()
