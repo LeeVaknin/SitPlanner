@@ -204,9 +204,9 @@ namespace SitPlanner.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", inviteeTable.EventId);
+            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", inviteeTable.EventId);
             ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id", inviteeTable.EventOptionId);
-            ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", inviteeTable.InviteeId);
+            ViewData["InviteeId"] = new SelectList(_context.Invitee.OrderBy(x => x.FullName), "Id", "FullName", inviteeTable.InviteeId);
             ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id", inviteeTable.TableId);
             return View(inviteeTable);
         }
@@ -224,9 +224,9 @@ namespace SitPlanner.Controllers
             {
                 return NotFound();
             }
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", inviteeTable.EventId);
+            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", inviteeTable.EventId);
             ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id", inviteeTable.EventOptionId);
-            ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", inviteeTable.InviteeId);
+            ViewData["InviteeId"] = new SelectList(_context.Invitee.OrderBy(x => x.FullName), "Id", "FullName", inviteeTable.InviteeId);
             ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id", inviteeTable.TableId);
             return PartialView(inviteeTable);
         }
@@ -263,9 +263,9 @@ namespace SitPlanner.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", inviteeTable.EventId);
+            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", inviteeTable.EventId);
             ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id", inviteeTable.EventOptionId);
-            ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", inviteeTable.InviteeId);
+            ViewData["InviteeId"] = new SelectList(_context.Invitee.OrderBy(x => x.FullName), "Id", "FullName", inviteeTable.InviteeId);
             ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id", inviteeTable.TableId);
             return View(inviteeTable);
         }

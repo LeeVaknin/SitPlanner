@@ -142,7 +142,7 @@ namespace SitPlanner.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", table.EventId);
+            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", table.EventId);
             return View(table);
         }
 

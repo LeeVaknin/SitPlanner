@@ -49,9 +49,9 @@ namespace SitPlanner.Controllers
         // GET: AccessibilityRestrictions/Create
         public IActionResult Create()
         {
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
+            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name");
             ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id");
-            ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FullName");
+            ViewData["InviteeId"] = new SelectList(_context.Invitee.OrderBy(x => x.FullName), "Id", "FullName");
             
             var enumData = from Table.TableTypeEnum e in Enum.GetValues(typeof(Table.TableTypeEnum))
                            select new
@@ -76,8 +76,8 @@ namespace SitPlanner.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", accessibilityRestriction.EventId);
-            ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FullName", accessibilityRestriction.InviteeId);
+            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", accessibilityRestriction.EventId);
+            ViewData["InviteeId"] = new SelectList(_context.Invitee.OrderBy(x => x.FullName), "Id", "FullName", accessibilityRestriction.InviteeId);
             
             return View(accessibilityRestriction);
         }
@@ -95,8 +95,8 @@ namespace SitPlanner.Controllers
             {
                 return NotFound();
             }
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", accessibilityRestriction.EventId);
-            ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FullName", accessibilityRestriction.InviteeId);
+            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", accessibilityRestriction.EventId);
+            ViewData["InviteeId"] = new SelectList(_context.Invitee.OrderBy(x => x.FullName), "Id", "FullName", accessibilityRestriction.InviteeId);
            
 
             var enumData = from Table.TableTypeEnum e in Enum.GetValues(typeof(Table.TableTypeEnum))
@@ -141,8 +141,8 @@ namespace SitPlanner.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", accessibilityRestriction.EventId);
-            ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FullName", accessibilityRestriction.InviteeId);
+            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", accessibilityRestriction.EventId);
+            ViewData["InviteeId"] = new SelectList(_context.Invitee.OrderBy(x => x.FullName), "Id", "FullName", accessibilityRestriction.InviteeId);
             
             return View(accessibilityRestriction);
         }

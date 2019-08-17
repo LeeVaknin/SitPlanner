@@ -56,7 +56,7 @@ namespace SitPlanner.Controllers
         // GET: Categories/Create
         public IActionResult Create()
         {
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
+            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name");
             return PartialView("_Create");
         }
 
@@ -77,7 +77,7 @@ namespace SitPlanner.Controllers
                 //return RedirectToAction(nameof(Index))
                 return RedirectToAction("Index" , "Invitees");
             }
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", category.EventId);
+            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", category.EventId);
             return View(category);
         }
 
@@ -101,7 +101,7 @@ namespace SitPlanner.Controllers
             {
                 return NotFound();
             }
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", category.EventId);
+            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", category.EventId);
             return PartialView(category);
         }
 
@@ -139,7 +139,7 @@ namespace SitPlanner.Controllers
                 return RedirectToAction("Index", "Invitees");
 
             }
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", category.EventId);
+            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", category.EventId);
             return View(category);
         }
 
