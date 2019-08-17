@@ -14,7 +14,7 @@ namespace SitPlanner.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     InviteeId = table.Column<int>(nullable: false),
-                    TableId = table.Column<int>(nullable: false),
+                    //TableId = table.Column<int>(nullable: false),
                     IsSittingAtTable = table.Column<bool>(nullable: false),
                     EventOptionId = table.Column<int>(nullable: false),
                     EventId = table.Column<int>(nullable: false)
@@ -22,7 +22,7 @@ namespace SitPlanner.Migrations
                 constraints: table =>
                 {
                     //table.PrimaryKey("PK_AccessibilityRestriction", x => x.Id);
-                    table.PrimaryKey("PK_AccessibilityRestriction", x => new { x.InviteeId, x.TableId });
+                    //table.PrimaryKey("PK_AccessibilityRestriction", x => new { x.InviteeId, x.TableId });
                     table.ForeignKey(
                         name: "FK_AccessibilityRestriction_Event_EventId",
                         column: x => x.EventId,
@@ -147,10 +147,10 @@ namespace SitPlanner.Migrations
                 table: "AccessibilityRestriction",
                 column: "InviteeId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_AccessibilityRestriction_TableId",
-                table: "AccessibilityRestriction",
-                column: "TableId");
+            //migrationBuilder.CreateIndex(
+              //  name: "IX_AccessibilityRestriction_TableId",
+                //table: "AccessibilityRestriction",
+               // column: "TableId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InviteeTable_EventId",

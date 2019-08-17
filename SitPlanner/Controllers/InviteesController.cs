@@ -191,7 +191,7 @@ namespace SitPlanner.Controllers
         // GET: Invitees/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name");
+            ViewData["CategoryId"] = new SelectList(_context.Category.OrderBy(x => x.Name), "Id", "Name");
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
             
             return PartialView("_Create");
@@ -210,8 +210,8 @@ namespace SitPlanner.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", invitee.CategoryId);
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", invitee.EventId);
+            ViewData["CategoryId"] = new SelectList(_context.Category.OrderBy(x => x.Name), "Id", "Name", invitee.CategoryId);
+            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", invitee.EventId);
             return View(invitee);
         }
 
@@ -242,8 +242,8 @@ namespace SitPlanner.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", invitee.CategoryId);
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", invitee.EventId);
+            ViewData["CategoryId"] = new SelectList(_context.Category.OrderBy(x => x.Name), "Id", "Name", invitee.CategoryId);
+            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", invitee.EventId);
             return PartialView(invitee);
         }
 
@@ -279,8 +279,8 @@ namespace SitPlanner.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", invitee.CategoryId);
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", invitee.EventId);
+            ViewData["CategoryId"] = new SelectList(_context.Category.OrderBy(x => x.Name), "Id", "Name", invitee.CategoryId);
+            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", invitee.EventId);
             return View(invitee);
         }
 

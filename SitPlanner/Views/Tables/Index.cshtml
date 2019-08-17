@@ -93,12 +93,12 @@
 <h2 style="color:#F3969A">Tables</h2>
 
 <p>
-    <button style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" id="createtable">Create New Table</button>
+    <button style="border-radius: 12px; border: 1px solid #56CC9D;background-color: #fff;" id="createtable"><i class="fa fa-plus" aria-hidden="true"></i> Table</button>
 
 </p>
 <div id="filter-blog">
     <input id="input-h" type="search" name="id" maxlength="20" placeholder="  Filter by table number" style="width:205px;width: 17%; border-radius: 12px; border: 2px solid #F3969A;background-color: #fff;">
-    <input id="btn-filter" type="submit" value="Search" onclick="filter()" style="width:205px;width: 7%; border-radius: 12px; border: 2px solid #F3969A;background-color: #F3969A;color:#fff">
+    <button style="border: 0px ;background-color: #fff;" id="btn-filter" type="submit" onclick="filter()"><i class="fa fa-search" aria-hidden="true"></i></button>
 
 </div>
 <table class="table">
@@ -130,9 +130,9 @@
                     @Html.DisplayFor(modelItem => item.TableType)
                 </td>
                 <td>
-                    <button style="border-radius: 12px; border: 2px solid #F3969A;background-color: #fff;" id="Edit" value="@item.Id">Edit</button>
-                    <button style="border-radius: 12px; border: 2px solid #d198ea;background-color: #fff;" id="Details" value="@item.Id">Details</button>
-                    <button style="border-radius: 12px; border: 2px solid #b22d38;background-color: #fff;" id="Delete" value="@item.Id">Delete</button>
+                    <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Edit" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                    <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Details" value="@item.Id"><i class="fa fa-info" aria-hidden="true"></i></button>
+                    <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Delete" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
 
                 </td>
             </tr>

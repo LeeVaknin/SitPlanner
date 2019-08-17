@@ -92,7 +92,7 @@ namespace SitPlanner.Algo
             totalPunishment += InviteesPersonalRestrictionPunishment();
 
             //invitee-accesabilityRestriction
-            totalPunishment += InviteesAccessabilityRestrictionPunishment();
+            //totalPunishment += InviteesAccessabilityRestrictionPunishment();
 
             //invitee- is comming?
            // totalPunishment += InviteeConfirmedInvatationPunishment();
@@ -162,17 +162,23 @@ namespace SitPlanner.Algo
         private int InviteesAccessabilityRestrictionPunishment()
         {
             int numOfpunished = 0;
+            Table inviteeTable = new Table();
             int inviteeTableId;
             foreach (var accessibilityRestriction in algoDb.accessibilityRestrictions)
             {
                 if (accessibilityRestriction.IsSittingAtTable)
                 {
                     inviteeTableId = GetInviteeTableIdFromGen(accessibilityRestriction.InviteeId);
-                    Table inviteeTable = GetTableByTableId(inviteeTableId);
-                   
-                    if (inviteeTable.TableType.ToString() == accessibilityRestriction.TableType.ToString())
+                    if (inviteeTableId != -1)
                     {
-                        numOfpunished++;
+                        inviteeTable = GetTableByTableId(inviteeTableId);
+                        if (inviteeTable != null)
+                        {
+                            if (inviteeTable.TableType.ToString() == accessibilityRestriction.TableType.ToString())
+                            {
+                                numOfpunished++;
+                            }
+                        }
                     }
                 }
             }
