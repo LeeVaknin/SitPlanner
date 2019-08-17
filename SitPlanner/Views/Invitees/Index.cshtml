@@ -246,7 +246,7 @@
     </div>*@
 
 <p>
-    <button style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" id="create">Create New Invitee</button>
+    <button style="border-radius: 12px; border: 1px solid #56CC9D;background-color: #fff;" id="create"><i class="fa fa-plus" aria-hidden="true"></i> Invitee</button>
 
 </p>
 <div id="filter-blog">
@@ -317,10 +317,9 @@
                     @Html.DisplayFor(modelItem => item.Category.Name)
                 </td>
                 <td>
-                    <button style="border-radius: 12px; border: 2px solid #F3969A;background-color: #fff;" id="Edit" value="@item.Id">
-                        <span class="glyphicon glyphicon-pencil"></span> Edit</button>
-                    <button style="border-radius: 12px; border: 2px solid #d198ea;background-color: #fff;" id="Details" value="@item.Id">Details</button>
-                    <button style="border-radius: 12px; border: 2px solid #b22d38;background-color: #fff;" id="Delete" value="@item.Id">Delete</button>
+                    <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Edit" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                    <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Details" value="@item.Id"><i class="fa fa-info" aria-hidden="true"></i></button>
+                    <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Delete" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
                 </td>
             </tr>
         }
@@ -328,7 +327,7 @@
 </table>
 <h3 style="color:#F3969A">Category</h3>
 <p>
-    <button style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" id="createcategory">Create New Category</button>
+    <button style="border-radius: 12px; border: 1px solid #56CC9D;background-color: #fff;" id="createcategory"><i class="fa fa-plus" aria-hidden="true"></i> Category</button>
     <table class="table">
         <thead>
             <tr>
@@ -347,9 +346,9 @@
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
                     <td>
-                        <button style="border-radius: 12px; border: 2px solid #F3969A;background-color: #fff;" id="EditCategory" value="@item.Id">Edit</button>
-                        <button style="border-radius: 12px; border: 2px solid #d198ea;background-color: #fff;" id="DetailsCategory" value="@item.Id">Details</button>
-                        <button style="border-radius: 12px; border: 2px solid #b22d38;background-color: #fff;" id="DeleteCategory" value="@item.Id">Delete</button>
+                        <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Edit" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                        <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Details" value="@item.Id"><i class="fa fa-info" aria-hidden="true"></i></button>
+                        <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Delete" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
                     </td>
                 </tr>
             }
