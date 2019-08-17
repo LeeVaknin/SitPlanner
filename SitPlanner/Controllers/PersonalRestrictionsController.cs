@@ -71,8 +71,8 @@ namespace SitPlanner.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", personalRestriction.EventId);
-            ViewData["MainInviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", personalRestriction.MainInviteeId);
-            ViewData["SecondaryInviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", personalRestriction.SecondaryInviteeId);
+            ViewData["MainInviteeId"] = new SelectList(_context.Invitee, "Id", "FullName", personalRestriction.MainInviteeId);
+            ViewData["SecondaryInviteeId"] = new SelectList(_context.Invitee, "Id", "FullName", personalRestriction.SecondaryInviteeId);
             return View(personalRestriction);
         }
 
@@ -90,8 +90,8 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", personalRestriction.EventId);
-            ViewData["MainInviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", personalRestriction.MainInviteeId);
-            ViewData["SecondaryInviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", personalRestriction.SecondaryInviteeId);
+            ViewData["MainInviteeId"] = new SelectList(_context.Invitee, "Id", "FullName", personalRestriction.MainInviteeId);
+            ViewData["SecondaryInviteeId"] = new SelectList(_context.Invitee, "Id", "FullName", personalRestriction.SecondaryInviteeId);
             return PartialView(personalRestriction);
         }
 
@@ -128,8 +128,8 @@ namespace SitPlanner.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", personalRestriction.EventId);
-            ViewData["MainInviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", personalRestriction.MainInviteeId);
-            ViewData["SecondaryInviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", personalRestriction.SecondaryInviteeId);
+            ViewData["MainInviteeId"] = new SelectList(_context.Invitee, "Id", "FullName", personalRestriction.MainInviteeId);
+            ViewData["SecondaryInviteeId"] = new SelectList(_context.Invitee, "Id", "FullName", personalRestriction.SecondaryInviteeId);
             return View(personalRestriction);
         }
 

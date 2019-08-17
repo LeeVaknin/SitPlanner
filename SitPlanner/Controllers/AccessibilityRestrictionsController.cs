@@ -50,9 +50,9 @@ namespace SitPlanner.Controllers
         public IActionResult Create()
         {
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
+            ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id");
             ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FullName");
-            //ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id");
-
+            
             var enumData = from Table.TableTypeEnum e in Enum.GetValues(typeof(Table.TableTypeEnum))
                            select new
                            {
@@ -68,7 +68,7 @@ namespace SitPlanner.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,InviteeId,TableType,TableId,IsSittingAtTable,EventId")] AccessibilityRestriction accessibilityRestriction)
+        public async Task<IActionResult> Create([Bind("Id,InviteeId,TableType,IsSittingAtTable,EventId,EventOptionId")] AccessibilityRestriction accessibilityRestriction)
         {
             if (ModelState.IsValid)
             {
@@ -77,8 +77,8 @@ namespace SitPlanner.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", accessibilityRestriction.EventId);
-            ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", accessibilityRestriction.InviteeId);
-            //ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id", accessibilityRestriction.TableId);
+            ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FullName", accessibilityRestriction.InviteeId);
+            
             return View(accessibilityRestriction);
         }
 
@@ -96,8 +96,8 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", accessibilityRestriction.EventId);
-            ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", accessibilityRestriction.InviteeId);
-            //ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id", accessibilityRestriction.TableId);
+            ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FullName", accessibilityRestriction.InviteeId);
+           
 
             var enumData = from Table.TableTypeEnum e in Enum.GetValues(typeof(Table.TableTypeEnum))
                            select new
@@ -114,7 +114,7 @@ namespace SitPlanner.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,InviteeId,TableType,TableId,IsSittingAtTable,EventId")] AccessibilityRestriction accessibilityRestriction)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,InviteeId,TableType,IsSittingAtTable,EventId,EventOptionId")] AccessibilityRestriction accessibilityRestriction)
         {
             if (id != accessibilityRestriction.Id)
             {
@@ -142,8 +142,8 @@ namespace SitPlanner.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", accessibilityRestriction.EventId);
-            ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName", accessibilityRestriction.InviteeId);
-            //ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id", accessibilityRestriction.TableId);
+            ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FullName", accessibilityRestriction.InviteeId);
+            
             return View(accessibilityRestriction);
         }
 

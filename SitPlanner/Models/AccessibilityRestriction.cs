@@ -18,9 +18,6 @@ namespace SitPlanner.Models
         [Display(Name = "Table type")]
         public TableTypeEnum TableType { get; set; }
 
-        public int TableId { get; set; }
-        public virtual Table Table { get; set; }
-
         // true in case invitee can NOT seat at the following table type
         [Display(Name = "The invitee can't seat at this kind of table?")]
         public bool IsSittingAtTable { get; set; }
