@@ -9,6 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+   
     <script>
         var inviteesCreatePostBackURL = '/Invitees/Create';
         $(function () {
@@ -24,9 +25,9 @@
                     datatype: "json",
                     success: function (data) {
                         $('#myModalContent').html(data);
-                        $('#myModal').modal(options);
-                        $('#myModal').modal('show');
-
+                        $('#myModal').fadeIn('slow');
+                        $('#myModal').modal(options);                        
+                        
                     },
                     error: function () {
                         alert("Dynamic content load failed.");
@@ -63,8 +64,9 @@
                         datatype: "json",
                         success: function (data) {
                             $('#myModalContent').html(data);
+                            $('#myModal').fadeIn('slow');
                             $('#myModal').modal(options);
-                            $('#myModal').modal('show');
+
 
                         },
                         error: function () {
@@ -95,8 +97,9 @@
                     datatype: "json",
                     success: function (data) {
                         $('#myModalContent').html(data);
+                        $('#myModal').fadeIn('slow');
                         $('#myModal').modal(options);
-                        $('#myModal').modal('show');
+                        
 
                     },
                     error: function () {
@@ -108,7 +111,7 @@
             //    $('#myModal').modal('hide');
 
             $("#closbtn").click(function () {
-                $('#myModal').modal('hide');
+                $('#myModal').fadeOut();
             });
         });
     </script>
@@ -186,7 +189,6 @@
                     if (possibleActionsInvitee.indexOf(action) < 0 && possibleActionsCategory.indexOf(action) < 0) {
                         return;
                     }
-
                     if (action.includes("Category")) {
                         PostBackURL = '/Categories/';
                         action = action.replace("Category", "");
@@ -204,7 +206,7 @@
                         success: function (data) {
                             $('#myModalContent').html(data);
                             $('#myModal').modal(options);
-                            $('#myModal').modal('show');
+                            $('#myModal').fadeIn('slow');
 
                         },
                         error: function () {
@@ -222,128 +224,101 @@
     </script>
 }
 
-    <script>
-        function filter() {
-            var e = document.getElementById("Categories");
-            var val = e.options[e.selectedIndex].value;
+<script>
+    function filter() {
+        var e = document.getElementById("Categories");
+        var val = e.options[e.selectedIndex].value;
 
-            window.location.href = "https://" + window.location.host + window.location.pathname + '?category=' + val;
-            return false;
-        }
-    </script>
+        window.location.href = "https://" + window.location.host + window.location.pathname + '?category=' + val;
+        return false;
+    }
+</script>
 
-</br>
-<h2 style="color:#F3969A">Invitee</h2>
+<div class="fade-in">
 
-@*<div id="filter-blog">
+    </br>
+    <h2 style="color:#F3969A">Invitee</h2>
+
+    @*<div id="filter-blog">
+            @using (Html.BeginForm("Index", "Invitees", FormMethod.Post))
+            {
+                <label>Search Invitee:</label> <br />
+                <label for="Category">category</label> @Html.DropDownList("category", ViewBag.EnumList as SelectList)
+                <input id="input-h" type="search" name="name" maxlength="20" placeholder="Name" style="width:105px;">
+                <input id="btn-filter" type="submit" value="Search">
+            }
+        </div>*@
+
+    <p>
+        <button style="border-radius: 12px; border: 1px solid #56CC9D;background-color: #fff;" id="create"><i class="fa fa-plus" aria-hidden="true"></i> Invitee</button>
+
+    </p>
+    <div id="filter-blog">
         @using (Html.BeginForm("Index", "Invitees", FormMethod.Post))
         {
-            <label>Search Invitee:</label> <br />
-            <label for="Category">category</label> @Html.DropDownList("category", ViewBag.EnumList as SelectList)
-            <input id="input-h" type="search" name="name" maxlength="20" placeholder="Name" style="width:105px;">
-            <input id="btn-filter" type="submit" value="Search">
+            <label>Invitee's category</label>
+            @Html.DropDownList("Categories", ViewBag.Categories as SelectList, new { onchange = "filter()", @class = "form-control", style = "width: 10%; border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" })
+
         }
-    </div>*@
-
-<p>
-    <button style="border-radius: 12px; border: 1px solid #56CC9D;background-color: #fff;" id="create"><i class="fa fa-plus" aria-hidden="true"></i> Invitee</button>
-
-</p>
-<div id="filter-blog">
-    @using (Html.BeginForm("Index", "Invitees", FormMethod.Post))
-    {
-        <label>Invitee's category</label>
-        @Html.DropDownList("Categories", ViewBag.Categories as SelectList, new { onchange = "filter()", @class = "form-control", style = "width: 10%; border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" })
-        
-    }
-</div>
-<p>
-    <div style="float: right" ; style="text-align:right">
-        <button style="border-radius: 12px ; border: 2px solid #F3969A;background-color: #fff;" id="importfromcsv">Import From CSV</button>
-        <button style="border-radius: 12px ; border: 2px solid #F3969A;background-color: #fff;" id="exporttocsv">Export To CSV</button>
-
     </div>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().PhoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().IsComing)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().Comment)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().Category)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Item1)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PhoneNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Address)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsComing)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Comment)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Category.Name)
-                </td>
-                <td>
-                    <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Edit" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                    <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Details" value="@item.Id"><i class="fa fa-info" aria-hidden="true"></i></button>
-                    <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Delete" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-<h3 style="color:#F3969A">Category</h3>
-<p>
-    <button style="border-radius: 12px; border: 1px solid #56CC9D;background-color: #fff;" id="createcategory"><i class="fa fa-plus" aria-hidden="true"></i> Category</button>
+    <p>
+        <div style="float: right" ; style="text-align:right">
+            <button style="border-radius: 12px ; border: 2px solid #F3969A;background-color: #fff;" id="importfromcsv">Import From CSV</button>
+            <button style="border-radius: 12px ; border: 2px solid #F3969A;background-color: #fff;" id="exporttocsv">Export To CSV</button>
+
+        </div>
+    </p>
     <table class="table">
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Item2.FirstOrDefault().Name)
+                    @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().FirstName)
                 </th>
                 <th>
+                    @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().LastName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().PhoneNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().Address)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().IsComing)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().Comment)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().Category)
+                </th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.Item2)
+            @foreach (var item in Model.Item1)
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Name)
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsComing)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Comment)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.Name)
                     </td>
                     <td>
                         <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Edit" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
@@ -354,12 +329,42 @@
             }
         </tbody>
     </table>
+    <h3 style="color:#F3969A">Category</h3>
+    <p>
+        <button style="border-radius: 12px; border: 1px solid #56CC9D;background-color: #fff;" id="createcategory"><i class="fa fa-plus" aria-hidden="true"></i> Category</button>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Item2.FirstOrDefault().Name)
+                    </th>
+                    <th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Item2)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="EditCategory" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                            <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="DetailsCategory" value="@item.Id"><i class="fa fa-info" aria-hidden="true"></i></button>
+                            <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="DeleteCategory" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 
-    <div id='myModal' class='modal'>
-        <div class="modal-dialog">
-            <div class="modal-content" style="width:700">
-                <div id='myModalContent' style="width: auto;margin-left: 50px;"></div>
+        <div id='myModal' class='modal'>
+            <div class="modal-dialog">
+                <div class="modal-content" style="width:700">
+                    <div id='myModalContent' style="width: auto;margin-left: 50px;"></div>
+                </div>
             </div>
-        </div>
 
-    </div>
+        </div>
+</div>
