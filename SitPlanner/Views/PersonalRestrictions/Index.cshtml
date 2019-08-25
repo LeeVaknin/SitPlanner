@@ -25,8 +25,8 @@
                     datatype: "json",
                     success: function (data) {
                         $('#myModalContent').html(data);
+                        $('#myModal').fadeIn('slow');
                         $('#myModal').modal(options);
-                        $('#myModal').modal('show');
 
                     },
                     error: function () {
@@ -64,8 +64,8 @@
                         datatype: "json",
                         success: function (data) {
                             $('#myModalContent').html(data);
+                            $('#myModal').fadeIn('slow');
                             $('#myModal').modal(options);
-                            $('#myModal').modal('show');
 
                         },
                         error: function () {
