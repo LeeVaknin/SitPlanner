@@ -23,8 +23,8 @@
                     datatype: "json",
                     success: function (data) {
                         $('#myModalContent').html(data);
+                        $('#myModal').fadeIn('slow');
                         $('#myModal').modal(options);
-                        $('#myModal').modal('show');
 
                     },
                     error: function () {
@@ -41,7 +41,7 @@
 
 }
 
-
+<div class="fade-in">
 <center>
     <div id="logo1" class="row" style="display:none; vertical-align:middle; text-align:center">
         <img src="~/images/seatme_site.png" />
@@ -52,7 +52,7 @@
         &nbsp;
         |
         &nbsp;
-        <input id="logo2" style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" type="button" value="Existing Event" onclick="window.location.href='/Events/index ';" />
+        <input id="logo2" style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" type="button" value="Existing Events" onclick="window.location.href='/Events/index ';" />
 
     </p>
 </center>
@@ -82,4 +82,5 @@
         </div>
     </div>
 
+</div>
 </div>

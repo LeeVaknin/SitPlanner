@@ -45,7 +45,17 @@ namespace SitPlanner.Algo
             this.tablesAmount = tables.Count;
             gens = new Gen[invitessAmount];
 
-            //generate gens list - all invitess with random tables
+      /*      //generate gens list - all invitess with random tables
+            Gen gen = null;
+            for (int i = 0; i < gens.Length; i++)
+            {
+                gen = generateRandomGen(i);
+                if(gen != null)
+                {
+                    gens[i] = gen;
+                }
+            }
+*/
             for (int i = 0; i < gens.Length; i++)
             {
                 gens[i] = generateRandomGen(i);
@@ -82,7 +92,10 @@ namespace SitPlanner.Algo
             totalPunishment += InviteesPersonalRestrictionPunishment();
 
             //invitee-accesabilityRestriction
-            totalPunishment += InviteesAccessabilityRestrictionPunishment();
+            //totalPunishment += InviteesAccessabilityRestrictionPunishment();
+
+            //invitee- is comming?
+           // totalPunishment += InviteeConfirmedInvatationPunishment();
 
             if (totalPunishment > this.fitness)
                 this.fitness = AlgoConsts.fitnessWorstResult;
@@ -131,7 +144,7 @@ namespace SitPlanner.Algo
                 inviteeTable2 = GetInviteeTableIdFromGen(personalRestriction.SecondaryInviteeId);
                 bool sammeTable = (inviteeTable == inviteeTable2);
 
-                if (personalRestriction.IsSittingTogether == false)
+                if (!personalRestriction.IsSittingTogether)
                 {
                     if (sammeTable)
                         notSittingTogetherPunishment++;
@@ -149,15 +162,23 @@ namespace SitPlanner.Algo
         private int InviteesAccessabilityRestrictionPunishment()
         {
             int numOfpunished = 0;
-            int inviteeTable;
+            Table inviteeTable = new Table();
+            int inviteeTableId;
             foreach (var accessibilityRestriction in algoDb.accessibilityRestrictions)
             {
-                if (accessibilityRestriction.IsSittingAtTable == false)
+                if (accessibilityRestriction.IsSittingAtTable)
                 {
-                    inviteeTable = GetInviteeTableIdFromGen(accessibilityRestriction.InviteeId);
-                    if (inviteeTable == accessibilityRestriction.TableId)
+                    inviteeTableId = GetInviteeTableIdFromGen(accessibilityRestriction.InviteeId);
+                    if (inviteeTableId != -1)
                     {
-                        numOfpunished++;
+                        inviteeTable = GetTableByTableId(inviteeTableId);
+                        if (inviteeTable != null)
+                        {
+                            if (inviteeTable.TableType.ToString() == accessibilityRestriction.TableType.ToString())
+                            {
+                                numOfpunished++;
+                            }
+                        }
                     }
                 }
             }
@@ -240,6 +261,20 @@ namespace SitPlanner.Algo
             return punishment * AlgoConsts.punishmentOnMultiCategoriesInTable;
         }
 
+        private int InviteeConfirmedInvatationPunishment()
+        {
+            int punishment = 0;
+
+            foreach(Gen gen in gens)
+            {
+                if(!gen.invitee.IsComing)
+                {
+                    punishment++;
+                }
+            }
+            return punishment * AlgoConsts.punishmentOnIsComming;
+        }
+
         #endregion
 
         #region  utils
@@ -252,6 +287,15 @@ namespace SitPlanner.Algo
             Gen gen = new Gen(invitees[i], tables[ran]);
 
             return gen;
+
+/*          //Generate gens only with invitees that confirmed invatation
+                      if (invitees[i].IsComing)
+                      {
+                          return new Gen(invitees[i], tables[ran]);
+                      }
+
+                      return null;
+                      */
         }
         public void cloneGens(Gen[] gens)
         {
@@ -290,6 +334,18 @@ namespace SitPlanner.Algo
                     inviteesTable.Add(gen.invitee);
             }
             return inviteesTable;
+        }
+
+        private Table GetTableByTableId(int tableId)
+        {
+            foreach(Table table in tables)
+            {
+                if(table.Id == tableId)
+                {
+                    return table;
+                }
+            }
+            return null;
         }
 
         #endregion

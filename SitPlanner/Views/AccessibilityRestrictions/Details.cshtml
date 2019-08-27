@@ -1,0 +1,44 @@
+﻿@model SitPlanner.Models.AccessibilityRestriction
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    </div>
+    <br />
+    <h4 style="color:#F3969A">Accessibility Restriction Details</h4>
+    <hr />
+    <dl style="color:#56CC9D" class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Invitee)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Invitee.FirstName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TableType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TableType)
+        </dd> 
+        <dt>
+            @Html.DisplayNameFor(model => model.IsSittingAtTable)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsSittingAtTable)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Event)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Event.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

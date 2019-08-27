@@ -11,10 +11,12 @@ namespace SitPlanner.Models
     {
         public int Id { get; set; }
 
+        [Display(Name = "First Invitee")]
         public int MainInviteeId { get; set; }
         [Display(Name = "First Invitee")]
         public virtual Invitee MainInvitee { get; set; }
 
+        [Display(Name = "Second Invitee")]
         public int SecondaryInviteeId { get; set; }
         [Display(Name = "Second Invitee")]
         public virtual Invitee SecondaryInvitee { get; set; }

@@ -192,13 +192,15 @@ namespace SitPlanner.Migrations
 
                     b.Property<int>("EventId");
 
-                    b.Property<int>("EventOptionId");
+                    b.Property<int?>("EventOptionId");
 
                     b.Property<int>("InviteeId");
 
                     b.Property<bool>("IsSittingAtTable");
 
                     b.Property<int>("TableId");
+
+                    b.Property<int>("TableType");
 
                     b.HasKey("Id");
 
@@ -494,10 +496,9 @@ namespace SitPlanner.Migrations
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("SitPlanner.Models.EventOption", "EventOption")
+                    b.HasOne("SitPlanner.Models.EventOption")
                         .WithMany("AccessibilityRestrictions")
-                        .HasForeignKey("EventOptionId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("EventOptionId");
 
                     b.HasOne("SitPlanner.Models.Invitee", "Invitee")
                         .WithMany()
