@@ -171,13 +171,6 @@ namespace SitPlanner.Controllers
             return RedirectToAction("Index", "InviteeTables");
         }
 
-        [HttpPost, ActionName("IsFavorite")]
-        public async Task<bool> isFavoriteOption(int id)
-        {
-            var eventOption = await _context.EventOption.FindAsync(id);
-            return eventOption.isFavorite;
-          
-        }
 
     }
 }

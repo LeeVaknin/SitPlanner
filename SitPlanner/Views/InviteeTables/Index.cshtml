@@ -115,7 +115,6 @@
         });
     </script>
 
-
     <script>
         var EventOptionPostBackURL = '/EventOptions/Delete/';
         $(function () {
@@ -181,41 +180,16 @@
             });
         });
     </script>
-
-    <script>
-        function isFavoriteEventOption() {
-            var isFavoriteBackURL = '/EventOptions/IsFavorite/';
-            var e = document.getElementById("Opts");
-            var id = e.options[e.selectedIndex].value;
-            var options = { keyboard: true };
-            $.ajax({
-                type: "POST",
-                url: isFavoriteBackURL + id,
-                contentType: "application/json; charset=utf-8",
-                data: { "Id": id },
-                datatype: "json",
-                success: function (data) {
-                    $('#myModalContent').html(data);
-                    $('#myModal').modal(options);
-                    $('#myModal').modal('show');
-                },
-                error: function () {
-                    alert("Dynamic content load failed.");
-                }
-            });
-
-            $("#closbtn").click(function () {
-                $('#myModal').modal('hide');
-            });
-        });
-    </script>
 }
+
 <script>
     function filter() {
         var e = document.getElementById("Opts");
         var val = e.options[e.selectedIndex].value;
 
         window.location.href = "https://" + window.location.host + window.location.pathname + '?id=' + val;
+        
+
         return false;
     }
 </script>
@@ -233,9 +207,8 @@
     <label>Choose your draft:</label> <br />
     <div style="display: flex">
         @Html.DropDownList("Opts", ViewBag.Opts as SelectList, new { onchange = "filter()", @class = "form-control", style = "width: 10%; border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" })
-
         <button style="border: 0px ;background-color: #fff;" id="setFavoriteEventOption">
-            @if (true)
+            @if (ViewBag.isFavorite)
             {
                 <i class="fa fa-star fa-2x" style="color: gold" aria-hidden="true"></i>
             }
