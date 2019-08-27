@@ -7,6 +7,7 @@
 
 @section scripts
     {
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -43,6 +44,8 @@
             });
         });
     </script>
+
+
 
     <script>
         var RunAlgoURL = '/InviteeTables/RunAlgo';
@@ -187,9 +190,7 @@
         var e = document.getElementById("Opts");
         var val = e.options[e.selectedIndex].value;
 
-        window.location.href = "https://" + window.location.host + window.location.pathname + '?id=' + val;
-        
-
+        window.location.href = "https://" + window.location.host + window.location.pathname + '?id=' + val + "&name=" + name;
         return false;
     }
 </script>
@@ -201,7 +202,7 @@
 </script>
 
 </br>
-<h3 style="color:#F3969A">Table Arrangment</h3>
+    <h3 style="color:#F3969A">Table Arrangment</h3>
 
 <div id="filter-blog">
     <label>Choose your draft:</label> <br />
@@ -225,48 +226,53 @@
 </div>
 
 
-<p>
-    <div style="float: right">
-        <button style="border-radius: 12px; border: 4px solid #F3969A;background-color: #fff;" id="runalgoinviteetable">
-            <i class="fa fa-users" aria-hidden="true"></i> SeatMe :)
-        </button>
-        <button style="border-radius: 12px; border: 4px solid #b22d38;background-color: #fff;" id="deleteEventOption"><i class="fa fa-trash" aria-hidden="true"></i> Arrangement</button>
-    </div>
-</p>
-@foreach (var invtable in Model)
-{
-    <br />
-    <h2 style="color:#56CC9D">Table @invtable.Key</h2>
-    <table style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" class="table">
-        <thead>
-            <tr>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Category
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in invtable)
-            {
+    <p>
+        <div style="float: right">
+            <button style="border-radius: 12px; border: 4px solid #F3969A;background-color: #fff;" id="runalgoinviteetable">
+                <i class="fa fa-users" aria-hidden="true"></i> SeatMe :)
+            </button>
+            <button style="border-radius: 12px; border: 4px solid #b22d38;background-color: #fff;" id="deleteEventOption"><i class="fa fa-trash" aria-hidden="true"></i> Arrangement</button>
+        </div>
+    </p>
+    @foreach (var invtable in Model)
+    {
+        <br />
+        <h2 style="color:#56CC9D">Table @invtable.Key</h2>
+        <table style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" class="table">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Invitee.FirstName) @Html.DisplayFor(modelItem => item.Invitee.LastName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Invitee.Category.Name)
-                    </td>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Category
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
-<div id='myModal' class='modal'>
-    <div class="modal-dialog">
-        <div class="modal-content" style="width:700">
-            <div id='myModalContent' style="width: auto;margin-left: 50px;"></div>
+            </thead>
+            <tbody>
+                @foreach (var item in invtable)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Invitee.FirstName) @Html.DisplayFor(modelItem => item.Invitee.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Invitee.Category.Name)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    <div id='myModal' class='modal'>
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:700">
+                <div id='myModalContent' style="width: auto;margin-left: 50px;"></div>
+            </div>
         </div>
     </div>
-</div>
+
+
+
+    <canvas id="canvas" width=300 height=300></canvas>
+    </div>

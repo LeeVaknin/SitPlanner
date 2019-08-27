@@ -3,22 +3,31 @@
 }
 <br/>
 
-<div class="jumbotron">
-    <h2 style="color:#F3969A">@ViewData["Title"]</h2>
-    <br/>
-    <div style="color:#56CC9D;  font-size:1.3rem;" class="row">
-        <div class="col-xs-6">
-            <p>
-                @ViewData["Message1"]
-                <br />
-                @ViewData["Message2"]
-                <br />
-                @ViewData["Message3"]
-                <br />
-                @ViewData["Message4"]
+<div class="fade-in">
+    <div class="jumbotron">
+        <h2 style="color:#F3969A">@ViewData["Title"]</h2>
+        <br />
+        <div style="color:#56CC9D;  font-size:1.3rem;" class="row">
+            <div class="col-xs-6">
+                <p>
+                    @ViewData["Message1"]
+                    <br />
+                    @ViewData["Message2"]
+                    <br />
+                    @ViewData["Message3"]
+                    <br />
+                    @ViewData["Message4"]
 
-            </p>
+                </p>
+                <div id="share" class="fadeIn">
+                    <a href="http://www.facebook.com/sharer.php?u=https://www.facebook.com/SeatMe-105261667514730/?modal=admin_todo_tour"
+                       title="share on facebook">
+                        <img width="50" height="50" src="~/images/facebook_icon.png" />
+                    </a>
+                </div>
+            </div>
         </div>
-        </div>
+    </div>
+
     </div>
 

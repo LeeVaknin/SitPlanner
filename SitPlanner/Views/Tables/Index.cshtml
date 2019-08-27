@@ -23,8 +23,8 @@
                     datatype: "json",
                     success: function (data) {
                         $('#myModalContent').html(data);
+                        $('#myModal').fadeIn('slow');
                         $('#myModal').modal(options);
-                        $('#myModal').modal('show');
 
                     },
                     error: function () {
@@ -62,8 +62,8 @@
                         datatype: "json",
                         success: function (data) {
                             $('#myModalContent').html(data);
+                            $('#myModal').fadeIn('slow');
                             $('#myModal').modal(options);
-                            $('#myModal').modal('show');
 
                         },
                         error: function () {
@@ -88,61 +88,62 @@
         }
     </script>
 }
+    <div class="fade-in">
+        <br>
+        <h2 style="color:#F3969A">Tables</h2>
 
-<br>
-<h2 style="color:#F3969A">Tables</h2>
+        <p>
+            <button style="border-radius: 12px; border: 1px solid #56CC9D;background-color: #fff;" id="createtable"><i class="fa fa-plus" aria-hidden="true"></i> Table</button>
 
-<p>
-    <button style="border-radius: 12px; border: 1px solid #56CC9D;background-color: #fff;" id="createtable"><i class="fa fa-plus" aria-hidden="true"></i> Table</button>
+        </p>
+        <div id="filter-blog">
+            <input id="input-h" type="search" name="id" maxlength="20" placeholder="  Filter by table number" style="width:205px;width: 17%; border-radius: 12px; border: 2px solid #F3969A;background-color: #fff;">
+            <button style="border: 0px ;background-color: #fff;" id="btn-filter" type="submit" onclick="filter()"><i class="fa fa-search" aria-hidden="true"></i></button>
 
-</p>
-<div id="filter-blog">
-    <input id="input-h" type="search" name="id" maxlength="20" placeholder="  Filter by table number" style="width:205px;width: 17%; border-radius: 12px; border: 2px solid #F3969A;background-color: #fff;">
-    <button style="border: 0px ;background-color: #fff;" id="btn-filter" type="submit" onclick="filter()"><i class="fa fa-search" aria-hidden="true"></i></button>
-
-</div>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Table Number
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CapacityOfPeople)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TableType)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CapacityOfPeople)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TableType)
-                </td>
-                <td>
-                    <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Edit" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                    <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Details" value="@item.Id"><i class="fa fa-info" aria-hidden="true"></i></button>
-                    <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Delete" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
-
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-<div id='myModal' class='modal'>
-    <div class="modal-dialog">
-        <div class="modal-content" style="width:700">
-            <div id='myModalContent' style="width: auto;margin-left: 50px;"></div>
         </div>
-    </div>
-</div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Table Number
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CapacityOfPeople)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TableType)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CapacityOfPeople)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TableType)
+                        </td>
+                        <td>
+                            <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Edit" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                            <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Details" value="@item.Id"><i class="fa fa-info" aria-hidden="true"></i></button>
+                            <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Delete" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div id='myModal' class='modal'>
+            <div class="modal-dialog">
+                <div class="modal-content" style="width:700">
+                    <div id='myModalContent' style="width: auto;margin-left: 50px;"></div>
+                </div>
+            </div>
+        </div>
+        </div>

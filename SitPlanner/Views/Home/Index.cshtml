@@ -23,8 +23,8 @@
                     datatype: "json",
                     success: function (data) {
                         $('#myModalContent').html(data);
+                        $('#myModal').fadeIn('slow');
                         $('#myModal').modal(options);
-                        $('#myModal').modal('show');
 
                     },
                     error: function () {
@@ -41,7 +41,7 @@
 
 }
 
-
+<div class="fade-in">
 <center>
     <div id="logo1" class="row" style="display:none; vertical-align:middle; text-align:center">
         <img src="~/images/seatme_site.png" />
@@ -82,4 +82,5 @@
         </div>
     </div>
 
+</div>
 </div>
