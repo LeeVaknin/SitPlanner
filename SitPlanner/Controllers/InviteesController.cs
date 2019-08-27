@@ -104,23 +104,42 @@ namespace SitPlanner.Controllers
             Category cat;
             var result = csv.read(@"csv\inv.csv");
             //var result = csv.read(@"C:\tmp\inv.csv");
-            foreach (var complete in result)
+            List<Category> list_of_categories = new List<Category>();
+            foreach (var invitee in result)
             {
-                var firstName = complete.Item1;
-                var lastName = complete.Item2;
-                int numShouldCome = complete.Item3;
-                var phoneNumber = complete.Item4;
-                var address = complete.Item5;
-                int numIsComing = complete.Item6;
-                var category = complete.Item7;
-
+                var firstName = invitee.Item1;
+                var lastName = invitee.Item2;
+                int numShouldCome = invitee.Item3;
+                var phoneNumber = invitee.Item4;
+                var address = invitee.Item5;
+                int numIsComing = invitee.Item6;
+                var category = invitee.Item7;
+                bool new_cat = true;
+                //on first itteration we save to db only when the loop ends
+                //this is why "GetCategoryByName" will always return null,
+                //thats why im adding this if below and the list to validate we dont create at first run multiple cat
                 cat = GetCategoryByName(category);
-
+                Category tmpCat = new Category(category, GetEventByID(1));
                 if (cat == null)
                 {
-                    cat = new Category(category, GetEventByID(1));
+                    foreach (Category existCat in list_of_categories)
+                    {
+                        if ((existCat.Name == tmpCat.Name) && (existCat.Event.Id == tmpCat.Event.Id))
+                        {
+                            cat = existCat;
+                            break;
+                        }
+                    }
+                    if( cat == null)
+                    {
+                        cat = tmpCat;
+                        list_of_categories.Add(cat);
+                    }
                     _context.Add(cat);
-                }   
+                }
+                 
+                 //await _context.SaveChangesAsync();
+
 
                 Invitee inv = new Invitee(firstName, lastName, phoneNumber, address, numIsComing, GetEventByID(1),cat);
                 _context.Add(inv);
