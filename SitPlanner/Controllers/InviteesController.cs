@@ -124,7 +124,7 @@ namespace SitPlanner.Controllers
                 {
                     foreach (Category existCat in list_of_categories)
                     {
-                        if ((existCat.Name == tmpCat.Name) && (existCat.EventId == tmpCat.EventId))
+                        if ((existCat.Name == tmpCat.Name) && (existCat.Event.Id == tmpCat.Event.Id))
                         {
                             cat = existCat;
                             break;
@@ -135,9 +135,9 @@ namespace SitPlanner.Controllers
                         cat = tmpCat;
                         list_of_categories.Add(cat);
                     }
-                            
+                    _context.Add(cat);
                 }
-                 _context.Add(cat);
+                 
                  //await _context.SaveChangesAsync();
 
 
