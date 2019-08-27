@@ -118,9 +118,8 @@
         });
     </script>
 
-
     <script>
-        var EventOptionPostBackURL = '/EventOptions/Delete';
+        var EventOptionPostBackURL = '/EventOptions/Delete/';
         $(function () {
             $("#deleteEventOption").click(function () {
                 var $buttonClicked = $(this);
@@ -128,7 +127,7 @@
                 var options = { keyboard: true };
                 $.ajax({
                     type: "GET",
-                    url: EventOptionPostBackURL,
+                    url: EventOptionPostBackURL + id,
                     contentType: "application/json; charset=utf-8",
                     data: { "Id": id },
                     datatype: "json",
@@ -151,31 +150,76 @@
             });
         });
     </script>
+
+    <script>
+        var EventOptionFavoritePostBackURL = '/InviteeTables/SetFavorite/';
+        $(function () {
+            $("#setFavoriteEventOption").click(function () {
+                var e = document.getElementById("Opts");
+                var id = e.options[e.selectedIndex].value;  
+                $.ajax({
+                    type: "POST",
+                    url: EventOptionFavoritePostBackURL + id,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "Id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        location.reload();
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+            //$("#closebtn").on('click',function(){
+            //    $('#myModal').modal('hide');
+
+            $("#closbtn").click(function () {
+                $('#myModal').modal('hide');
+            });
+        });
+    </script>
 }
+
 <script>
     function filter() {
         var e = document.getElementById("Opts");
         var val = e.options[e.selectedIndex].value;
-        var name = document.getElementById("input-h").value;
 
         window.location.href = "https://" + window.location.host + window.location.pathname + '?id=' + val + "&name=" + name;
         return false;
     }
 </script>
 
-<div class="fade-in">
-    </br>
+<script>
+    function getOptionId() {
+        return document.getElementById("Opts");
+    }
+</script>
+
+</br>
     <h3 style="color:#F3969A">Table Arrangment</h3>
 
-    <div id="filter-blog">
-
-        <label>Choose your draft:</label> <br />
+<div id="filter-blog">
+    <label>Choose your draft:</label> <br />
+    <div style="display: flex">
         @Html.DropDownList("Opts", ViewBag.Opts as SelectList, new { onchange = "filter()", @class = "form-control", style = "width: 10%; border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" })
-
-        <br />
-        <input id="input-h" type="search" name="id" maxlength="20" placeholder="  Filter by name" style="width:205px;width: 12%; border-radius: 12px; border: 1px solid #F3969A;background-color: #fff;">
-        <button style="border: 0px ;background-color: #fff;" id="btn-filter" type="submit" onclick="filter()"><i class="fa fa-search" aria-hidden="true"></i></button>
+        <button style="border: 0px ;background-color: #fff;" id="setFavoriteEventOption">
+            @if (ViewBag.isFavorite)
+            {
+                <i class="fa fa-star fa-2x" style="color: gold" aria-hidden="true"></i>
+            }
+            else
+            {
+                <i class="fa fa-star-o fa-2x" style="color: gold" aria-hidden="true"></i>
+            }
+        </button>
     </div>
+    <br />
+
+    <input id="input-h" type="search" name="id" maxlength="20" placeholder="  Filter by name" style="width:205px;width: 12%; border-radius: 12px; border: 1px solid #F3969A;background-color: #fff;">
+    <button style="border: 0px ;background-color: #fff;" id="btn-filter" type="submit" onclick="filter()"><i class="fa fa-search" aria-hidden="true"></i></button>
+</div>
 
 
     <p>

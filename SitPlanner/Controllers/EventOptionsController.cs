@@ -57,7 +57,7 @@ namespace SitPlanner.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,EventId")] EventOption eventOption)
+        public async Task<IActionResult> Create([Bind("Id,EventId,isFavorite")] EventOption eventOption)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +91,7 @@ namespace SitPlanner.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,EventId")] EventOption eventOption)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,EventId,isFavorite")] EventOption eventOption)
         {
             if (id != eventOption.Id)
             {
@@ -161,5 +161,8 @@ namespace SitPlanner.Controllers
         {
             return _context.EventOption.Any(e => e.Id == id);
         }
+
+
+
     }
 }

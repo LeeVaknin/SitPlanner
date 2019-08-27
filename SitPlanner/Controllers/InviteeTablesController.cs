@@ -55,12 +55,14 @@ namespace SitPlanner.Controllers
             {
                 optionIdsList.Add(new SelectListItem()
                 {
-                    Text = opt.Id.ToString(),
+                    Text = opt.Id.ToString() + (opt.isFavorite ? "  ★" : "") ,
                     Value = opt.Id.ToString(),
+                    
                     Selected = opt.Id == id
                 });
             }
-          
+
+            ViewData["isFavorite"] = _context.EventOption.Where(i => i.Id == id).Select(i=>i.isFavorite).First();
             ViewData["Opts"] = optionIdsList;
             ViewData["Id"] = id;
             if (id == null)
@@ -328,6 +330,15 @@ namespace SitPlanner.Controllers
 
             AlgoDb algoDb = new AlgoDb(invitees, tables, personalRestrictions, accessibilityRestrictions, categories);
             return algoDb;
+        }
+
+
+        [HttpPost, ActionName("SetFavorite")]
+        public async Task setFavoriteEventOptionAsync(int id)
+        {
+            var eventOption = await _context.EventOption.FindAsync(id);
+            eventOption.isFavorite = !eventOption.isFavorite;
+            await _context.SaveChangesAsync();   
         }
     }
 }

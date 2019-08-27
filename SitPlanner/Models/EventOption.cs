@@ -33,5 +33,7 @@ namespace SitPlanner.Models
 
         public List<AccessibilityRestriction> AccessibilityRestrictions { get; set; }
 
+        public bool isFavorite { get; set; }
+
     }
 }

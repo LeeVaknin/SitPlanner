@@ -10,6 +10,8 @@
     <Compile Remove="Migrations\20190413114941_createConnections.Designer.cs" />
     <Compile Remove="Migrations\20190413121452_createConnections.cs" />
     <Compile Remove="Migrations\20190413121452_createConnections.Designer.cs" />
+    <Compile Remove="Migrations\20190817094448_removeTableIdAccessabilityRestriction.cs" />
+    <Compile Remove="Migrations\20190817094448_removeTableIdAccessabilityRestriction.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +29,39 @@
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
     <Folder Include="Services\DAL\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\less\animated.less" />
+    <None Include="wwwroot\less\bordered-pulled.less" />
+    <None Include="wwwroot\less\core.less" />
+    <None Include="wwwroot\less\fixed-width.less" />
+    <None Include="wwwroot\less\font-awesome.less" />
+    <None Include="wwwroot\less\icons.less" />
+    <None Include="wwwroot\less\larger.less" />
+    <None Include="wwwroot\less\list.less" />
+    <None Include="wwwroot\less\mixins.less" />
+    <None Include="wwwroot\less\path.less" />
+    <None Include="wwwroot\less\rotated-flipped.less" />
+    <None Include="wwwroot\less\screen-reader.less" />
+    <None Include="wwwroot\less\stacked.less" />
+    <None Include="wwwroot\less\variables.less" />
+    <None Include="wwwroot\scss\font-awesome.scss" />
+    <None Include="wwwroot\scss\_animated.scss" />
+    <None Include="wwwroot\scss\_bordered-pulled.scss" />
+    <None Include="wwwroot\scss\_core.scss" />
+    <None Include="wwwroot\scss\_fixed-width.scss" />
+    <None Include="wwwroot\scss\_icons.scss" />
+    <None Include="wwwroot\scss\_larger.scss" />
+    <None Include="wwwroot\scss\_list.scss" />
+    <None Include="wwwroot\scss\_mixins.scss" />
+    <None Include="wwwroot\scss\_path.scss" />
+    <None Include="wwwroot\scss\_rotated-flipped.scss" />
+    <None Include="wwwroot\scss\_screen-reader.scss" />
+    <None Include="wwwroot\scss\_stacked.scss" />
+    <None Include="wwwroot\scss\_variables.scss" />
   </ItemGroup>
 
   <ItemGroup>
