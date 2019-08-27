@@ -332,7 +332,13 @@ namespace SitPlanner.Controllers
             return algoDb;
         }
 
-       
 
+        [HttpPost, ActionName("SetFavorite")]
+        public async Task setFavoriteEventOptionAsync(int id)
+        {
+            var eventOption = await _context.EventOption.FindAsync(id);
+            eventOption.isFavorite = !eventOption.isFavorite;
+            await _context.SaveChangesAsync();   
+        }
     }
 }

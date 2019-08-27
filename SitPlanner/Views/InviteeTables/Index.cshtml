@@ -152,13 +152,11 @@
     </script>
 
     <script>
-        var EventOptionFavoritePostBackURL = '/EventOptions/SetFavorite/';
+        var EventOptionFavoritePostBackURL = '/InviteeTables/SetFavorite/';
         $(function () {
             $("#setFavoriteEventOption").click(function () {
-                var $buttonClicked = $(this);
                 var e = document.getElementById("Opts");
-                var id = e.options[e.selectedIndex].value;
-                var options = { keyboard: true };
+                var id = e.options[e.selectedIndex].value;  
                 $.ajax({
                     type: "POST",
                     url: EventOptionFavoritePostBackURL + id,
@@ -166,9 +164,7 @@
                     data: { "Id": id },
                     datatype: "json",
                     success: function (data) {
-                        $('#myModalContent').html(data);
-                        $('#myModal').modal(options);
-                        $('#myModal').modal('show');
+                        location.reload();
                     },
                     error: function () {
                         alert("Dynamic content load failed.");

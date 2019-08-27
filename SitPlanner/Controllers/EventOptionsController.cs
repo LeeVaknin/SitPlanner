@@ -162,14 +162,6 @@ namespace SitPlanner.Controllers
             return _context.EventOption.Any(e => e.Id == id);
         }
 
-        [HttpPost, ActionName("SetFavorite")]
-        public async Task<IActionResult> setFavoriteEventOptionAsync(int id)
-        {
-            var eventOption = await _context.EventOption.FindAsync(id);
-            eventOption.isFavorite = !eventOption.isFavorite;
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "InviteeTables");
-        }
 
 
     }
