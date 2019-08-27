@@ -15,20 +15,49 @@ namespace SitPlanner.csv
             {
                 List<Tuple<string, string, int, int, string, int, string>> completeList =
                     new List<Tuple<string, string, int, int, string, int, string>>();
+                
                 reader.ReadLine();//to skip the headline
                 while (!reader.EndOfStream)
                 {
+                    string firstName = " ";
+                    string lastName = " ";
+                    string address = " ";
+                    string category = " ";
+                    int numShouldCome = 0;
+                    int phoneNumber = 0;
+                    int numOfComing = 0;
                     var line = reader.ReadLine();
                     var values = line.Split(',');
-
-                    var firstName = values[0];
-                    var lastName = values[1];
-                    int numShouldCome = Int32.Parse(values[2]);
-                    var phoneNumber = Int32.Parse(values[3]);
-                    var address = values[4];
-                    int numIsComing = Int32.Parse(values[5]);
-                    var category = values[6];
-                    completeList.Add(Tuple.Create(firstName, lastName, numShouldCome, phoneNumber, address, numIsComing, category));
+                    if (values[0].All(Char.IsLetterOrDigit))
+                    {
+                        firstName = values[0];
+                    }
+                    if (values[1].All(Char.IsLetterOrDigit))
+                    {
+                        lastName = values[1];
+                    }
+                    if (values[2].All(Char.IsDigit))
+                    {
+                        numShouldCome = Int32.Parse(values[2]);
+                    }
+                    if (values[3].All(Char.IsDigit))
+                    {
+                        phoneNumber = Int32.Parse(values[3]);
+                    }
+                    if (values[4].All(Char.IsLetterOrDigit))
+                    {
+                        address = values[4];
+                    }
+                    if (values[5].All(Char.IsDigit))
+                    {
+                        numOfComing = Int32.Parse(values[5]);
+                    }
+                    if (values[6].All(Char.IsLetterOrDigit))
+                    {
+                        category = values[6];
+                    }
+                    else {continue;}
+                    completeList.Add(Tuple.Create(firstName, lastName, numShouldCome, phoneNumber, address, numOfComing, category));
                 }
                 return completeList;
             }
