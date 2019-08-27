@@ -329,5 +329,13 @@ namespace SitPlanner.Controllers
             AlgoDb algoDb = new AlgoDb(invitees, tables, personalRestrictions, accessibilityRestrictions, categories);
             return algoDb;
         }
+
+        public async Task<bool> isFavoriteOption(int id)
+        {
+            var eventOption = await _context.EventOption.FindAsync(id);
+            return eventOption.isFavorite;
+
+        }
+
     }
 }

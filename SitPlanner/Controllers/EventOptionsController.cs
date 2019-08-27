@@ -57,7 +57,7 @@ namespace SitPlanner.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,EventId")] EventOption eventOption)
+        public async Task<IActionResult> Create([Bind("Id,EventId,isFavorite")] EventOption eventOption)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +91,7 @@ namespace SitPlanner.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,EventId")] EventOption eventOption)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,EventId,isFavorite")] EventOption eventOption)
         {
             if (id != eventOption.Id)
             {
@@ -161,5 +161,23 @@ namespace SitPlanner.Controllers
         {
             return _context.EventOption.Any(e => e.Id == id);
         }
+
+        [HttpPost, ActionName("SetFavorite")]
+        public async Task<IActionResult> setFavoriteEventOptionAsync(int id)
+        {
+            var eventOption = await _context.EventOption.FindAsync(id);
+            eventOption.isFavorite = !eventOption.isFavorite;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "InviteeTables");
+        }
+
+        [HttpPost, ActionName("IsFavorite")]
+        public async Task<bool> isFavoriteOption(int id)
+        {
+            var eventOption = await _context.EventOption.FindAsync(id);
+            return eventOption.isFavorite;
+          
+        }
+
     }
 }

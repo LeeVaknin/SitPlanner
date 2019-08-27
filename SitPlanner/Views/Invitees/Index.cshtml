@@ -192,9 +192,9 @@
                         action = action.replace("Category", "");
                     }
 
-
                     var id = $buttonClicked.attr('data-id');
                     var options = { keyboard: true };
+
                     $.ajax({
                         type: "GET",
                         url: PostBackURL + action + "/" + $buttonClicked.val().toString(),

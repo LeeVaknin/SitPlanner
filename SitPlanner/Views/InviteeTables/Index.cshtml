@@ -59,7 +59,7 @@
                     data: { "Id": id },
                     datatype: "json",
                     success: function (data) {
-                        window.location.reload(true); 
+                        window.location.reload(true);
                     },
                     error: function () {
                         alert("Dynamic content load failed.");
@@ -117,7 +117,7 @@
 
 
     <script>
-        var EventOptionPostBackURL = '/EventOptions/Delete';
+        var EventOptionPostBackURL = '/EventOptions/Delete/';
         $(function () {
             $("#deleteEventOption").click(function () {
                 var $buttonClicked = $(this);
@@ -125,7 +125,7 @@
                 var options = { keyboard: true };
                 $.ajax({
                     type: "GET",
-                    url: EventOptionPostBackURL,
+                    url: EventOptionPostBackURL + id,
                     contentType: "application/json; charset=utf-8",
                     data: { "Id": id },
                     datatype: "json",
@@ -148,27 +148,105 @@
             });
         });
     </script>
+
+    <script>
+        var EventOptionFavoritePostBackURL = '/EventOptions/SetFavorite/';
+        $(function () {
+            $("#setFavoriteEventOption").click(function () {
+                var $buttonClicked = $(this);
+                var e = document.getElementById("Opts");
+                var id = e.options[e.selectedIndex].value;
+                var options = { keyboard: true };
+                $.ajax({
+                    type: "POST",
+                    url: EventOptionFavoritePostBackURL + id,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "Id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        $('#myModalContent').html(data);
+                        $('#myModal').modal(options);
+                        $('#myModal').modal('show');
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+            //$("#closebtn").on('click',function(){
+            //    $('#myModal').modal('hide');
+
+            $("#closbtn").click(function () {
+                $('#myModal').modal('hide');
+            });
+        });
+    </script>
+
+    <script>
+        function isFavoriteEventOption() {
+            var isFavoriteBackURL = '/EventOptions/IsFavorite/';
+            var e = document.getElementById("Opts");
+            var id = e.options[e.selectedIndex].value;
+            var options = { keyboard: true };
+            $.ajax({
+                type: "POST",
+                url: isFavoriteBackURL + id,
+                contentType: "application/json; charset=utf-8",
+                data: { "Id": id },
+                datatype: "json",
+                success: function (data) {
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal(options);
+                    $('#myModal').modal('show');
+                },
+                error: function () {
+                    alert("Dynamic content load failed.");
+                }
+            });
+
+            $("#closbtn").click(function () {
+                $('#myModal').modal('hide');
+            });
+        });
+    </script>
 }
 <script>
     function filter() {
         var e = document.getElementById("Opts");
         var val = e.options[e.selectedIndex].value;
-        var name = document.getElementById("input-h").value;
 
-        window.location.href = "https://" + window.location.host + window.location.pathname + '?id=' + val+"&name="+name;
+        window.location.href = "https://" + window.location.host + window.location.pathname + '?id=' + val;
         return false;
     }
 </script>
 
-    </br>
+<script>
+    function getOptionId() {
+        return document.getElementById("Opts");
+    }
+</script>
+
+</br>
 <h3 style="color:#F3969A">Table Arrangment</h3>
 
 <div id="filter-blog">
-
     <label>Choose your draft:</label> <br />
-    @Html.DropDownList("Opts", ViewBag.Opts as SelectList, new { onchange = "filter()", @class = "form-control", style = "width: 10%; border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" })
+    <div style="display: flex">
+        @Html.DropDownList("Opts", ViewBag.Opts as SelectList, new { onchange = "filter()", @class = "form-control", style = "width: 10%; border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" })
 
+        <button style="border: 0px ;background-color: #fff;" id="setFavoriteEventOption">
+            @if (true)
+            {
+                <i class="fa fa-star fa-2x" style="color: gold" aria-hidden="true"></i>
+            }
+            else
+            {
+                <i class="fa fa-star-o fa-2x" style="color: gold" aria-hidden="true"></i>
+            }
+        </button>
+    </div>
     <br />
+
     <input id="input-h" type="search" name="id" maxlength="20" placeholder="  Filter by name" style="width:205px;width: 12%; border-radius: 12px; border: 1px solid #F3969A;background-color: #fff;">
     <button style="border: 0px ;background-color: #fff;" id="btn-filter" type="submit" onclick="filter()"><i class="fa fa-search" aria-hidden="true"></i></button>
 </div>
@@ -177,7 +255,8 @@
 <p>
     <div style="float: right">
         <button style="border-radius: 12px; border: 4px solid #F3969A;background-color: #fff;" id="runalgoinviteetable">
-            <i class="fa fa-users" aria-hidden="true"></i> SeatMe :)</button>
+            <i class="fa fa-users" aria-hidden="true"></i> SeatMe :)
+        </button>
         <button style="border-radius: 12px; border: 4px solid #b22d38;background-color: #fff;" id="deleteEventOption"><i class="fa fa-trash" aria-hidden="true"></i> Arrangement</button>
     </div>
 </p>
