@@ -28,11 +28,11 @@ namespace SitPlanner.csv
                     int numOfComing = 0;
                     var line = reader.ReadLine();
                     var values = line.Split(',');
-                    if (values[0].All(Char.IsLetterOrDigit))
+                    if (values[0].All(c=> Char.IsLetterOrDigit(c) || Char.IsWhiteSpace(c)))
                     {
                         firstName = values[0];
                     }
-                    if (values[1].All(Char.IsLetterOrDigit))
+                    if (values[1].All(c => Char.IsLetterOrDigit(c) || Char.IsWhiteSpace(c)))
                     {
                         lastName = values[1];
                     }
@@ -44,7 +44,7 @@ namespace SitPlanner.csv
                     {
                         phoneNumber = Int32.Parse(values[3]);
                     }
-                    if (values[4].All(Char.IsLetterOrDigit))
+                    if (values[4].All(c => Char.IsLetterOrDigit(c) || Char.IsWhiteSpace(c)))
                     {
                         address = values[4];
                     }
@@ -52,7 +52,7 @@ namespace SitPlanner.csv
                     {
                         numOfComing = Int32.Parse(values[5]);
                     }
-                    if (values[6].All(Char.IsLetterOrDigit))
+                    if (values[6].All(c => Char.IsLetterOrDigit(c) || Char.IsWhiteSpace(c)))
                     {
                         category = values[6];
                     }
