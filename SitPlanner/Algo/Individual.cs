@@ -92,7 +92,7 @@ namespace SitPlanner.Algo
             totalPunishment += InviteesPersonalRestrictionPunishment();
 
             //invitee-accesabilityRestriction
-            //totalPunishment += InviteesAccessabilityRestrictionPunishment();
+            totalPunishment += InviteesAccessabilityRestrictionPunishment();
 
             //invitee- is comming?
            // totalPunishment += InviteeConfirmedInvatationPunishment();
@@ -329,16 +329,17 @@ namespace SitPlanner.Algo
 
         private Table GetTableByTableId(int tableId)
         {
-            foreach(Table table in tables)
+
+            foreach (Table table in algoDb.tables)
             {
-                if(table.Id == tableId)
+                if (table.Id == tableId)
                 {
                     return table;
-                }
+                } 
             }
+            
             return null;
         }
-
         #endregion
     }
 }
