@@ -154,7 +154,6 @@
             $("#importfromcsv").click(function () {
                 var $buttonClicked = $(this);
                 var id = $buttonClicked.attr('data-id');
-                var options = { keyboard: true };
                 $.ajax({
                     type: "GET",
                     url: categoriesImprtCSVPostBackURL,
@@ -162,11 +161,7 @@
                     data: { "Id": id },
                     datatype: "json",
                     success: function (data) {
-                        $('#myModalContent').html(data);
-                        $('#myModal').fadeIn('slow');
-                        $('#myModal').modal(options);
-                        
-
+                        location.reload();
                     },
                     error: function () {
                         alert("failed to load csv.");
