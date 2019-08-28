@@ -131,7 +131,7 @@
                     data: { "Id": id },
                     datatype: "json",
                     success: function (data) {
-                        location.reload();
+                        window.location.href = "https://" + window.location.host + window.location.pathname
                     },
                     error: function () {
                         alert("Dynamic content load failed.");
