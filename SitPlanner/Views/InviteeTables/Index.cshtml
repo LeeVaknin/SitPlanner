@@ -122,28 +122,22 @@
         var EventOptionPostBackURL = '/EventOptions/Delete/';
         $(function () {
             $("#deleteEventOption").click(function () {
-                var $buttonClicked = $(this);
-                var id = $buttonClicked.attr('data-id');
-                var options = { keyboard: true };
+                var e = document.getElementById("Opts");
+                var id = e.options[e.selectedIndex].value;  
                 $.ajax({
-                    type: "GET",
+                    type: "POST",
                     url: EventOptionPostBackURL + id,
                     contentType: "application/json; charset=utf-8",
                     data: { "Id": id },
                     datatype: "json",
                     success: function (data) {
-                        $('#myModalContent').html(data);
-                        $('#myModal').modal(options);
-                        $('#myModal').modal('show');
-
+                        location.reload();
                     },
                     error: function () {
                         alert("Dynamic content load failed.");
                     }
                 });
             });
-            //$("#closebtn").on('click',function(){
-            //    $('#myModal').modal('hide');
 
             $("#closbtn").click(function () {
                 $('#myModal').modal('hide');
@@ -171,8 +165,6 @@
                     }
                 });
             });
-            //$("#closebtn").on('click',function(){
-            //    $('#myModal').modal('hide');
 
             $("#closbtn").click(function () {
                 $('#myModal').modal('hide');

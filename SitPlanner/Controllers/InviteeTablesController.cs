@@ -62,7 +62,7 @@ namespace SitPlanner.Controllers
                 });
             }
 
-            ViewData["isFavorite"] = _context.EventOption.Where(i => i.Id == id).Select(i=>i.isFavorite).First();
+            ViewData["isFavorite"] = _context.EventOption.Where(i => i.Id == id).Select(i=>i.isFavorite).FirstOrDefault();
             ViewData["Opts"] = optionIdsList;
             ViewData["Id"] = id;
             if (id == null)
