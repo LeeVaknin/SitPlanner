@@ -7,12 +7,18 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SitPlanner.Data;
 using SitPlanner.Models;
+using SitPlanner.Algo;
+
 
 namespace SitPlanner.Controllers
 {
     public class EventsController : Controller
     {
         private readonly SitPlannerContext _context;
+
+        //int i = MyGlobals.GlobalEventID;
+
+        //MyGlobals.GlobalEventID = 2; 
 
         public EventsController(SitPlannerContext context)
         {
@@ -21,17 +27,19 @@ namespace SitPlanner.Controllers
 
         // GET: Events
         public async Task<IActionResult> Index()
-        {
+        {        
             return View(await _context.Event.OrderBy(d => d.Date).ToListAsync());
         }
 
         // GET: Events/Details/5
         public Event GetEventByID(int? id)
         {
+            
             if (id == null)
             {
                 return null;
             }
+            MyGlobals.SetEventID((int)id);
 
             var item = _context.Event.FirstOrDefault(i => i.Id == id);
 
@@ -48,6 +56,8 @@ namespace SitPlanner.Controllers
 
             var @event = await _context.Event
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            MyGlobals.SetEventID((int)id);
             if (@event == null)
             {
                 return NotFound();

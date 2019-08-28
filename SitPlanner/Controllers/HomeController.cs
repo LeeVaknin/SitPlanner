@@ -9,7 +9,10 @@ using SitPlanner.Models;
 namespace SitPlanner.Controllers
 {
     public class HomeController : Controller
+
+    
     {
+
         public IActionResult Index()
         {
             return View();

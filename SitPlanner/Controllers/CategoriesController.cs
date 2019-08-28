@@ -13,10 +13,12 @@ namespace SitPlanner.Controllers
     public class CategoriesController : Controller
     {
         private readonly SitPlannerContext _context;
+        private Algo.AlgoLogic algo;
 
         public CategoriesController(SitPlannerContext context)
         {
             _context = context;
+            algo = new Algo.AlgoLogic();
         }
 
         public Category GetCategoryByName(string name)
@@ -30,7 +32,7 @@ namespace SitPlanner.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            var sitPlannerContext = _context.Category.Include(c => c.Event);
+            var sitPlannerContext = _context.Category.Include(c => c.Event.Id == algo.eventIDGlobal);
             return View(await sitPlannerContext.ToListAsync());
         }
 

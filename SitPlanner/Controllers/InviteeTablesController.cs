@@ -27,6 +27,7 @@ namespace SitPlanner.Controllers
         {
             _context = context;
             algo = new Algo.AlgoLogic();
+            
         }
 
         // GET: InviteeTables

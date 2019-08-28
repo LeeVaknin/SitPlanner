@@ -59,15 +59,18 @@ namespace SitPlanner.Controllers
 
             if (category == "Any")
             {
-                var invitees = _context.Invitee.Include(i => i.Category).Include(i => i.Event).OrderBy(n => n.LastName);
-                var categories = _context.Category.Include(c => c.Event).OrderBy(e => e.Name);
+                var invitees = _context.Invitee.Where(i => i.EventId == MyGlobals.GlobalEventID);
+                invitees = _context.Invitee.Include(i => i.Category).Include(i => i.Event).OrderBy(n => n.LastName);
+                var categories = _context.Category.Where(i => i.EventId == MyGlobals.GlobalEventID);
+                categories = _context.Category.Include(c => c.Event).OrderBy(e => e.Name);
                 var tuple = new Tuple<IEnumerable<Invitee>, IEnumerable<Category>>(invitees, categories);
                 return View(tuple);
             }
             else
             {
-                var invitees = _context.Invitee.Include(i => i.Category).Include(i => i.Event).Where(i => i.Category.Name == category);
-                var categories = _context.Category.Include(c => c.Event);
+                var invitees = _context.Invitee.Where(i => i.EventId == MyGlobals.GlobalEventID).Include(i => i.Category).Include(i => i.Event).Where(i => i.Category.Name == category);
+                var categories = _context.Category.Where(i => i.EventId == MyGlobals.GlobalEventID);
+                categories = _context.Category.Include(c => c.Event);
                 var tuple = new Tuple<IEnumerable<Invitee>, IEnumerable<Category>>(invitees, categories);
                 return View(tuple);
             }
@@ -119,7 +122,7 @@ namespace SitPlanner.Controllers
                 //this is why "GetCategoryByName" will always return null,
                 //thats why im adding this if below and the list to validate we dont create at first run multiple cat
                 cat = GetCategoryByName(category);
-                Category tmpCat = new Category(category, GetEventByID(1));
+                Category tmpCat = new Category(category, GetEventByID(MyGlobals.GlobalEventID));
                 if (cat == null)
                 {
                     foreach (Category existCat in list_of_categories)
@@ -141,7 +144,7 @@ namespace SitPlanner.Controllers
                  //await _context.SaveChangesAsync();
 
 
-                Invitee inv = new Invitee(firstName, lastName, phoneNumber, address, numIsComing, GetEventByID(1),cat);
+                Invitee inv = new Invitee(firstName, lastName, phoneNumber, address, numIsComing, GetEventByID(MyGlobals.GlobalEventID),cat);
                 _context.Add(inv);
             }
             await _context.SaveChangesAsync();

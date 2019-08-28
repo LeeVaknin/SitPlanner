@@ -18,6 +18,9 @@ namespace SitPlanner.Algo
         int iterationsWithoutTopXChange = 0;
         private List<Individual[]> parentsCouplesList = new List<Individual[]>();
 
+        public static int GlobalEventID;
+        public int eventIDGlobal { get; set; }
+
         public AlgoLogic()
         {
 
