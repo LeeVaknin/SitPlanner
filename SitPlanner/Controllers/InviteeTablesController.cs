@@ -149,6 +149,12 @@ namespace SitPlanner.Controllers
         // GET: InviteeTables/Create
         public async Task<int> RunAlgo()
         {
+
+            if(!isDataValid())
+            {
+                throw new Exception(" ");
+            }
+
             result = algo.RunAlgo(AlgoDbCreation()).getGens().ToList();
 
             EventOption eventOption = new EventOption(GetEventByID(1));
@@ -168,6 +174,21 @@ namespace SitPlanner.Controllers
 
             return eventOption.Id;
 
+        }
+
+        private bool isDataValid()
+        {
+            bool isValid = false;
+
+            if(_context.Table.Count() > 0 && _context.Invitee.Count() > 0)
+            {
+                if(_context.Table.Sum(t => t.CapacityOfPeople) < _context.Invitee.Where(i => i.IsComing).Count())
+                {
+                    isValid = true;
+                }
+            }
+
+            return isValid;
         }
 
         // GET: InviteeTables/Create
