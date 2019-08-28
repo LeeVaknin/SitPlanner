@@ -287,15 +287,6 @@ namespace SitPlanner.Algo
             Gen gen = new Gen(invitees[i], tables[ran]);
 
             return gen;
-
-/*          //Generate gens only with invitees that confirmed invatation
-                      if (invitees[i].IsComing)
-                      {
-                          return new Gen(invitees[i], tables[ran]);
-                      }
-
-                      return null;
-                      */
         }
         public void cloneGens(Gen[] gens)
         {

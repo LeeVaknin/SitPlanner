@@ -22,6 +22,7 @@ namespace SitPlanner.Models
             this.PhoneNumber = phoneNumber;
             this.Address = address;
             this.Event = @event;
+            this.IsComing = (numOfComing > 0 ? true : false);
             this.Category = category;
         }
 

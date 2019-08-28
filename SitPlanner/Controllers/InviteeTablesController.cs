@@ -313,7 +313,7 @@ namespace SitPlanner.Controllers
         private AlgoDb AlgoDbCreation()
         {
             
-            var sitPlannerContextInvitees = _context.Invitee.Include(i => i.Category).Include(i => i.Event).ToList();
+            var sitPlannerContextInvitees = _context.Invitee.Where(i => i.IsComing).Include(i => i.Category).Include(i => i.Event).ToList();
             invitees = new List<Invitee>(sitPlannerContextInvitees);
 
             var sitPlannerContextTables = _context.Table.Include(t => t.Event).ToList();
