@@ -11,6 +11,7 @@ Lidor,Rozenstain,1,60,Tel Aviv,1,College
 Yasmin,Simons,1,61,Tel Aviv,1,College
 Bar,Mayo,1,62,Tel Aviv,1,College
 Dr Igor,Rochlin,1,63,Tel Aviv,1,College
+Dr Eliyahoo,Halsachi,1,63,Tel Aviv,1,College
 Ben,Vaknin,1,64,Hod Hasharon,1,Family
 Lior,Vaknin,1,65,Hod Hasharon,1,Family
 Bar,Vaknin,1,66,Hod Hasharon,1,Family
@@ -27,14 +28,14 @@ Ido,Shani,1,76,Tel Aviv,1,Friends
 Shaked,Madar,1,77,Haruzim,1,Friends
 Tal,Tzoref,1,78,Batzra,1,Friends
 Liel,Menachem,1,79,Kadima,1,Friends
-Oren,Meiron,1,80,Tel Aviv,1,Work
-May,Shwartz,1,81,Tel Aviv,1,Work
-Gal,Blum,1,82,Jerusalem,1,Work
-Avi,Haim,1,83,Nes ziona,1,Work
-Dror,Alon,1,84,Saleat,1,Work
-Tzahi,Erez,1,85,Raanana,1,Work
-Ranit,Chrust,1,86,Poleg,1,Work
-Rotem,Geffen,1,87,Tel Aviv,1,Work
+Oren,Meiron,1,80,Tel Aviv,1,Work1
+May,Shwartz,1,81,Tel Aviv,1,Work1
+Gal,Blum,1,82,Jerusalem,1,Work1
+Avi,Haim,1,83,Nes ziona,1,Work1
+Dror,Alon,1,84,Saleat,1,Work1
+Tzahi,Erez,1,85,Raanana,1,Work1
+Ranit,Chrust,1,86,Poleg,1,Work1
+Rotem,Geffen,1,87,Tel Aviv,1,Work1
 Roy,Rashti,1,88,Tel Aviv,1,Friends
 Shira,Koch,1,89,Tel Aviv,1,IDF
 Reut,kurzweil,1,90,Jerusalem,1,IDF
@@ -58,3 +59,38 @@ Tai,Mizeles,1,107,Tel Aviv,1,Animals
 Boni,Mizeles,1,108,Tel Aviv,1,Animals
 Navit,Sadrina,1,109,Azur,1,Animals
 Gigi,Mayo,1,110,Tel Aviv,1,Animals
+teacherA,ta,1,110,Tel Aviv,1,Teachers
+teacherB,tb,1,110,Tel Aviv,1,Teachers
+teacherC,tc,1,110,Tel Aviv,1,Teachers
+teacherD,td,1,110,Tel Aviv,1,Teachers
+teacherE,te,1,110,Tel Aviv,1,Teachers
+teacherF,na,1,110,Tel Aviv,1,Teachers
+teacherG,nb,1,110,Tel Aviv,1,Teachers
+teacherH,nc,1,110,Tel Aviv,1,Teachers
+teacherI,nd,1,110,Tel Aviv,1,Teachers
+plumber,bla,1,110,Tel Aviv,1,IDF
+barber,bli,1,110,Tel Aviv,1,IDF
+swimmera,bli,1,110,Tel Aviv,1,Swimming_group
+swimmerb,bli,1,110,Tel Aviv,1,Swimming_group
+swimmerc,bli,1,110,Tel Aviv,1,Swimming_group
+swimmerd,bli,1,110,Tel Aviv,1,Swimming_group
+swimmere,bli,1,110,Tel Aviv,1,Swimming_group
+swimmerf,bli,1,110,Tel Aviv,1,Swimming_group
+swimmerg,bli,1,110,Tel Aviv,1,Swimming_group
+swimmerh,bli,1,110,Tel Aviv,1,Swimming_group
+swimmeri,bli,1,110,Tel Aviv,1,Swimming_group
+swimmerj,bli,1,110,Tel Aviv,1,Swimming_group
+swimmerk,bli,1,110,Tel Aviv,1,Swimming_group
+swimmerl,bli,1,110,Tel Aviv,1,Swimming_group
+swimmerm,bli,1,110,Tel Aviv,1,Swimming_group
+swimmern,bli,1,110,Tel Aviv,1,Swimming_group
+swimmero,bli,1,110,Tel Aviv,1,Swimming_group
+swimmerp,bli,1,110,Tel Aviv,1,Swimming_group
+swimmerq,bli,1,110,Tel Aviv,1,Swimming_group
+swimmerr,bli,1,110,Tel Aviv,1,Swimming_group
+swimmers,bli,1,110,Tel Aviv,1,Swimming_group
+swimmers,bli,1,110,Tel Aviv,1,Swimming_group
+swimmert,bli,1,110,Tel Aviv,1,Swimming_group
+swimmero,bli,1,110,Tel Aviv,1,Swimming_group
+swimmeru,bli,1,110,Tel Aviv,1,Swimming_group
+swimmerv,bli,1,110,Tel Aviv,1,Swimming_group
