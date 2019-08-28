@@ -65,10 +65,10 @@
                     data: { "Id": id },
                     datatype: "json",
                     success: function (data) {
-                        window.location.reload(true);
+                        window.location.href = "https://" + window.location.host + window.location.pathname + '?id=' + data;
                     },
                     error: function () {
-                        alert("Dynamic content load failed.");
+                        alert("You supplied invalid data. Please check again if you have enough seats to all of your invitees.");
                     }
                 });
             });
@@ -181,7 +181,7 @@
         var e = document.getElementById("Opts");
         var val = e.options[e.selectedIndex].value;
 
-        window.location.href = "https://" + window.location.host + window.location.pathname + '?id=' + val + "&name=" + name;
+        window.location.href = "https://" + window.location.host + window.location.pathname + '?id=' + val;
         return false;
     }
 </script>
