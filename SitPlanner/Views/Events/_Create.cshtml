@@ -5,13 +5,18 @@
 }
 <script>
     function onLabelChanged() {
-
+        var now = new Date()
         if (document.getElementById("namelabel").value === "") {
             document.getElementById("submitbtn").disabled = true;
             document.getElementById("error").innerHTML = "<font color=\"red\"> Please enter event name</font>";
             return;
         }
-        var TeamDetailPostBackURL = '/Events/EventExists?name=' + document.getElementById("namelabel").value;
+        if (document.getElementById("datelabel").value === "" || new Date(document.getElementById("datelabel").value) < now) {
+            document.getElementById("submitbtn").disabled = true;
+            document.getElementById("error").innerHTML = "<font color=\"red\"> Date can't be in the past</font>";
+            return;
+        }
+        var TeamDetailPostBackURL = '/Events/EventExists?name=' + document.getElementById("namelabel").value + '&date=' + document.getElementById("datelabel").value;;
         var options = { keyboard: true };
         $.ajax({
             type: "GET",
@@ -26,7 +31,7 @@
 
                 } else {
                     document.getElementById("submitbtn").disabled = false;
-                    document.getElementById("error").innerHTML = "<font color=\"blue\">Event name is valid   </font>";
+                    document.getElementById("error").innerHTML = "<font color=\"blue\">Event details are valid   </font>";
 
                 }
 
@@ -59,7 +64,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Date" class="control-label"></label>
-                    <input asp-for="Date" class="form-control" />
+                    <input asp-for="Date" class="form-control" onchange="onLabelChanged();" id="datelabel"/>
                     <span asp-validation-for="Date" class="text-danger"></span>
                 </div>
                 <div class="form-group">
