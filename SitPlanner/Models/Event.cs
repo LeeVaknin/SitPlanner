@@ -30,7 +30,7 @@ namespace SitPlanner.Models
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [EventValidate]
+        //[EventValidate]
         public DateTime Date { get; set; }
 
         //public List<User> Users { get; set; }
