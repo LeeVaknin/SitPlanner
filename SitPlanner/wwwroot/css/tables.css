@@ -81,10 +81,6 @@
     font-size: 15px;
 }
 
-.tables-container {
-    display: flex;
-    width: 100%;
-}
 
 .table-container-12 {
     position: absolute;
@@ -182,8 +178,128 @@
     font-size: 15px;
 }
 
-.tables-container {
-    display: flex;
-    width: 100%;
+
+.table-container-16 {
+    position: absolute;
+    height: 348px !important;
+    width: 348px !important;
 }
+
+.position-middle-16 {
+    position: absolute;
+    top: 35%;
+    left: 39%;
+    font-size: 25px;
+}
+
+.guest-16-0 {
+    position: absolute;
+    top: 0%;
+    left: 87%;
+    font-size: 15px;
+}
+
+.guest-16-1 {
+    position: absolute;
+    top: 0%;
+    left: 76%;
+    font-size: 15px;
+}
+
+.guest-16-2 {
+    position: absolute;
+    top: 0%;
+    left: 63%;
+    font-size: 15px;
+}
+
+.guest-16-3 {
+    position: absolute;
+    top: 0%;
+    left: 53%;
+    font-size: 15px;
+}
+
+.guest-16-4 {
+    position: absolute;
+    top: 0%;
+    left: 39%;
+    font-size: 15px;
+}
+
+.guest-16-5 {
+    position: absolute;
+    top: 0%;
+    left: 32%;
+    font-size: 15px;
+}
+
+.guest-16-6 {
+    position: absolute;
+    top: 0%;
+    left: 20%;
+    font-size: 15px;
+}
+
+.guest-16-7 {
+    position: absolute;
+    top: 0%;
+    left: 10%;
+    font-size: 15px;
+}
+
+.guest-16-8 {
+    position: absolute;
+    top: 63%;
+    left: 8%;
+    font-size: 15px;
+}
+
+.guest-16-9 {
+    position: absolute;
+    top: 63%;
+    left: 20%;
+    font-size: 15px;
+}
+
+.guest-16-10 {
+    position: absolute;
+    top: 63%;
+    left: 33%;
+    font-size: 15px;
+}
+
+.guest-16-11 {
+    position: absolute;
+    top: 63%;
+    left: 42%;
+    font-size: 15px;
+}
+
+.guest-16-12 {
+    position: absolute;
+    top: 63%;
+    left: 52%;
+    font-size: 15px;
+}
+.guest-16-13 {
+    position: absolute;
+    top: 63%;
+    left: 63%;
+    font-size: 15px;
+}
+
+.guest-16-14 {
+    position: absolute;
+    top: 63%;
+    left: 77%;
+    font-size: 15px;
+}
+.guest-16-15 {
+    position: absolute;
+    top: 63%;
+    left: 90%;
+    font-size: 15px;
+}
+
         
