@@ -180,9 +180,9 @@ namespace SitPlanner.Controllers
         {
             bool isValid = false;
 
-            if(_context.Table.Count() > 0 && _context.Invitee.Count() > 0)
+            if (_context.Table.Count() > 0 && _context.Invitee.Count() > 0)
             {
-                if(_context.Table.Sum(t => t.CapacityOfPeople) < _context.Invitee.Where(i => i.IsComing).Count())
+                if(_context.Table.Sum(p => p.CapacityOfPeople) > _context.Invitee.Where(i => i.IsComing).Count())
                 {
                     isValid = true;
                 }
