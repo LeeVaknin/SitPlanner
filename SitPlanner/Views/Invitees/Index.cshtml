@@ -195,7 +195,7 @@
                     var options = { keyboard: true };
 
                     $.ajax({
-                        type: "GET",
+                        type: "POST",
                         url: PostBackURL + action + "/" + $buttonClicked.val().toString(),
                         contentType: "application/json; charset=utf-8",
                         data: { "Id": id },
@@ -204,11 +204,10 @@
                             $('#myModalContent').html(data);
                             $('#myModal').fadeIn('slow');
                             $('#myModal').modal(options);
-                            
-
+                            location.reload();
                         },
                         error: function () {
-                            alert("Dynamic content load failed.");
+                            alert("Invalid operation. The category is assign to one of your invitees.");
                         }
                     });
                 });
