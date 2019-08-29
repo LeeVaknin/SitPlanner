@@ -37,5 +37,12 @@ namespace SitPlanner.Models
             Rectangle
         }
 
+        public enum TableSizesEnum
+        {
+            Ten,
+            Twelve,
+            Sixteen
+        }
+
     }
 }

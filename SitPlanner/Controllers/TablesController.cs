@@ -64,7 +64,14 @@ namespace SitPlanner.Controllers
                                TableTypeEnum = e,
                            };
             ViewBag.EnumList = new SelectList(enumData, "TableTypeEnum", "TableTypeEnum");
-            
+
+            var enumData1 = from Table.TableSizesEnum e1 in Enum.GetValues(typeof(Table.TableSizesEnum))
+                           select new
+                           {
+                               TableSizesEnum = e1,
+                           };
+            ViewBag.EnumList = new SelectList(enumData1, "TableSizesEnum", "TableSizesEnum");
+
             return PartialView();
         }
 
