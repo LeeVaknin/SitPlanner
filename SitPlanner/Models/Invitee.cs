@@ -22,6 +22,7 @@ namespace SitPlanner.Models
             this.PhoneNumber = phoneNumber;
             this.Address = address;
             this.Event = @event;
+            this.IsComing = (numOfComing > 0 ? true : false);
             this.Category = category;
         }
 
@@ -40,6 +41,7 @@ namespace SitPlanner.Models
         public string LastName { get; set; }
 
         [NotMapped]
+        [Display(Name = "Name")]
         public string FullName => String.Join(" ", FirstName, LastName);
 
         [Required(ErrorMessage = "Please provide phone number")]

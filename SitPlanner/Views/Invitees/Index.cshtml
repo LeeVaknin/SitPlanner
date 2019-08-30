@@ -148,37 +148,32 @@
         });
     </script>
 
-    <script>
-        var categoriesImprtCSVPostBackURL = '/Invitees/fromCsv';
-        $(function () {
-            $("#importfromcsv").click(function () {
-                var $buttonClicked = $(this);
-                var id = $buttonClicked.attr('data-id');
-                var options = { keyboard: true };
-                $.ajax({
-                    type: "GET",
-                    url: categoriesImprtCSVPostBackURL,
-                    contentType: "application/json; charset=utf-8",
-                    data: { "Id": id },
-                    datatype: "json",
+        <script>
+        function uploadFiles(inputId) {
+            var input = document.getElementById(inputId);
+            var files = input.files;
+            //var formData = $(this).serialize();
+            var formData = new FormData();
+            //var formData = new FormData($(this)[0]);
+
+            for (var i = 0; i != files.length; i++) {
+                formData.append("files", files[i]);
+            }
+
+            $.ajax(
+                {
+                    url: "/Invitees/fromCsv/",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    type: "POST",
                     success: function (data) {
-                        $('#myModalContent').html(data);
-                        $('#myModal').fadeIn('slow');
-                        $('#myModal').modal(options);
-                        
-
-                    },
-                    error: function () {
-                        alert("failed to load csv.");
+                        alert("Files Uploaded!");
                     }
-                });
-            });
-            $("#closbtn").click(function () {
-                $('#myModal').modal('hide');
-            });
-        });
-    </script>
-
+                }
+            );
+        }
+        </script>
     <script>
         var PostBackURL = '/Invitees/';
         $(function () {
@@ -191,6 +186,7 @@
                     if (possibleActionsInvitee.indexOf(action) < 0 && possibleActionsCategory.indexOf(action) < 0) {
                         return;
                     }
+                    console.log("action: ", action);
                     if (action.includes("Category")) {
                         PostBackURL = '/Categories/';
                         action = action.replace("Category", "");
@@ -199,23 +195,44 @@
                     var id = $buttonClicked.attr('data-id');
                     var options = { keyboard: true };
 
-                    $.ajax({
-                        type: "GET",
-                        url: PostBackURL + action + "/" + $buttonClicked.val().toString(),
-                        contentType: "application/json; charset=utf-8",
-                        data: { "Id": id },
-                        datatype: "json",
-                        success: function (data) {
-                            $('#myModalContent').html(data);
-                            $('#myModal').fadeIn('slow');
-                            $('#myModal').modal(options);
-                            
+                    console.log("PostBackURL: ", PostBackURL);
 
-                        },
-                        error: function () {
-                            alert("Dynamic content load failed.");
-                        }
-                    });
+                    if (action.includes("Delete") && (PostBackURL.includes("Categories"))) {
+                        $.ajax({
+                            type: "POST",
+                            url: PostBackURL + action + "/" + $buttonClicked.val().toString(),
+                            contentType: "application/json; charset=utf-8",
+                            data: { "Id": id },
+                            datatype: "json",
+                            success: function (data) {
+                                location.reload();
+                            },
+                            error: function () {
+                                alert("Invalid operation. The category is assign to one of your invitees.");
+                                PostBackURL = '/Invitees/';
+                            }
+                        });
+
+                    } else {
+                        $.ajax({
+                            type: "GET",
+                            url: PostBackURL + action + "/" + $buttonClicked.val().toString(),
+                            contentType: "application/json; charset=utf-8",
+                            data: { "Id": id },
+                            datatype: "json",
+                            success: function (data) {
+                                $('#myModalContent').html(data);
+                                $('#myModal').fadeIn('slow');
+                                $('#myModal').modal(options);
+                                PostBackURL = '/Invitees/';
+                            },
+                            error: function () {
+                                alert("Dynamic content load failed.");
+                                PostBackURL = '/Invitees/';
+                            }
+                        });
+                    }
+
                 });
             //$("#closebtn").on('click',function(){
             //    $('#myModal').modal('hide');
@@ -240,7 +257,7 @@
 <div class="fade-in">
 
     </br>
-    <h2 style="color:#F3969A">Invitee</h2>
+    <h2 style="color:#F3969A; text-shadow: 2px 2px 5px #F3969A">Invitees</h2>
 
     @*<div id="filter-blog">
             @using (Html.BeginForm("Index", "Invitees", FormMethod.Post))
@@ -265,12 +282,19 @@
         }
     </div>
     <p>
-        <div style="float: right" ; style="text-align:right">
-            <button style="border-radius: 12px ; border: 2px solid #F3969A;background-color: #fff;" id="importfromcsv">Import From CSV</button>
-            <button style="border-radius: 12px ; border: 2px solid #F3969A;background-color: #fff;" id="exporttocsv">Export To CSV</button>
+        
 
-        </div>
+        <form id="form" name="form" action="/Invitees/fromCsv/" enctype="multipart/form-data" method="post">
+            <div class="buttons">
+                <div class="upload-button">
+                    <div class="label">Select invitees csv file to import</div>
+                    <input id="files" name="files" type="file" size="1" accept=".*csv" multiple onchange="uploadFiles('files');" button style="border-radius: 12px ; border: 2px solid #F3969A;background-color: #fff;" />
+                </div>
+            </div>
+        </form>
+        
     </p>
+
     <table class="table">
         <thead>
             <tr>
@@ -325,49 +349,53 @@
                     </td>
                     <td>
                         <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Edit" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                        <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Details" value="@item.Id"><i class="fa fa-info" aria-hidden="true"></i></button>
                         <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Delete" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-    <h3 style="color:#F3969A">Category</h3>
-    <p>
-        <button style="border-radius: 12px; border: 1px solid #56CC9D;background-color: #fff;" id="createcategory"><i class="fa fa-plus" aria-hidden="true"></i> Category</button>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Item2.FirstOrDefault().Name)
-                    </th>
-                    <th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Item2)
-                {
+    <div style="display:flex">
+        <div style="font-weight: bold">Total invitees: </div><a>@ViewBag.TotalInvitees</a>
+    </div>
+    <div style="display:flex">
+        <div style="font-weight: bold">Total coming invitees: </div><a>@ViewBag.TotalCommingInvitees</a>
+    </div>
+        <h3 style="color:#F3969A; text-shadow: 2px 2px 5px #F3969A; margin-top: 15px; margin-bottom: 15px">Categories</h3>
+        <p>
+            <button style="border-radius: 12px; border: 1px solid #56CC9D;background-color: #fff;" id="createcategory"><i class="fa fa-plus" aria-hidden="true"></i> Category</button>
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="EditCategory" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                            <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="DetailsCategory" value="@item.Id"><i class="fa fa-info" aria-hidden="true"></i></button>
-                            <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="DeleteCategory" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                        </td>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Item2.FirstOrDefault().Name)
+                        </th>
+                        <th>
+                        <th></th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Item2)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="EditCategory" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                                <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="DeleteCategory" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 
-        <div id='myModal' class='modal'>
-            <div class="modal-dialog">
-                <div class="modal-content" style="width:700">
-                    <div id='myModalContent' style="width: auto;margin-left: 50px;"></div>
+            <div id='myModal' class='modal'>
+                <div class="modal-dialog">
+                    <div class="modal-content" style="width:700">
+                        <div id='myModalContent' style="width: auto;margin-left: 50px;"></div>
+                    </div>
                 </div>
-            </div>
 
-        </div>
-</div>
+            </div>
+    </div>

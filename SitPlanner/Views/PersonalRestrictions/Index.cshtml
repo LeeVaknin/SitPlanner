@@ -55,6 +55,7 @@
                         return;
                     }
                     var id = $buttonClicked.attr('data-id');
+                    console.log("id: ", id);
                     var options = { keyboard: true };
                     $.ajax({
                         type: "GET",
@@ -84,7 +85,7 @@
 }
     <div class="fade-in">
         <br>
-        <h2 style="color:#F3969A">Personal Restrictions</h2>
+        <h2 style="color:#F3969A; text-shadow: 2px 2px 5px #F3969A">Personal Restrictions</h2>
 
         <p>
             <button style="border-radius: 12px; border: 1px solid #56CC9D;background-color: #fff;" id="createpersonalrestrication"><i class="fa fa-plus" aria-hidden="true"></i> Restriction</button>
@@ -108,22 +109,28 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MainInvitee.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SecondaryInvitee.FullName)
+                    </td>
+                    @if (item.IsSittingTogether)
+                    {
                         <td>
-                            @Html.DisplayFor(modelItem => item.MainInvitee.FullName)
+                            <i style="margin-left: 60px" class="fa fa-check" aria-hidden="true"></i>
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.SecondaryInvitee.FullName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IsSittingTogether)
-                        </td>
-                        <td>
-                            <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Edit" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                            <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Details" value="@item.Id"><i class="fa fa-info" aria-hidden="true"></i></button>
-                            <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Delete" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                        </td>
-                    </tr>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    <td>
+                        <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Edit" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                        <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Delete" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

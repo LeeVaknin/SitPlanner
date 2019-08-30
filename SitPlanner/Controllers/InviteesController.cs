@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using SitPlanner.Data;
 using SitPlanner.Models;
 using SitPlanner.csv;
+using System.Web;
+using Microsoft.AspNetCore.Http;
+using System.Net.Http.Headers;
 
 namespace SitPlanner.Controllers
 {
@@ -56,6 +59,8 @@ namespace SitPlanner.Controllers
             }
             ViewData["Categories"] = categoriesList;
             ViewData["Id"] = category;
+            ViewData["TotalCommingInvitees"] = _context.Invitee.Where(i => i.IsComing).Count();
+            ViewData["TotalInvitees"] = _context.Invitee.Count();
 
             if (category == "Any")
             {
@@ -97,13 +102,22 @@ namespace SitPlanner.Controllers
 
             return item;
         }
-
-        public async Task<IActionResult> fromCsv()
+        
+        [HttpPost]
+        public async Task<IActionResult> fromCsv(IList<IFormFile> files)
         {
+            using (System.IO.StreamWriter outputFile = new System.IO.StreamWriter(@"csv\inv_tmp.csv"))
+            {
+                using (var reader = new System.IO.StreamReader(files[0].OpenReadStream()))
+                {
+                    while (reader.Peek() >= 0)
+                        outputFile.WriteLine(reader.ReadLine());
+                }
+            }
+
             Csv csv = new Csv();
             Category cat;
-            var result = csv.read(@"csv\inv.csv");
-            //var result = csv.read(@"C:\tmp\inv.csv");
+            var result = csv.read(@"csv\inv_tmp.csv");
             List<Category> list_of_categories = new List<Category>();
             foreach (var invitee in result)
             {
@@ -115,9 +129,7 @@ namespace SitPlanner.Controllers
                 int numIsComing = invitee.Item6;
                 var category = invitee.Item7;
                 bool new_cat = true;
-                //on first itteration we save to db only when the loop ends
-                //this is why "GetCategoryByName" will always return null,
-                //thats why im adding this if below and the list to validate we dont create at first run multiple cat
+
                 cat = GetCategoryByName(category);
                 Category tmpCat = new Category(category, GetEventByID(1));
                 if (cat == null)
@@ -278,6 +290,17 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
 
+            //foreach(Invitee e in _context.Invitee.ToList())
+            //{
+            //    if (e.Id != invitee.Id)
+            //    {
+            //        //e.IsComing = true;
+            //        _context.Update(e);
+            //        await _context.SaveChangesAsync();
+            //    }
+               
+            //}
+
             if (ModelState.IsValid)
             {
                 try
@@ -325,10 +348,32 @@ namespace SitPlanner.Controllers
 
         // POST: Invitees/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+           
+            while (_context.AccessibilityRestriction.FirstOrDefault(r => r.InviteeId == id) != null)
+            {
+                var restrictionA = _context.AccessibilityRestriction.FirstOrDefault(r => r.InviteeId == id);
+                _context.AccessibilityRestriction.Remove(restrictionA);
+                _context.SaveChanges();
+            }
+
+            while (_context.PersonalRestriction.FirstOrDefault(p => p.MainInviteeId == id || p.SecondaryInviteeId == id) != null)
+            {
+                var personalRestriction = _context.PersonalRestriction.FirstOrDefault(p => p.MainInviteeId == id || p.SecondaryInviteeId == id);
+                _context.PersonalRestriction.Remove(personalRestriction);
+                _context.SaveChanges();
+            }
+
+            while (_context.InviteeTable.FirstOrDefault(t => t.InviteeId == id) != null)
+            {
+                var inviteeTable = _context.InviteeTable.FirstOrDefault(i => i.InviteeId == id);
+                _context.InviteeTable.Remove(inviteeTable);
+                _context.SaveChanges();
+            } 
+
             var invitee = await _context.Invitee.FindAsync(id);
+
             _context.Invitee.Remove(invitee);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

@@ -92,7 +92,7 @@ namespace SitPlanner.Algo
             totalPunishment += InviteesPersonalRestrictionPunishment();
 
             //invitee-accesabilityRestriction
-            //totalPunishment += InviteesAccessabilityRestrictionPunishment();
+            totalPunishment += InviteesAccessabilityRestrictionPunishment();
 
             //invitee- is comming?
            // totalPunishment += InviteeConfirmedInvatationPunishment();
@@ -287,15 +287,6 @@ namespace SitPlanner.Algo
             Gen gen = new Gen(invitees[i], tables[ran]);
 
             return gen;
-
-/*          //Generate gens only with invitees that confirmed invatation
-                      if (invitees[i].IsComing)
-                      {
-                          return new Gen(invitees[i], tables[ran]);
-                      }
-
-                      return null;
-                      */
         }
         public void cloneGens(Gen[] gens)
         {
@@ -338,16 +329,17 @@ namespace SitPlanner.Algo
 
         private Table GetTableByTableId(int tableId)
         {
-            foreach(Table table in tables)
+
+            foreach (Table table in algoDb.tables)
             {
-                if(table.Id == tableId)
+                if (table.Id == tableId)
                 {
                     return table;
-                }
+                } 
             }
+            
             return null;
         }
-
         #endregion
     }
 }

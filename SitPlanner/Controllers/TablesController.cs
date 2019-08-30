@@ -26,9 +26,11 @@ namespace SitPlanner.Controllers
             if (id == null)
             {
                 var sitPlannerContext = _context.Table.Include(t => t.Event);
+                ViewData["TotalCapacity"] = _context.Table.Sum(c => c.CapacityOfPeople);
                 return View(await sitPlannerContext.ToListAsync());
             }
             var seatPlannerContext = _context.Table.Include(t => t.Event).Where(i => i.Id == id);
+            ViewData["TotalCapacity"] = _context.Table.Sum(c => c.CapacityOfPeople);
             return View(await seatPlannerContext.ToListAsync());
 
 
@@ -53,6 +55,11 @@ namespace SitPlanner.Controllers
             return PartialView(table);
         }
 
+        struct TableSizeOption
+        {
+            int size;
+            string name;
+        }
         // GET: Tables/Create
         public IActionResult Create()
         {
@@ -64,7 +71,14 @@ namespace SitPlanner.Controllers
                                TableTypeEnum = e,
                            };
             ViewBag.EnumList = new SelectList(enumData, "TableTypeEnum", "TableTypeEnum");
-            
+
+            var enumData1 = from Table.TableSizesEnum e1 in Enum.GetValues(typeof(Table.TableSizesEnum))
+                           select new
+                           {
+                               TableSizesEnum = e1,
+                           };
+            ViewBag.EnumListSize = new SelectList(enumData1, "TableSizesEnum", "TableSizesEnum");
+
             return PartialView();
         }
 
@@ -81,7 +95,7 @@ namespace SitPlanner.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", table.EventId);
+            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", table.EventId);       
             return View(table);
         }
 
@@ -106,7 +120,7 @@ namespace SitPlanner.Controllers
                                TableTypeEnum = e,
                            };
             ViewData["TableType"] = new SelectList(enumData, "TableTypeEnum", "TableTypeEnum");
-
+            
             return PartialView(table);
         }
 
@@ -167,9 +181,12 @@ namespace SitPlanner.Controllers
 
         // POST: Tables/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (_context.InviteeTable.FirstOrDefault(t => t.TableId == id) != null)
+            {
+                throw new Exception("");
+            }
             var table = await _context.Table.FindAsync(id);
             _context.Table.Remove(table);
             await _context.SaveChangesAsync();

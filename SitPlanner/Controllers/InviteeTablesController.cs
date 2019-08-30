@@ -62,7 +62,7 @@ namespace SitPlanner.Controllers
                 });
             }
 
-            ViewData["isFavorite"] = _context.EventOption.Where(i => i.Id == id).Select(i=>i.isFavorite).First();
+            ViewData["isFavorite"] = _context.EventOption.Where(i => i.Id == id).Select(i=>i.isFavorite).FirstOrDefault();
             ViewData["Opts"] = optionIdsList;
             ViewData["Id"] = id;
             if (id == null)
@@ -147,8 +147,13 @@ namespace SitPlanner.Controllers
         }
 
         // GET: InviteeTables/Create
-        public async Task<IActionResult> RunAlgo()
+        public async Task<int> RunAlgo()
         {
+
+            if(!isDataValid())
+            {
+                throw new Exception(" ");
+            }
 
             result = algo.RunAlgo(AlgoDbCreation()).getGens().ToList();
 
@@ -166,9 +171,25 @@ namespace SitPlanner.Controllers
             ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id");
             ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName");
             ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id");
-            return RedirectToAction("Index","InviteeTables");
-            //return RedirectToAction(nameof(Index));
-            //return View(nameof(Index));
+
+            return eventOption.Id;
+
+        }
+
+        private bool isDataValid()
+        {
+            bool isValid = false;
+
+            if (_context.Table.Count() > 0 && _context.Invitee.Count() > 0)
+            {
+                
+                if (_context.Table.Sum(p => p.CapacityOfPeople) > _context.Invitee.Where(i => i.IsComing).Count())
+                {
+                    isValid = true;
+                }
+            }
+
+            return isValid;
         }
 
         // GET: InviteeTables/Create
@@ -313,7 +334,7 @@ namespace SitPlanner.Controllers
         private AlgoDb AlgoDbCreation()
         {
             
-            var sitPlannerContextInvitees = _context.Invitee.Include(i => i.Category).Include(i => i.Event).ToList();
+            var sitPlannerContextInvitees = _context.Invitee.Where(i => i.IsComing).Include(i => i.Category).Include(i => i.Event).ToList();
             invitees = new List<Invitee>(sitPlannerContextInvitees);
 
             var sitPlannerContextTables = _context.Table.Include(t => t.Event).ToList();
