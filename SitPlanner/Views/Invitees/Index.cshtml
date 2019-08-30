@@ -148,47 +148,7 @@
         });
     </script>
 
-    <script>
-        var categoriesImprtCSVPostBackURL = '/Invitees/fromCsv/';
-        $(function () {
-            $("#importfromcsv").click(function () {
-                var $buttonClicked = $(this);
-
-                //var id = $buttonClicked.attr('data-id');
-                var id = $buttonClicked.attr('id');
-                var val = $buttonClicked.val('fileupload');
-                var file = myCsvFile.files[0]
-                console.log(file)
-                var formData = new FormData();
-                formData.append("csv_file",file)
-                console.log("id: ", id);
-                var options = { keyboard: true };
-
-                var id = $buttonClicked.attr('data-id');
-
-                $.ajax({
-                    type: "POST",
-                    url: categoriesImprtCSVPostBackURL,
-                    contentType: "multipart/form-data",
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    //datatype: "json",
-                    success: function (data) {
-                        location.reload();
-                    },
-                    error: function () {
-                        alert("failed to load csv.");
-                    }
-                });
-            });
-            $("#closbtn").click(function () {
-                $('#myModal').modal('hide');
-            });
-        });
-    </script>
-
-    <script>
+        <script>
         function uploadFiles(inputId) {
             var input = document.getElementById(inputId);
             var files = input.files;
@@ -322,16 +282,13 @@
         }
     </div>
     <p>
-        <div style="float: right" ; style="text-align:right">
-            <!--<button style="border-radius: 12px ; border: 2px solid #F3969A;background-color: #fff;" id="importfromcsv">Import From CSV</button>-->
-            <!-- <button style="border-radius: 12px ; border: 2px solid #F3969A;background-color: #fff;" id="exporttocsv">Export To CSV</button>-->
-        </div>
+        
 
         <form id="form" name="form" action="/Invitees/fromCsv/" enctype="multipart/form-data" method="post">
             <div class="buttons">
                 <div class="upload-button">
                     <div class="label">Select invitees csv file to import</div>
-                    <input id="files" name="files" type="file" size="1" accept=".*csv" multiple onchange="uploadFiles('files');" button style="border-radius: 12px ; border: 2px solid #F3969A;background-color: #fff;"
+                    <input id="files" name="files" type="file" size="1" accept=".*csv" multiple onchange="uploadFiles('files');" button style="border-radius: 12px ; border: 2px solid #F3969A;background-color: #fff;" />
                 </div>
             </div>
         </form>
