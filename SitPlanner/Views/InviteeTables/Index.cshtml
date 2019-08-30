@@ -187,6 +187,34 @@
 </script>
 
 <script>
+    function filterbyname() {
+        jQuery.expr[":"].containsIgnoreCase = jQuery.expr.createPseudo(function (arg) {
+            return function (elem) {
+                return jQuery(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+            };
+        });
+
+
+        var spans = document.getElementsByTagName("span");
+
+        $("span.filtered").each(function () { $(this).removeClass() });
+
+
+        var e = document.getElementById("input-h").value;
+        $("div:containsIgnoreCase('" + e + "')").each(function () {
+
+            if ($(this).attr('class').indexOf("guest") !== -1) {
+
+                $(this).html("<span class=\"filtered\">" + $(this).html() + "</span>");
+
+            }
+        });
+
+    }
+</script>
+
+
+<script>
     function getOptionId() {
         return document.getElementById("Opts");
     }
@@ -197,7 +225,7 @@
 
 <div id="filter-blog">
     <label>Choose your draft:</label> <br />
-    <div style="display: flex">
+    <div style="display: flex;">
         @Html.DropDownList("Opts", ViewBag.Opts as SelectList, new { onchange = "filter()", @class = "form-control", style = "width: 10%; border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" })
         <button style="border: 0px ;background-color: #fff;" id="setFavoriteEventOption">
             @if (ViewBag.isFavorite)
@@ -213,7 +241,7 @@
     <br />
 
     <input id="input-h" type="search" name="id" maxlength="20" placeholder="  Filter by name" style="width:205px;width: 12%; border-radius: 12px; border: 1px solid #F3969A;background-color: #fff;">
-    <button style="border: 0px ;background-color: #fff;" id="btn-filter" type="submit" onclick="filter()"><i class="fa fa-search" aria-hidden="true"></i></button>
+    <button style="border: 0px ;background-color: #fff;" id="btn-filter" type="submit" onclick="filterbyname()"><i class="fa fa-search" aria-hidden="true"></i></button>
 </div>
 
 
@@ -226,46 +254,133 @@
     </div>
 </p>
 
-    @foreach (var invtable in Model)
+<!-- <div class="tables-container" style="display: grid; grid-template-columns: repeat(auto-fill,400px); width:80%;"> -->
+<div>
+@foreach (var invtable in Model)
+{
+    int invtableCounter = invtable.Count();
+    if (invtableCounter <= 10 && false)
     {
-            <br />
-            <h2 style="color:#56CC9D">Table @invtable.Key</h2>
-            <br />
-            <table style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            Name
-                        </th>
-                        <th>
-                            Category
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in invtable)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Invitee.FirstName) @Html.DisplayFor(modelItem => item.Invitee.LastName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Invitee.Category.Name)
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-            }
-    <div id='myModal' class='modal'>
-        <div class="modal-dialog">
-            <div class="modal-content" style="width:700">
-                <div id='myModalContent' style="width: auto;margin-left: 50px;"></div>
+        string tableClass = "10";
+        // <h2 style="color:#56CC9D">Table @invtable.Key</h2>
+
+
+        <div style="position: relative" class="table-container-@tableClass">
+            <img width="300" height="300" src="~/images/Table-@tableClass-.png" />
+            <div class="position-middle-@tableClass ">
+                @invtable.Key
             </div>
+
+            @{
+                int counter = 0;
+            }
+
+            @foreach (var item in invtable)
+            {
+                <div class="guest-@tableClass-@counter">
+                    @invtable.ElementAt(counter).Invitee.FirstName <br />@invtable.ElementAt(counter).Invitee.LastName
+                </div>
+                counter++;
+
+            }
+
+        </div>
+
+    }
+
+    if (invtableCounter > 10 && invtableCounter <= 12 && false)
+    {
+        string tableClass = "12";
+        // <h2 style="color:#56CC9D">Table @invtable.Key</h2>
+
+
+        <div style="position: relative" class="table-container-@tableClass">
+            <img width="300" height="300" src="~/images/Table-@tableClass-.png" />
+            <div class="position-middle-@tableClass ">
+                @invtable.Key
+            </div>
+
+            @{
+                int counter = 0;
+            }
+
+            @foreach (var item in invtable)
+            {
+                <div class="guest-@tableClass-@counter">
+                    @invtable.ElementAt(counter).Invitee.FirstName <br />@invtable.ElementAt(counter).Invitee.LastName
+                </div>
+                counter++;
+
+            }
+
+        </div>
+
+    }
+    if (invtableCounter > 12 && invtableCounter <= 16 && false)
+    {
+        string tableClass = "16";
+        // <h2 style="color:#56CC9D">Table @invtable.Key</h2>
+
+
+        <div style="position: relative" class="table-container-@tableClass">
+            <img width="400" height="300" src="~/images/Table-@tableClass-.png" />
+            <div class="position-middle-@tableClass ">
+                @invtable.Key
+            </div>
+
+            @{
+                int counter = 0;
+            }
+
+            @foreach (var item in invtable)
+            {
+                <div class="guest-@tableClass-@counter">
+                    @invtable.ElementAt(counter).Invitee.FirstName <br />@invtable.ElementAt(counter).Invitee.LastName
+                </div>
+                counter++;
+
+            }
+
+        </div>
+
+    }
+    if (invtableCounter > 16 || true)
+    {
+        <h2 style="color:#56CC9D">Table @invtable.Key</h2>
+        <br />
+        <table style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Category
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in invtable)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Invitee.FirstName) @Html.DisplayFor(modelItem => item.Invitee.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Invitee.Category.Name)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+<div id='myModal' class='modal'>
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:700">
+            <div id='myModalContent' style="width: auto;margin-left: 50px;"></div>
         </div>
     </div>
-
-
-
-    <canvas id="canvas" width=300 height=300></canvas>
 </div>
+
+
