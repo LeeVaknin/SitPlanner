@@ -179,9 +179,12 @@ namespace SitPlanner.Controllers
 
         // POST: Tables/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (_context.InviteeTable.FirstOrDefault(t => t.TableId == id) != null)
+            {
+                throw new Exception("");
+            }
             var table = await _context.Table.FindAsync(id);
             _context.Table.Remove(table);
             await _context.SaveChangesAsync();
