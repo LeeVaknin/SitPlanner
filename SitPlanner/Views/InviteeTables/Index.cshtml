@@ -197,7 +197,7 @@
 
 <div id="filter-blog">
     <label>Choose your draft:</label> <br />
-    <div style="display: flex">
+    <div style="display: flex;">
         @Html.DropDownList("Opts", ViewBag.Opts as SelectList, new { onchange = "filter()", @class = "form-control", style = "width: 10%; border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" })
         <button style="border: 0px ;background-color: #fff;" id="setFavoriteEventOption">
             @if (ViewBag.isFavorite)
@@ -225,7 +225,7 @@
         <button style="border-radius: 12px; border: 4px solid #b22d38;background-color: #fff;" id="deleteEventOption"><i class="fa fa-trash" aria-hidden="true"></i> Arrangement</button>
     </div>
 </p>
-<div class="tables-container" style="display:flex;">
+<div class="tables-container" style="display: grid; grid-template-columns: repeat(auto-fill,400px); width:80%;">
 
     @foreach (var invtable in Model)
     {
@@ -233,7 +233,6 @@
         if (invtableCounter <= 10)
         {
             string tableClass = "10";
-            <br />
             // <h2 style="color:#56CC9D">Table @invtable.Key</h2>
 
 
@@ -263,7 +262,6 @@
         if (invtableCounter > 10 && invtableCounter <= 12)
         {
             string tableClass = "12";
-            <br />
             // <h2 style="color:#56CC9D">Table @invtable.Key</h2>
 
 
@@ -289,10 +287,9 @@
             </div>
 
         }
-        if (invtableCounter > 12 && invtableCounter <= 16 || true)
+        if (invtableCounter > 12 && invtableCounter <= 16)
         {
             string tableClass = "16";
-            <br />
             // <h2 style="color:#56CC9D">Table @invtable.Key</h2>
 
 
@@ -318,10 +315,10 @@
             </div>
 
         }
-        else
+        if (invtableCounter > 16)
         {
-            <br />
             <h2 style="color:#56CC9D">Table @invtable.Key</h2>
+            <br />
             <table style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" class="table">
                 <thead>
                     <tr>

@@ -24,7 +24,7 @@ namespace SitPlanner.Models
 
         [Display(Name = "Table type")]
         public TableTypeEnum TableType { get; set; }
-
+        
         public int EventId { get; set; }
         public virtual Event Event { get; set; }
 

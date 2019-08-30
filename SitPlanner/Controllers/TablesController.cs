@@ -53,6 +53,11 @@ namespace SitPlanner.Controllers
             return PartialView(table);
         }
 
+        struct TableSizeOption
+        {
+            int size;
+            string name;
+        }
         // GET: Tables/Create
         public IActionResult Create()
         {
@@ -70,7 +75,7 @@ namespace SitPlanner.Controllers
                            {
                                TableSizesEnum = e1,
                            };
-            ViewBag.EnumList = new SelectList(enumData1, "TableSizesEnum", "TableSizesEnum");
+            ViewBag.EnumListSize = new SelectList(enumData1, "TableSizesEnum", "TableSizesEnum");
 
             return PartialView();
         }
