@@ -50,7 +50,7 @@
     }
 </script>
 
-<div>
+<div style="font-family: cursive">
 
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -95,16 +95,16 @@
                     <input asp-for="Comment" class="form-control" />
                     <span asp-validation-for="Comment" class="text-danger"></span>
                 </div>
-                @*<div class="form-group">
-                    <label asp-for="EventId" class="control-label"></label>
+                <div class="form-group">
+                    <label asp-for="Event" class="control-label"></label>
                     <select asp-for="EventId" class="form-control" asp-items="ViewBag.EventId"></select>
-                </div>*@
+                </div>
                 <div class="form-group">
                     <label asp-for="Category" class="control-label"></label>
                     <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-default" id="submitbtn" disabled="true" style="background-color: #56CC9D;" />
+                    <input type="submit" value="Create" class="btn btn-default" id="submitbtn" disabled="true" style="background-color: #56CC9D; font-family: cursive" />
                 </div>
             </form>
         </div>

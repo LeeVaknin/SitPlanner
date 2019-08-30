@@ -5,6 +5,9 @@
     @ViewBag.Message
 }
 
+<link rel="stylesheet" href="~/css/tables.css" type="text/css" />
+
+
 @section scripts
     {
 
@@ -62,10 +65,10 @@
                     data: { "Id": id },
                     datatype: "json",
                     success: function (data) {
-                        window.location.reload(true);
+                        window.location.href = "https://" + window.location.host + window.location.pathname + '?id=' + data;
                     },
                     error: function () {
-                        alert("Dynamic content load failed.");
+                        alert("You supplied invalid data. Please check again if you have enough seats to all of your invitees.");
                     }
                 });
             });
@@ -122,28 +125,22 @@
         var EventOptionPostBackURL = '/EventOptions/Delete/';
         $(function () {
             $("#deleteEventOption").click(function () {
-                var $buttonClicked = $(this);
-                var id = $buttonClicked.attr('data-id');
-                var options = { keyboard: true };
+                var e = document.getElementById("Opts");
+                var id = e.options[e.selectedIndex].value;
                 $.ajax({
-                    type: "GET",
+                    type: "POST",
                     url: EventOptionPostBackURL + id,
                     contentType: "application/json; charset=utf-8",
                     data: { "Id": id },
                     datatype: "json",
                     success: function (data) {
-                        $('#myModalContent').html(data);
-                        $('#myModal').modal(options);
-                        $('#myModal').modal('show');
-
+                        window.location.href = "https://" + window.location.host + window.location.pathname
                     },
                     error: function () {
                         alert("Dynamic content load failed.");
                     }
                 });
             });
-            //$("#closebtn").on('click',function(){
-            //    $('#myModal').modal('hide');
 
             $("#closbtn").click(function () {
                 $('#myModal').modal('hide');
@@ -156,7 +153,7 @@
         $(function () {
             $("#setFavoriteEventOption").click(function () {
                 var e = document.getElementById("Opts");
-                var id = e.options[e.selectedIndex].value;  
+                var id = e.options[e.selectedIndex].value;
                 $.ajax({
                     type: "POST",
                     url: EventOptionFavoritePostBackURL + id,
@@ -171,8 +168,6 @@
                     }
                 });
             });
-            //$("#closebtn").on('click',function(){
-            //    $('#myModal').modal('hide');
 
             $("#closbtn").click(function () {
                 $('#myModal').modal('hide');
@@ -186,10 +181,38 @@
         var e = document.getElementById("Opts");
         var val = e.options[e.selectedIndex].value;
 
-        window.location.href = "https://" + window.location.host + window.location.pathname + '?id=' + val + "&name=" + name;
+        window.location.href = "https://" + window.location.host + window.location.pathname + '?id=' + val;
         return false;
     }
 </script>
+
+<script>
+    function filterbyname() {
+        jQuery.expr[":"].containsIgnoreCase = jQuery.expr.createPseudo(function (arg) {
+            return function (elem) {
+                return jQuery(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+            };
+        });
+
+
+        var spans = document.getElementsByTagName("span");
+
+        $("span.filtered").each(function () { $(this).removeClass() });
+
+
+        var e = document.getElementById("input-h").value;
+        $("div:containsIgnoreCase('" + e + "')").each(function () {
+
+            if ($(this).attr('class').indexOf("guest") !== -1) {
+
+                $(this).html("<span class=\"filtered\">" + $(this).html() + "</span>");
+
+            }
+        });
+
+    }
+</script>
+
 
 <script>
     function getOptionId() {
@@ -198,11 +221,11 @@
 </script>
 
 </br>
-    <h3 style="color:#F3969A">Table Arrangment</h3>
+<h3 style="color:#F3969A; text-shadow: 2px 2px 5px #F3969A">Table Arrangments</h3>
 
 <div id="filter-blog">
     <label>Choose your draft:</label> <br />
-    <div style="display: flex">
+    <div style="display: flex;">
         @Html.DropDownList("Opts", ViewBag.Opts as SelectList, new { onchange = "filter()", @class = "form-control", style = "width: 10%; border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" })
         <button style="border: 0px ;background-color: #fff;" id="setFavoriteEventOption">
             @if (ViewBag.isFavorite)
@@ -218,22 +241,113 @@
     <br />
 
     <input id="input-h" type="search" name="id" maxlength="20" placeholder="  Filter by name" style="width:205px;width: 12%; border-radius: 12px; border: 1px solid #F3969A;background-color: #fff;">
-    <button style="border: 0px ;background-color: #fff;" id="btn-filter" type="submit" onclick="filter()"><i class="fa fa-search" aria-hidden="true"></i></button>
+    <button style="border: 0px ;background-color: #fff;" id="btn-filter" type="submit" onclick="filterbyname()"><i class="fa fa-search" aria-hidden="true"></i></button>
 </div>
 
 
-    <p>
-        <div style="float: right">
-            <button style="border-radius: 12px; border: 4px solid #F3969A;background-color: #fff;" id="runalgoinviteetable">
-                <i class="fa fa-users" aria-hidden="true"></i> SeatMe :)
-            </button>
-            <button style="border-radius: 12px; border: 4px solid #b22d38;background-color: #fff;" id="deleteEventOption"><i class="fa fa-trash" aria-hidden="true"></i> Arrangement</button>
-        </div>
-    </p>
-    @foreach (var invtable in Model)
+<p>
+    <div style="float: right">
+        <button style="border-radius: 12px; border: 4px solid #F3969A;background-color: #fff;" id="runalgoinviteetable">
+            <i class="fa fa-users" aria-hidden="true"></i> SeatMe :)
+        </button>
+        <button style="border-radius: 12px; border: 4px solid #b22d38;background-color: #fff;" id="deleteEventOption"><i class="fa fa-trash" aria-hidden="true"></i> Arrangement</button>
+    </div>
+</p>
+
+<!-- <div class="tables-container" style="display: grid; grid-template-columns: repeat(auto-fill,400px); width:80%;"> -->
+<div>
+@foreach (var invtable in Model)
+{
+    int invtableCounter = invtable.Count();
+    if (invtableCounter <= 10 && false)
     {
-        <br />
+        string tableClass = "10";
+        // <h2 style="color:#56CC9D">Table @invtable.Key</h2>
+
+
+        <div style="position: relative" class="table-container-@tableClass">
+            <img width="300" height="300" src="~/images/Table-@tableClass-.png" />
+            <div class="position-middle-@tableClass ">
+                @invtable.Key
+            </div>
+
+            @{
+                int counter = 0;
+            }
+
+            @foreach (var item in invtable)
+            {
+                <div class="guest-@tableClass-@counter">
+                    @invtable.ElementAt(counter).Invitee.FirstName <br />@invtable.ElementAt(counter).Invitee.LastName
+                </div>
+                counter++;
+
+            }
+
+        </div>
+
+    }
+
+    if (invtableCounter > 10 && invtableCounter <= 12 && false)
+    {
+        string tableClass = "12";
+        // <h2 style="color:#56CC9D">Table @invtable.Key</h2>
+
+
+        <div style="position: relative" class="table-container-@tableClass">
+            <img width="300" height="300" src="~/images/Table-@tableClass-.png" />
+            <div class="position-middle-@tableClass ">
+                @invtable.Key
+            </div>
+
+            @{
+                int counter = 0;
+            }
+
+            @foreach (var item in invtable)
+            {
+                <div class="guest-@tableClass-@counter">
+                    @invtable.ElementAt(counter).Invitee.FirstName <br />@invtable.ElementAt(counter).Invitee.LastName
+                </div>
+                counter++;
+
+            }
+
+        </div>
+
+    }
+    if (invtableCounter > 12 && invtableCounter <= 16 && false)
+    {
+        string tableClass = "16";
+        // <h2 style="color:#56CC9D">Table @invtable.Key</h2>
+
+
+        <div style="position: relative" class="table-container-@tableClass">
+            <img width="400" height="300" src="~/images/Table-@tableClass-.png" />
+            <div class="position-middle-@tableClass ">
+                @invtable.Key
+            </div>
+
+            @{
+                int counter = 0;
+            }
+
+            @foreach (var item in invtable)
+            {
+                <div class="guest-@tableClass-@counter">
+                    @invtable.ElementAt(counter).Invitee.FirstName <br />@invtable.ElementAt(counter).Invitee.LastName
+                </div>
+                counter++;
+
+            }
+
+        </div>
+
+    }
+    if (invtableCounter > 16 || true)
+    {
         <h2 style="color:#56CC9D">Table @invtable.Key</h2>
+        <br />
         <table style="border-radius: 12px; border: 2px solid #56CC9D;background-color: #fff;" class="table">
             <thead>
                 <tr>
@@ -260,15 +374,13 @@
             </tbody>
         </table>
     }
-    <div id='myModal' class='modal'>
-        <div class="modal-dialog">
-            <div class="modal-content" style="width:700">
-                <div id='myModalContent' style="width: auto;margin-left: 50px;"></div>
-            </div>
+}
+<div id='myModal' class='modal'>
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:700">
+            <div id='myModalContent' style="width: auto;margin-left: 50px;"></div>
         </div>
     </div>
+</div>
 
 
-
-    <canvas id="canvas" width=300 height=300></canvas>
-    </div>
