@@ -30,12 +30,12 @@ namespace SitPlanner.Controllers
         public async Task<IActionResult> Index(string category)
         {
             // If no such  category exists
-            if (!_context.Category.Where(i => i.Name == category).Any())
+            if (!_context.Category.Where(i => i.EventId == MyGlobals.GlobalEventID).Where(i => i.Name == category).Any())
             {
                 category = null;
             }
 
-            if (category == null && _context.Invitee.Any())
+            if (category == null && _context.Invitee.Where(i => i.EventId == MyGlobals.GlobalEventID).Any())
             {
                 category = "Any";
             }
@@ -59,24 +59,25 @@ namespace SitPlanner.Controllers
             }
             ViewData["Categories"] = categoriesList;
             ViewData["Id"] = category;
-            ViewData["TotalCommingInvitees"] = _context.Invitee.Where(i => i.IsComing).Count();
-            ViewData["TotalInvitees"] = _context.Invitee.Count();
+            ViewData["TotalCommingInvitees"] = _context.Invitee.Where(i => i.EventId == MyGlobals.GlobalEventID).
+                Where(i => i.IsComing).Count();
+            ViewData["TotalInvitees"] = _context.Invitee.Where(i => i.EventId == MyGlobals.GlobalEventID).Count();
 
             if (category == "Any")
             {
-                var invitees = _context.Invitee.Include(i => i.Category).Include(i => i.Event).OrderBy(n => n.LastName);
-                var categories = _context.Category.Include(c => c.Event).OrderBy(e => e.Name);
+                var invitees = _context.Invitee.Where(i => i.EventId == MyGlobals.GlobalEventID).Include(i => i.Category).Include(i => i.Event).OrderBy(n => n.LastName);
+                var categories = _context.Category.Where(i => i.EventId == MyGlobals.GlobalEventID).Include(c => c.Event).OrderBy(e => e.Name);
                 var tuple = new Tuple<IEnumerable<Invitee>, IEnumerable<Category>>(invitees, categories);
                 return View(tuple);
             }
             else
             {
-                var invitees = _context.Invitee.Include(i => i.Category).Include(i => i.Event).Where(i => i.Category.Name == category);
-                var categories = _context.Category.Include(c => c.Event);
+                var invitees = _context.Invitee.Where(i => i.EventId == MyGlobals.GlobalEventID).Include(i => i.Category).Include(i => i.Event).Where(i => i.Category.Name == category);
+                var categories = _context.Category.Where(i => i.EventId == MyGlobals.GlobalEventID).Include(c => c.Event);
                 var tuple = new Tuple<IEnumerable<Invitee>, IEnumerable<Category>>(invitees, categories);
                 return View(tuple);
             }
-           
+
         }
 
 
@@ -87,7 +88,7 @@ namespace SitPlanner.Controllers
                 return null;
             }
 
-            var item = _context.Category.FirstOrDefault(i => i.Name == name);
+            var item = _context.Category.Where(i => i.EventId == MyGlobals.GlobalEventID).FirstOrDefault(i => i.Name == name);
 
             return item;
         }
@@ -102,7 +103,7 @@ namespace SitPlanner.Controllers
 
             return item;
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> fromCsv(IList<IFormFile> files)
         {
@@ -131,7 +132,7 @@ namespace SitPlanner.Controllers
                 bool new_cat = true;
 
                 cat = GetCategoryByName(category);
-                Category tmpCat = new Category(category, GetEventByID(1));
+                Category tmpCat = new Category(category, GetEventByID(MyGlobals.GlobalEventID));
                 if (cat == null)
                 {
                     foreach (Category existCat in list_of_categories)
@@ -149,11 +150,11 @@ namespace SitPlanner.Controllers
                     }
                     _context.Add(cat);
                 }
-                 
+
                  //await _context.SaveChangesAsync();
 
 
-                Invitee inv = new Invitee(firstName, lastName, phoneNumber, address, numIsComing, GetEventByID(1),cat);
+                Invitee inv = new Invitee(firstName, lastName, phoneNumber, address, numIsComing, GetEventByID(MyGlobals.GlobalEventID),cat);
                 _context.Add(inv);
             }
             await _context.SaveChangesAsync();
@@ -222,19 +223,23 @@ namespace SitPlanner.Controllers
         // GET: Invitees/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Category.OrderBy(x => x.Name), "Id", "Name");
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
-            
+            ViewData["CategoryId"] = new SelectList(_context.Category.Where(x => x.EventId == MyGlobals.GlobalEventID).
+                OrderBy(x => x.Name), "Id", "Name");
+
+
+            //ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
+
             return PartialView("_Create");
         }
 
         // POST: Invitees/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,PhoneNumber,Address,IsComing,Comment,EventId,CategoryId")] Invitee invitee)
         {
+            invitee.EventId = MyGlobals.GlobalEventID;
             if (ModelState.IsValid)
             {
                 _context.Add(invitee);
@@ -250,7 +255,7 @@ namespace SitPlanner.Controllers
         [HttpGet]
         public async Task<IActionResult> InviteeExistRequest(string firstName, String lastName, int phoneNumber)
         {
-            
+
             bool doesExist = _context.Invitee.Any(e => e.FirstName.ToLower() == firstName.ToLower() && e.LastName.ToLower() == lastName.ToLower() && e.PhoneNumber == phoneNumber);
 
             if(doesExist)
@@ -273,13 +278,14 @@ namespace SitPlanner.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category.OrderBy(x => x.Name), "Id", "Name", invitee.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Category.Where(x=> x.EventId == MyGlobals.GlobalEventID).
+                OrderBy(x => x.Name), "Id", "Name", invitee.CategoryId);
             ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", invitee.EventId);
             return PartialView(invitee);
         }
 
         // POST: Invitees/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -298,7 +304,7 @@ namespace SitPlanner.Controllers
             //        _context.Update(e);
             //        await _context.SaveChangesAsync();
             //    }
-               
+
             //}
 
             if (ModelState.IsValid)
@@ -350,7 +356,7 @@ namespace SitPlanner.Controllers
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-           
+
             while (_context.AccessibilityRestriction.FirstOrDefault(r => r.InviteeId == id) != null)
             {
                 var restrictionA = _context.AccessibilityRestriction.FirstOrDefault(r => r.InviteeId == id);
@@ -370,7 +376,7 @@ namespace SitPlanner.Controllers
                 var inviteeTable = _context.InviteeTable.FirstOrDefault(i => i.InviteeId == id);
                 _context.InviteeTable.Remove(inviteeTable);
                 _context.SaveChanges();
-            } 
+            }
 
             var invitee = await _context.Invitee.FindAsync(id);
 
