@@ -288,6 +288,17 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
 
+            foreach(Invitee e in _context.Invitee.ToList())
+            {
+                if (e.Id != invitee.Id)
+                {
+                    e.IsComing = true;
+                    _context.Update(e);
+                    await _context.SaveChangesAsync();
+                }
+               
+            }
+
             if (ModelState.IsValid)
             {
                 try
@@ -335,10 +346,32 @@ namespace SitPlanner.Controllers
 
         // POST: Invitees/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+           
+            while (_context.AccessibilityRestriction.FirstOrDefault(r => r.InviteeId == id) != null)
+            {
+                var restrictionA = _context.AccessibilityRestriction.FirstOrDefault(r => r.InviteeId == id);
+                _context.AccessibilityRestriction.Remove(restrictionA);
+                _context.SaveChanges();
+            }
+
+            while (_context.PersonalRestriction.FirstOrDefault(p => p.MainInviteeId == id || p.SecondaryInviteeId == id) != null)
+            {
+                var personalRestriction = _context.PersonalRestriction.FirstOrDefault(p => p.MainInviteeId == id || p.SecondaryInviteeId == id);
+                _context.PersonalRestriction.Remove(personalRestriction);
+                _context.SaveChanges();
+            }
+
+            while (_context.InviteeTable.FirstOrDefault(t => t.InviteeId == id) != null)
+            {
+                var inviteeTable = _context.InviteeTable.FirstOrDefault(i => i.InviteeId == id);
+                _context.InviteeTable.Remove(inviteeTable);
+                _context.SaveChanges();
+            } 
+
             var invitee = await _context.Invitee.FindAsync(id);
+
             _context.Invitee.Remove(invitee);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

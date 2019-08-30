@@ -54,22 +54,39 @@
                     }
                     var id = $buttonClicked.attr('data-id');
                     var options = { keyboard: true };
-                    $.ajax({
-                        type: "GET",
-                        url: TableDeletePostBackURL + action + "/" + $buttonClicked.val().toString(),
-                        contentType: "application/json; charset=utf-8",
-                        data: { "Id": id },
-                        datatype: "json",
-                        success: function (data) {
-                            $('#myModalContent').html(data);
-                            $('#myModal').fadeIn('slow');
-                            $('#myModal').modal(options);
+                    if (action.includes("Delete")) {
+                        $.ajax({
+                            type: "POST",
+                            url: TableDeletePostBackURL + action + "/" + $buttonClicked.val().toString(),
+                            contentType: "application/json; charset=utf-8",
+                            data: { "Id": id },
+                            datatype: "json",
+                            success: function (data) {
+                               location.reload();
+                            },
+                            error: function () {
+                                alert("Invalid operation. People are sitting at the table you are trying to delete.");
+                            }
+                        });
 
-                        },
-                        error: function () {
-                            alert("Dynamic content load failed.");
-                        }
-                    });
+                    } else {
+                        $.ajax({
+                            type: "GET",
+                            url: TableDeletePostBackURL + action + "/" + $buttonClicked.val().toString(),
+                            contentType: "application/json; charset=utf-8",
+                            data: { "Id": id },
+                            datatype: "json",
+                            success: function (data) {
+                                $('#myModalContent').html(data);
+                                $('#myModal').fadeIn('slow');
+                                $('#myModal').modal(options);
+
+                            },
+                            error: function () {
+                                alert("Dynamic content load failed.");
+                            }
+                        });
+                    }
                 });
             //$("#closebtn").on('click',function(){
             //    $('#myModal').modal('hide');
@@ -90,7 +107,7 @@
 }
     <div class="fade-in">
         <br>
-        <h2 style="color:#F3969A">Tables</h2>
+        <h2 style="color:#F3969A; text-shadow: 2px 2px 5px #F3969A">Tables</h2>
 
         <p>
             <button style="border-radius: 12px; border: 1px solid #56CC9D;background-color: #fff;" id="createtable"><i class="fa fa-plus" aria-hidden="true"></i> Table</button>
@@ -133,7 +150,6 @@
                             <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Edit" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
                             <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Details" value="@item.Id"><i class="fa fa-info" aria-hidden="true"></i></button>
                             <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Delete" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
-
                         </td>
                     </tr>
                 }

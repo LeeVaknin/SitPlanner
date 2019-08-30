@@ -143,8 +143,7 @@ namespace SitPlanner.Controllers
 
         // POST: EventOptions/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task DeleteConfirmed(int id)
         {
             foreach (var inviteeTable in _context.InviteeTable)
             {
@@ -154,7 +153,7 @@ namespace SitPlanner.Controllers
             var eventOption = await _context.EventOption.FindAsync(id);
             _context.EventOption.Remove(eventOption);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "InviteeTables");
+            
         }
 
         private bool EventOptionExists(int id)
