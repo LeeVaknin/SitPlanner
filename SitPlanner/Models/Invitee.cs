@@ -41,6 +41,7 @@ namespace SitPlanner.Models
         public string LastName { get; set; }
 
         [NotMapped]
+        [Display(Name = "Name")]
         public string FullName => String.Join(" ", FirstName, LastName);
 
         [Required(ErrorMessage = "Please provide phone number")]
