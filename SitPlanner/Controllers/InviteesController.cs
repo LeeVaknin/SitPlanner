@@ -30,12 +30,12 @@ namespace SitPlanner.Controllers
         public async Task<IActionResult> Index(string category)
         {
             // If no such  category exists
-            if (!_context.Category.Where(i => i.Name == category).Any())
+            if (!_context.Category.Where(i => i.EventId == MyGlobals.GlobalEventID).Where(i => i.Name == category).Any())
             {
                 category = null;
             }
 
-            if (category == null && _context.Invitee.Any())
+            if (category == null && _context.Invitee.Where(i => i.EventId == MyGlobals.GlobalEventID).Any())
             {
                 category = "Any";
             }
@@ -59,8 +59,9 @@ namespace SitPlanner.Controllers
             }
             ViewData["Categories"] = categoriesList;
             ViewData["Id"] = category;
-            ViewData["TotalCommingInvitees"] = _context.Invitee.Where(i => i.IsComing).Count();
-            ViewData["TotalInvitees"] = _context.Invitee.Count();
+            ViewData["TotalCommingInvitees"] = _context.Invitee.Where(i => i.EventId == MyGlobals.GlobalEventID).
+                Where(i => i.IsComing).Count();
+            ViewData["TotalInvitees"] = _context.Invitee.Where(i => i.EventId == MyGlobals.GlobalEventID).Count();
 
             if (category == "Any")
             {
@@ -246,7 +247,7 @@ namespace SitPlanner.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Category.OrderBy(x => x.Name), "Id", "Name", invitee.CategoryId);
-            //ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", invitee.EventId);
+            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", invitee.EventId);
             return View(invitee);
         }
 

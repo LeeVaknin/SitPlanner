@@ -32,7 +32,7 @@ namespace SitPlanner.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            var sitPlannerContext = _context.Category.Include(c => c.Event.Id == MyGlobals.GlobalEventID);
+            var sitPlannerContext = _context.Category.Where(i => i.EventId == MyGlobals.GlobalEventID).Include(c => c.Event);
             return View(await sitPlannerContext.ToListAsync());
         }
 
