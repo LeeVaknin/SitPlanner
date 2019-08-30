@@ -104,7 +104,7 @@ namespace SitPlanner.Controllers
             {
                 return NotFound();
             }
-            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", category.EventId);
+            //ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", category.EventId);
             return PartialView(category);
         }
 
@@ -115,6 +115,7 @@ namespace SitPlanner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,EventId")] Category category)
         {
+            category.EventId = MyGlobals.GlobalEventID;
             if (id != category.Id)
             {
                 return NotFound();

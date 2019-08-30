@@ -280,7 +280,7 @@ namespace SitPlanner.Controllers
             }
             ViewData["CategoryId"] = new SelectList(_context.Category.Where(x=> x.EventId == MyGlobals.GlobalEventID).
                 OrderBy(x => x.Name), "Id", "Name", invitee.CategoryId);
-            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", invitee.EventId);
+            //ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", invitee.EventId);
             return PartialView(invitee);
         }
 
@@ -291,6 +291,7 @@ namespace SitPlanner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,PhoneNumber,Address,IsComing,Comment,EventId,CategoryId")] Invitee invitee)
         {
+            invitee.EventId = MyGlobals.GlobalEventID;
             if (id != invitee.Id)
             {
                 return NotFound();
