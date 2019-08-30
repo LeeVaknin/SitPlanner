@@ -113,7 +113,7 @@ namespace SitPlanner.Controllers
             {
                 return NotFound();
             }
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", table.EventId);
+            //ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", table.EventId);
 
             var enumData = from Table.TableTypeEnum e in Enum.GetValues(typeof(Table.TableTypeEnum))
                            select new
@@ -132,6 +132,7 @@ namespace SitPlanner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,CapacityOfPeople,MinCapacityOfPeople,TableType,EventId")] Table table)
         {
+            table.EventId = MyGlobals.GlobalEventID;
             if (id != table.Id)
             {
                 return NotFound();

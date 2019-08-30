@@ -95,7 +95,7 @@ namespace SitPlanner.Controllers
             {
                 return NotFound();
             }
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", personalRestriction.EventId);
+            //ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", personalRestriction.EventId);
             ViewData["MainInviteeId"] = new SelectList(_context.Invitee.Where(t => t.EventId == MyGlobals.GlobalEventID).
                 OrderBy(x => x.FullName), "Id", "FullName", personalRestriction.MainInviteeId);
             ViewData["SecondaryInviteeId"] = new SelectList(_context.Invitee.Where(t => t.EventId == MyGlobals.GlobalEventID).
@@ -110,6 +110,7 @@ namespace SitPlanner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,MainInviteeId,SecondaryInviteeId,IsSittingTogether,EventId,EventOptionId")] PersonalRestriction personalRestriction)
         {
+            personalRestriction.EventId = MyGlobals.GlobalEventID;
             if (id != personalRestriction.Id)
             {
                 return NotFound();

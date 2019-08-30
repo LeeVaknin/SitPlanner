@@ -247,7 +247,7 @@ namespace SitPlanner.Controllers
             {
                 return NotFound();
             }
-            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", inviteeTable.EventId);
+            //ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", inviteeTable.EventId);
             ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id", inviteeTable.EventOptionId);
             ViewData["InviteeId"] = new SelectList(_context.Invitee.OrderBy(x => x.FullName), "Id", "FullName", inviteeTable.InviteeId);
             ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id", inviteeTable.TableId);
@@ -261,6 +261,7 @@ namespace SitPlanner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,InviteeId,TableId,EventOptionId,EventId")] InviteeTable inviteeTable)
         {
+            inviteeTable.EventId = MyGlobals.GlobalEventID;
             if (id != inviteeTable.Id)
             {
                 return NotFound();
