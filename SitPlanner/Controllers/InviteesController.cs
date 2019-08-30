@@ -59,18 +59,15 @@ namespace SitPlanner.Controllers
 
             if (category == "Any")
             {
-                var invitees = _context.Invitee.Where(i => i.EventId == MyGlobals.GlobalEventID);
-                invitees = _context.Invitee.Include(i => i.Category).Include(i => i.Event).OrderBy(n => n.LastName);
-                var categories = _context.Category.Where(i => i.EventId == MyGlobals.GlobalEventID);
-                categories = _context.Category.Include(c => c.Event).OrderBy(e => e.Name);
+                var invitees = _context.Invitee.Where(i => i.EventId == MyGlobals.GlobalEventID).Include(i => i.Category).Include(i => i.Event).OrderBy(n => n.LastName);
+                var categories = _context.Category.Where(i => i.EventId == MyGlobals.GlobalEventID).Include(c => c.Event).OrderBy(e => e.Name);
                 var tuple = new Tuple<IEnumerable<Invitee>, IEnumerable<Category>>(invitees, categories);
                 return View(tuple);
             }
             else
             {
                 var invitees = _context.Invitee.Where(i => i.EventId == MyGlobals.GlobalEventID).Include(i => i.Category).Include(i => i.Event).Where(i => i.Category.Name == category);
-                var categories = _context.Category.Where(i => i.EventId == MyGlobals.GlobalEventID);
-                categories = _context.Category.Include(c => c.Event);
+                var categories = _context.Category.Where(i => i.EventId == MyGlobals.GlobalEventID).Include(c => c.Event);
                 var tuple = new Tuple<IEnumerable<Invitee>, IEnumerable<Category>>(invitees, categories);
                 return View(tuple);
             }
@@ -85,7 +82,7 @@ namespace SitPlanner.Controllers
                 return null;
             }
 
-            var item = _context.Category.FirstOrDefault(i => i.Name == name);
+            var item = _context.Category.Where(i => i.EventId == MyGlobals.GlobalEventID).FirstOrDefault(i => i.Name == name);
 
             return item;
         }
