@@ -26,9 +26,11 @@ namespace SitPlanner.Controllers
             if (id == null)
             {
                 var sitPlannerContext = _context.Table.Include(t => t.Event);
+                ViewData["TotalCapacity"] = _context.Table.Sum(c => c.CapacityOfPeople);
                 return View(await sitPlannerContext.ToListAsync());
             }
             var seatPlannerContext = _context.Table.Include(t => t.Event).Where(i => i.Id == id);
+            ViewData["TotalCapacity"] = _context.Table.Sum(c => c.CapacityOfPeople);
             return View(await seatPlannerContext.ToListAsync());
 
 
@@ -64,7 +66,7 @@ namespace SitPlanner.Controllers
                                TableTypeEnum = e,
                            };
             ViewBag.EnumList = new SelectList(enumData, "TableTypeEnum", "TableTypeEnum");
-            
+
             return PartialView();
         }
 
@@ -81,7 +83,7 @@ namespace SitPlanner.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", table.EventId);
+            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", table.EventId);       
             return View(table);
         }
 
@@ -106,7 +108,7 @@ namespace SitPlanner.Controllers
                                TableTypeEnum = e,
                            };
             ViewData["TableType"] = new SelectList(enumData, "TableTypeEnum", "TableTypeEnum");
-
+            
             return PartialView(table);
         }
 
