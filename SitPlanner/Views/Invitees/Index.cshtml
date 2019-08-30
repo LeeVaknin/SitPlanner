@@ -153,7 +153,7 @@
         $(function () {
             $("#importfromcsv").click(function () {
                 var $buttonClicked = $(this);
-<<<<<<< HEAD
+
                 //var id = $buttonClicked.attr('data-id');
                 var id = $buttonClicked.attr('id');
                 var val = $buttonClicked.val('fileupload');
@@ -163,9 +163,9 @@
                 formData.append("csv_file",file)
                 console.log("id: ", id);
                 var options = { keyboard: true };
-=======
+
                 var id = $buttonClicked.attr('data-id');
->>>>>>> origin/develop
+
                 $.ajax({
                     type: "POST",
                     url: categoriesImprtCSVPostBackURL,
@@ -337,8 +337,7 @@
         </form>
         
     </p>
-<<<<<<< HEAD
-=======
+
     <table class="table">
         <thead>
             <tr>
@@ -400,76 +399,7 @@
         </tbody>
     </table>
     <h3 style="color:#F3969A; text-shadow: 2px 2px 5px #F3969A">Categories</h3>
-    <p>
-        <button style="border-radius: 12px; border: 1px solid #56CC9D;background-color: #fff;" id="createcategory"><i class="fa fa-plus" aria-hidden="true"></i> Category</button>
->>>>>>> origin/develop
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().FirstName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().LastName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().PhoneNumber)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().Address)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().IsComing)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().Comment)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().Category)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Item1)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.FirstName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LastName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PhoneNumber)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Address)
-                        </td>
-                        <td>
-<<<<<<< HEAD
-                            @Html.DisplayFor(modelItem => item.IsComing)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Comment)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Category.Name)
-                        </td>
-                        <td>
-                            <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Edit" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                            <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Details" value="@item.Id"><i class="fa fa-info" aria-hidden="true"></i></button>
-                            <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Delete" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
-=======
-                            <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="EditCategory" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                            <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="DeleteCategory" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
->>>>>>> origin/develop
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <h3 style="color:#F3969A">Category</h3>
+    
         <p>
             <button style="border-radius: 12px; border: 1px solid #56CC9D;background-color: #fff;" id="createcategory"><i class="fa fa-plus" aria-hidden="true"></i> Category</button>
             <table class="table">
