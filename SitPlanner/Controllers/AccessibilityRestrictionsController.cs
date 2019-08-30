@@ -81,7 +81,7 @@ namespace SitPlanner.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", accessibilityRestriction.EventId);
+            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", accessibilityRestriction.EventId);
             ViewData["InviteeId"] = new SelectList(_context.Invitee.Where(t => t.EventId == MyGlobals.GlobalEventID).
                 OrderBy(x => x.FullName), "Id", "FullName", accessibilityRestriction.InviteeId);
             

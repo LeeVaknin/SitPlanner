@@ -297,7 +297,7 @@ namespace SitPlanner.Controllers
             {
                 if (e.Id != invitee.Id)
                 {
-                    e.IsComing = true;
+                    //e.IsComing = true;
                     _context.Update(e);
                     await _context.SaveChangesAsync();
                 }
