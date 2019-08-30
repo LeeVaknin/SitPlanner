@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using SitPlanner.Data;
 using SitPlanner.Models;
 using SitPlanner.csv;
+using System.Web;
+using Microsoft.AspNetCore.Http;
+using System.Net.Http.Headers;
 
 namespace SitPlanner.Controllers
 {
@@ -97,13 +100,22 @@ namespace SitPlanner.Controllers
 
             return item;
         }
-
-        public async Task<IActionResult> fromCsv()
+        
+        [HttpPost]
+        public async Task<IActionResult> fromCsv(IList<IFormFile> files)
         {
+            using (System.IO.StreamWriter outputFile = new System.IO.StreamWriter(@"csv\inv_tmp.csv"))
+            {
+                using (var reader = new System.IO.StreamReader(files[0].OpenReadStream()))
+                {
+                    while (reader.Peek() >= 0)
+                        outputFile.WriteLine(reader.ReadLine());
+                }
+            }
+
             Csv csv = new Csv();
             Category cat;
-            var result = csv.read(@"csv\inv.csv");
-            //var result = csv.read(@"C:\tmp\inv.csv");
+            var result = csv.read(@"csv\inv_tmp.csv");
             List<Category> list_of_categories = new List<Category>();
             foreach (var invitee in result)
             {
@@ -115,9 +127,7 @@ namespace SitPlanner.Controllers
                 int numIsComing = invitee.Item6;
                 var category = invitee.Item7;
                 bool new_cat = true;
-                //on first itteration we save to db only when the loop ends
-                //this is why "GetCategoryByName" will always return null,
-                //thats why im adding this if below and the list to validate we dont create at first run multiple cat
+
                 cat = GetCategoryByName(category);
                 Category tmpCat = new Category(category, GetEventByID(1));
                 if (cat == null)
