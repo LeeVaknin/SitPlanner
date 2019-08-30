@@ -59,6 +59,8 @@ namespace SitPlanner.Controllers
             }
             ViewData["Categories"] = categoriesList;
             ViewData["Id"] = category;
+            ViewData["TotalCommingInvitees"] = _context.Invitee.Where(i => i.IsComing).Count();
+            ViewData["TotalInvitees"] = _context.Invitee.Count();
 
             if (category == "Any")
             {
@@ -74,7 +76,7 @@ namespace SitPlanner.Controllers
                 var tuple = new Tuple<IEnumerable<Invitee>, IEnumerable<Category>>(invitees, categories);
                 return View(tuple);
             }
-           
+
         }
 
 
@@ -100,7 +102,7 @@ namespace SitPlanner.Controllers
 
             return item;
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> fromCsv(IList<IFormFile> files)
         {
@@ -147,7 +149,7 @@ namespace SitPlanner.Controllers
                     }
                     _context.Add(cat);
                 }
-                 
+
                  //await _context.SaveChangesAsync();
 
 
@@ -225,12 +227,12 @@ namespace SitPlanner.Controllers
 
 
             //ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
-            
+
             return PartialView("_Create");
         }
 
         // POST: Invitees/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -252,7 +254,7 @@ namespace SitPlanner.Controllers
         [HttpGet]
         public async Task<IActionResult> InviteeExistRequest(string firstName, String lastName, int phoneNumber)
         {
-            
+
             bool doesExist = _context.Invitee.Any(e => e.FirstName.ToLower() == firstName.ToLower() && e.LastName.ToLower() == lastName.ToLower() && e.PhoneNumber == phoneNumber);
 
             if(doesExist)
@@ -282,7 +284,7 @@ namespace SitPlanner.Controllers
         }
 
         // POST: Invitees/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -293,16 +295,16 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
 
-            foreach(Invitee e in _context.Invitee.ToList())
-            {
-                if (e.Id != invitee.Id)
-                {
-                    //e.IsComing = true;
-                    _context.Update(e);
-                    await _context.SaveChangesAsync();
-                }
-               
-            }
+            //foreach(Invitee e in _context.Invitee.ToList())
+            //{
+            //    if (e.Id != invitee.Id)
+            //    {
+            //        //e.IsComing = true;
+            //        _context.Update(e);
+            //        await _context.SaveChangesAsync();
+            //    }
+
+            //}
 
             if (ModelState.IsValid)
             {
@@ -353,7 +355,7 @@ namespace SitPlanner.Controllers
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-           
+
             while (_context.AccessibilityRestriction.FirstOrDefault(r => r.InviteeId == id) != null)
             {
                 var restrictionA = _context.AccessibilityRestriction.FirstOrDefault(r => r.InviteeId == id);
@@ -373,7 +375,7 @@ namespace SitPlanner.Controllers
                 var inviteeTable = _context.InviteeTable.FirstOrDefault(i => i.InviteeId == id);
                 _context.InviteeTable.Remove(inviteeTable);
                 _context.SaveChanges();
-            } 
+            }
 
             var invitee = await _context.Invitee.FindAsync(id);
 

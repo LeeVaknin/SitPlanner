@@ -26,9 +26,11 @@ namespace SitPlanner.Controllers
             if (id == null)
             {
                 var sitPlannerContext = _context.Table.Where(t => t.EventId == MyGlobals.GlobalEventID).Include(t => t.Event);
+                ViewData["TotalCapacity"] = _context.Table.Sum(c => c.CapacityOfPeople);
                 return View(await sitPlannerContext.ToListAsync());
             }
             var seatPlannerContext = _context.Table.Where(t => t.EventId == MyGlobals.GlobalEventID).Include(t => t.Event).Where(i => i.Id == id);
+            ViewData["TotalCapacity"] = _context.Table.Sum(c => c.CapacityOfPeople);
             return View(await seatPlannerContext.ToListAsync());
 
 
@@ -81,7 +83,7 @@ namespace SitPlanner.Controllers
         }
 
         // POST: Tables/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -94,7 +96,7 @@ namespace SitPlanner.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", table.EventId);
+            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", table.EventId);
             return View(table);
         }
 
@@ -124,7 +126,7 @@ namespace SitPlanner.Controllers
         }
 
         // POST: Tables/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]

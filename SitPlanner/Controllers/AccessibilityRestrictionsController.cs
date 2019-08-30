@@ -172,7 +172,7 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
 
-            return View(accessibilityRestriction);
+            return PartialView(accessibilityRestriction);
         }
 
         // POST: AccessibilityRestrictions/Delete/5
