@@ -186,6 +186,7 @@
                     if (possibleActionsInvitee.indexOf(action) < 0 && possibleActionsCategory.indexOf(action) < 0) {
                         return;
                     }
+                    console.log("action: ", action);
                     if (action.includes("Category")) {
                         PostBackURL = '/Categories/';
                         action = action.replace("Category", "");
@@ -194,22 +195,44 @@
                     var id = $buttonClicked.attr('data-id');
                     var options = { keyboard: true };
 
-                    $.ajax({
-                        type: "POST",
-                        url: PostBackURL + action + "/" + $buttonClicked.val().toString(),
-                        contentType: "application/json; charset=utf-8",
-                        data: { "Id": id },
-                        datatype: "json",
-                        success: function (data) {
-                            $('#myModalContent').html(data);
-                            $('#myModal').fadeIn('slow');
-                            $('#myModal').modal(options);
-                            location.reload();
-                        },
-                        error: function () {
-                            alert("Invalid operation. The category is assign to one of your invitees.");
-                        }
-                    });
+                    console.log("PostBackURL: ", PostBackURL);
+
+                    if (action.includes("Delete") && (PostBackURL.includes("Categories"))) {
+                        $.ajax({
+                            type: "POST",
+                            url: PostBackURL + action + "/" + $buttonClicked.val().toString(),
+                            contentType: "application/json; charset=utf-8",
+                            data: { "Id": id },
+                            datatype: "json",
+                            success: function (data) {
+                                location.reload();
+                            },
+                            error: function () {
+                                alert("Invalid operation. The category is assign to one of your invitees.");
+                                PostBackURL = '/Invitees/';
+                            }
+                        });
+
+                    } else {
+                        $.ajax({
+                            type: "GET",
+                            url: PostBackURL + action + "/" + $buttonClicked.val().toString(),
+                            contentType: "application/json; charset=utf-8",
+                            data: { "Id": id },
+                            datatype: "json",
+                            success: function (data) {
+                                $('#myModalContent').html(data);
+                                $('#myModal').fadeIn('slow');
+                                $('#myModal').modal(options);
+                                PostBackURL = '/Invitees/';
+                            },
+                            error: function () {
+                                alert("Dynamic content load failed.");
+                                PostBackURL = '/Invitees/';
+                            }
+                        });
+                    }
+
                 });
             //$("#closebtn").on('click',function(){
             //    $('#myModal').modal('hide');
@@ -234,7 +257,7 @@
 <div class="fade-in">
 
     </br>
-    <h2 style="color:#F3969A">Invitee</h2>
+    <h2 style="color:#F3969A; text-shadow: 2px 2px 5px #F3969A">Invitees</h2>
 
     @*<div id="filter-blog">
             @using (Html.BeginForm("Index", "Invitees", FormMethod.Post))
@@ -319,14 +342,13 @@
                     </td>
                     <td>
                         <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Edit" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                        <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Details" value="@item.Id"><i class="fa fa-info" aria-hidden="true"></i></button>
                         <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Delete" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-    <h3 style="color:#F3969A">Category</h3>
+    <h3 style="color:#F3969A; text-shadow: 2px 2px 5px #F3969A">Categories</h3>
     <p>
         <button style="border-radius: 12px; border: 1px solid #56CC9D;background-color: #fff;" id="createcategory"><i class="fa fa-plus" aria-hidden="true"></i> Category</button>
         <table class="table">
@@ -348,7 +370,6 @@
                         </td>
                         <td>
                             <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="EditCategory" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                            <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="DetailsCategory" value="@item.Id"><i class="fa fa-info" aria-hidden="true"></i></button>
                             <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="DeleteCategory" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
                         </td>
                     </tr>
