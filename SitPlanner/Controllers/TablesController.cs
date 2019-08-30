@@ -25,10 +25,10 @@ namespace SitPlanner.Controllers
         {
             if (id == null)
             {
-                var sitPlannerContext = _context.Table.Include(t => t.Event);
+                var sitPlannerContext = _context.Table.Where(t => t.EventId == MyGlobals.GlobalEventID).Include(t => t.Event);
                 return View(await sitPlannerContext.ToListAsync());
             }
-            var seatPlannerContext = _context.Table.Include(t => t.Event).Where(i => i.Id == id);
+            var seatPlannerContext = _context.Table.Where(t => t.EventId == MyGlobals.GlobalEventID).Include(t => t.Event).Where(i => i.Id == id);
             return View(await seatPlannerContext.ToListAsync());
 
 
@@ -56,7 +56,7 @@ namespace SitPlanner.Controllers
         // GET: Tables/Create
         public IActionResult Create()
         {
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
+            //ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
 
             var enumData = from Table.TableTypeEnum e in Enum.GetValues(typeof(Table.TableTypeEnum))
                            select new
@@ -75,13 +75,14 @@ namespace SitPlanner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,CapacityOfPeople,MinCapacityOfPeople,TableType,EventId")] Table table)
         {
+            table.EventId = MyGlobals.GlobalEventID;
             if (ModelState.IsValid)
             {
                 _context.Add(table);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", table.EventId);
+            //ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", table.EventId);
             return View(table);
         }
 

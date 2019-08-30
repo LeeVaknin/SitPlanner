@@ -13,12 +13,12 @@ namespace SitPlanner.Controllers
     public class CategoriesController : Controller
     {
         private readonly SitPlannerContext _context;
-        private Algo.AlgoLogic algo;
+        
 
         public CategoriesController(SitPlannerContext context)
         {
             _context = context;
-            algo = new Algo.AlgoLogic();
+            
         }
 
         public Category GetCategoryByName(string name)
@@ -32,7 +32,7 @@ namespace SitPlanner.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            var sitPlannerContext = _context.Category.Include(c => c.Event.Id == algo.eventIDGlobal);
+            var sitPlannerContext = _context.Category.Include(c => c.Event.Id == MyGlobals.GlobalEventID);
             return View(await sitPlannerContext.ToListAsync());
         }
 
@@ -58,7 +58,7 @@ namespace SitPlanner.Controllers
         // GET: Categories/Create
         public IActionResult Create()
         {
-            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name");
+            //ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name");
             return PartialView("_Create");
         }
 
@@ -69,6 +69,7 @@ namespace SitPlanner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,EventId")] Category category)
         {
+            category.EventId = MyGlobals.GlobalEventID;
             if (ModelState.IsValid)
             {
                 if (!CategoryExists(category.Name))
@@ -79,7 +80,7 @@ namespace SitPlanner.Controllers
                 //return RedirectToAction(nameof(Index))
                 return RedirectToAction("Index" , "Invitees");
             }
-            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", category.EventId);
+            //ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", category.EventId);
             return View(category);
         }
 
@@ -179,7 +180,7 @@ namespace SitPlanner.Controllers
 
         private bool CategoryExists(string name)
         {
-            return _context.Category.Any(e => e.Name == name);
+            return _context.Category.Where(e => e.EventId == MyGlobals.GlobalEventID).Any(e => e.Name == name);
         }
     }
 }

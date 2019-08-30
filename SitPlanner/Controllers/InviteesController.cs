@@ -210,8 +210,11 @@ namespace SitPlanner.Controllers
         // GET: Invitees/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Category.OrderBy(x => x.Name), "Id", "Name");
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
+            ViewData["CategoryId"] = new SelectList(_context.Category.Where(x => x.EventId == MyGlobals.GlobalEventID).
+                OrderBy(x => x.Name), "Id", "Name");
+
+
+            //ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
             
             return PartialView("_Create");
         }
@@ -223,6 +226,7 @@ namespace SitPlanner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,PhoneNumber,Address,IsComing,Comment,EventId,CategoryId")] Invitee invitee)
         {
+            invitee.EventId = MyGlobals.GlobalEventID;
             if (ModelState.IsValid)
             {
                 _context.Add(invitee);
@@ -230,7 +234,7 @@ namespace SitPlanner.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Category.OrderBy(x => x.Name), "Id", "Name", invitee.CategoryId);
-            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", invitee.EventId);
+            //ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", invitee.EventId);
             return View(invitee);
         }
 
@@ -261,7 +265,8 @@ namespace SitPlanner.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category.OrderBy(x => x.Name), "Id", "Name", invitee.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Category.Where(x=> x.EventId == MyGlobals.GlobalEventID).
+                OrderBy(x => x.Name), "Id", "Name", invitee.CategoryId);
             ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", invitee.EventId);
             return PartialView(invitee);
         }

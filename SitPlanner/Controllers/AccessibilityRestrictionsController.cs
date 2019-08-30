@@ -22,7 +22,8 @@ namespace SitPlanner.Controllers
         // GET: AccessibilityRestrictions
         public async Task<IActionResult> Index()
         {
-            var sitPlannerContext = _context.AccessibilityRestriction.Include(a => a.Event).Include(a => a.Invitee);
+            var sitPlannerContext = _context.AccessibilityRestriction.Where(t => t.EventId == MyGlobals.GlobalEventID).
+                Include(a => a.Event).Include(a => a.Invitee);
             return View(await sitPlannerContext.ToListAsync());
         }
 
@@ -34,7 +35,8 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
 
-            var accessibilityRestriction = await _context.AccessibilityRestriction
+            var accessibilityRestriction = await _context.AccessibilityRestriction.
+                Where(t => t.EventId == MyGlobals.GlobalEventID)
                 .Include(a => a.Event)
                 .Include(a => a.Invitee)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -49,9 +51,11 @@ namespace SitPlanner.Controllers
         // GET: AccessibilityRestrictions/Create
         public IActionResult Create()
         {
-            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name");
-            ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id");
-            ViewData["InviteeId"] = new SelectList(_context.Invitee.OrderBy(x => x.FullName), "Id", "FullName");
+            //ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name");
+            ViewData["EventOptionId"] = new SelectList(_context.EventOption.
+                Where(t => t.EventId == MyGlobals.GlobalEventID), "Id", "Id");
+            ViewData["InviteeId"] = new SelectList(_context.Invitee.Where(t => t.EventId == MyGlobals.GlobalEventID).
+                OrderBy(x => x.FullName), "Id", "FullName");
             
             var enumData = from Table.TableTypeEnum e in Enum.GetValues(typeof(Table.TableTypeEnum))
                            select new
@@ -70,14 +74,16 @@ namespace SitPlanner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,InviteeId,TableType,IsSittingAtTable,EventId,EventOptionId")] AccessibilityRestriction accessibilityRestriction)
         {
+            accessibilityRestriction.EventId = MyGlobals.GlobalEventID;
             if (ModelState.IsValid)
             {
                 _context.Add(accessibilityRestriction);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", accessibilityRestriction.EventId);
-            ViewData["InviteeId"] = new SelectList(_context.Invitee.OrderBy(x => x.FullName), "Id", "FullName", accessibilityRestriction.InviteeId);
+            //ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", accessibilityRestriction.EventId);
+            ViewData["InviteeId"] = new SelectList(_context.Invitee.Where(t => t.EventId == MyGlobals.GlobalEventID).
+                OrderBy(x => x.FullName), "Id", "FullName", accessibilityRestriction.InviteeId);
             
             return View(accessibilityRestriction);
         }
@@ -96,7 +102,8 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
             ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", accessibilityRestriction.EventId);
-            ViewData["InviteeId"] = new SelectList(_context.Invitee.OrderBy(x => x.FullName), "Id", "FullName", accessibilityRestriction.InviteeId);
+            ViewData["InviteeId"] = new SelectList(_context.Invitee.Where(t => t.EventId == MyGlobals.GlobalEventID).
+                OrderBy(x => x.FullName), "Id", "FullName", accessibilityRestriction.InviteeId);
            
 
             var enumData = from Table.TableTypeEnum e in Enum.GetValues(typeof(Table.TableTypeEnum))
@@ -142,7 +149,8 @@ namespace SitPlanner.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", accessibilityRestriction.EventId);
-            ViewData["InviteeId"] = new SelectList(_context.Invitee.OrderBy(x => x.FullName), "Id", "FullName", accessibilityRestriction.InviteeId);
+            ViewData["InviteeId"] = new SelectList(_context.Invitee.Where(t => t.EventId == MyGlobals.GlobalEventID).
+                OrderBy(x => x.FullName), "Id", "FullName", accessibilityRestriction.InviteeId);
             
             return View(accessibilityRestriction);
         }
