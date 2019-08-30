@@ -290,16 +290,16 @@ namespace SitPlanner.Controllers
                 return NotFound();
             }
 
-            foreach(Invitee e in _context.Invitee.ToList())
-            {
-                if (e.Id != invitee.Id)
-                {
-                    e.IsComing = true;
-                    _context.Update(e);
-                    await _context.SaveChangesAsync();
-                }
+            //foreach(Invitee e in _context.Invitee.ToList())
+            //{
+            //    if (e.Id != invitee.Id)
+            //    {
+            //        //e.IsComing = true;
+            //        _context.Update(e);
+            //        await _context.SaveChangesAsync();
+            //    }
                
-            }
+            //}
 
             if (ModelState.IsValid)
             {
