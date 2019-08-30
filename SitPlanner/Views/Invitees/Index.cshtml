@@ -9,7 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
+   
     <script>
         var inviteesCreatePostBackURL = '/Invitees/Create';
         $(function () {
@@ -26,8 +26,8 @@
                     success: function (data) {
                         $('#myModalContent').html(data);
                         $('#myModal').fadeIn('slow');
-                        $('#myModal').modal(options);
-
+                        $('#myModal').modal(options);                        
+                        
                     },
                     error: function () {
                         alert("Dynamic content load failed.");
@@ -99,7 +99,7 @@
                         $('#myModalContent').html(data);
                         $('#myModal').fadeIn('slow');
                         $('#myModal').modal(options);
-
+                        
 
                     },
                     error: function () {
@@ -134,7 +134,7 @@
                         $('#myModalContent').html(data);
                         $('#myModal').fadeIn('slow');
                         $('#myModal').modal(options);
-
+                        
 
                     },
                     error: function () {
@@ -160,7 +160,7 @@
                 var file = myCsvFile.files[0]
                 console.log(file)
                 var formData = new FormData();
-                formData.append("csv_file", file)
+                formData.append("csv_file",file)
                 console.log("id: ", id);
                 var options = { keyboard: true };
 
@@ -213,7 +213,7 @@
                 }
             );
         }
-    </script>
+        </script>
     <script>
         var PostBackURL = '/Invitees/';
         $(function () {
@@ -322,85 +322,21 @@
         }
     </div>
     <p>
-        @*<div style="float: right" ; style="text-align:right">
+        <div style="float: right" ; style="text-align:right">
             <!--<button style="border-radius: 12px ; border: 2px solid #F3969A;background-color: #fff;" id="importfromcsv">Import From CSV</button>-->
             <!-- <button style="border-radius: 12px ; border: 2px solid #F3969A;background-color: #fff;" id="exporttocsv">Export To CSV</button>-->
-        </div>*@
+        </div>
 
         <form id="form" name="form" action="/Invitees/fromCsv/" enctype="multipart/form-data" method="post">
             <div class="buttons">
-            <div class="upload-button">
-            <div class="label">Select invitees csv file to import</div>
-            <input id="files" name="files" type="file" size="1" accept=".*csv" multiple onchange="uploadFiles('files');" button style="border-radius: 12px ; border: 2px solid #F3969A;background-color: #fff;" />
-</div>
-</div>
+                <div class="upload-button">
+                    <div class="label">Select invitees csv file to import</div>
+                    <input id="files" name="files" type="file" size="1" accept=".*csv" multiple onchange="uploadFiles('files');" button style="border-radius: 12px ; border: 2px solid #F3969A;background-color: #fff;"
+                </div>
+            </div>
         </form>
-
+        
     </p>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().PhoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().IsComing)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().Comment)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Item1.FirstOrDefault().Category)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Item1)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PhoneNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Address)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsComing)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Comment)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Category.Name)
-                </td>
-                <td>
-                    <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Edit" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                    <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Delete" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-<h3 style="color:#F3969A; text-shadow: 2px 2px 5px #F3969A">Categories</h3>
-@*<p>
-    <button style="border-radius: 12px; border: 1px solid #56CC9D;background-color: #fff;" id="createcategory"><i class="fa fa-plus" aria-hidden="true"></i> Category</button>
 
     <table class="table">
         <thead>
@@ -446,7 +382,6 @@
                         @Html.DisplayFor(modelItem => item.Address)
                     </td>
                     <td>
-
                         @Html.DisplayFor(modelItem => item.IsComing)
                     </td>
                     <td>
@@ -457,53 +392,53 @@
                     </td>
                     <td>
                         <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Edit" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                        <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Details" value="@item.Id"><i class="fa fa-info" aria-hidden="true"></i></button>
                         <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Delete" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
-
-                        <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="EditCategory" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                        <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="DeleteCategory" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
-
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-    <h3 style="color:#F3969A">Category</h3>*@
-<p>
-    <button style="border-radius: 12px; border: 1px solid #56CC9D;background-color: #fff;" id="createcategory"><i class="fa fa-plus" aria-hidden="true"></i> Category</button>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Item2.FirstOrDefault().Name)
-                </th>
-                <th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Item2)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="EditCategory" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                        <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="DetailsCategory" value="@item.Id"><i class="fa fa-info" aria-hidden="true"></i></button>
-                        <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="DeleteCategory" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-    <div id='myModal' class='modal'>
-        <div class="modal-dialog">
-            <div class="modal-content" style="width:700">
-                <div id='myModalContent' style="width: auto;margin-left: 50px;"></div>
-            </div>
-        </div>
-
+    <div style="display:flex">
+        <div style="font-weight: bold">Total invitees: </div><a>@ViewBag.TotalInvitees</a>
     </div>
+    <div style="display:flex">
+        <div style="font-weight: bold">Total coming invitees: </div><a>@ViewBag.TotalCommingInvitees</a>
+    </div>
+        <h3 style="color:#F3969A; text-shadow: 2px 2px 5px #F3969A; margin-top: 15px; margin-bottom: 15px">Categories</h3>
+        <p>
+            <button style="border-radius: 12px; border: 1px solid #56CC9D;background-color: #fff;" id="createcategory"><i class="fa fa-plus" aria-hidden="true"></i> Category</button>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Item2.FirstOrDefault().Name)
+                        </th>
+                        <th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Item2)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="EditCategory" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                                <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="DeleteCategory" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div id='myModal' class='modal'>
+                <div class="modal-dialog">
+                    <div class="modal-content" style="width:700">
+                        <div id='myModalContent' style="width: auto;margin-left: 50px;"></div>
+                    </div>
+                </div>
+
+            </div>
     </div>

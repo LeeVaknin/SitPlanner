@@ -41,7 +41,7 @@
         });
     </script>
     <script>
-        var AccessabilityResrtictionsDeletePostBackURL = '/AccessabilityRestrictions/';
+        var AccessabilityResrtictionsDeletePostBackURL = '/AccessibilityRestrictions/';
         $(function () {
             $(":button")
                 .click(function () {
@@ -53,6 +53,8 @@
                         return;
                     }
                     var id = $buttonClicked.attr('data-id');
+                    console.log("action: ", action);
+                    console.log("id: ", id);
                     var options = { keyboard: true };
                     $.ajax({
                         type: "GET",
@@ -106,24 +108,33 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Invitee.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TableType)
+                    </td>
+                    @if (item.IsSittingAtTable)
+                    {
+                    <td>
+                        <i style="margin-left: 135px" class="fa fa-check" aria-hidden="true"></i>
+                    </td>
+                    }
+                    else
+                    {
                         <td>
-                            @Html.DisplayFor(modelItem => item.Invitee.FullName)
+                           
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TableType)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IsSittingAtTable)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Event.Name)
-                        </td>
-                        <td>
-                            <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Edit" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                            <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Delete" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                        </td>
-                    </tr>
+                    }
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Event.Name)
+                    </td>
+                    <td>
+                        <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Edit" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                        <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Delete" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>
