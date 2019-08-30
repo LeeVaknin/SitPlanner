@@ -164,15 +164,18 @@ namespace SitPlanner.Controllers
 
         // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task DeleteConfirmed(int id)
         {
+
+            var invitee = _context.Invitee.FirstOrDefault(c => c.CategoryId == id);
+            if (invitee != null)
+            {
+                throw new Exception("");
+            }
             var category = await _context.Category.FindAsync(id);
             _context.Category.Remove(category);
             await _context.SaveChangesAsync();
-            // return RedirectToAction(nameof(Index));
-            return RedirectToAction("Index", "Invitees");
-
+        
         }
 
         private bool CategoryExists(string name)
