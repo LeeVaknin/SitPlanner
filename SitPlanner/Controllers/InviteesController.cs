@@ -56,7 +56,8 @@ namespace SitPlanner.Controllers
             }
             ViewData["Categories"] = categoriesList;
             ViewData["Id"] = category;
-            ViewData["TotalInvitees"] = _context.Invitee.Where(i => i.IsComing).Count();
+            ViewData["TotalCommingInvitees"] = _context.Invitee.Where(i => i.IsComing).Count();
+            ViewData["TotalInvitees"] = _context.Invitee.Count();
 
             if (category == "Any")
             {
