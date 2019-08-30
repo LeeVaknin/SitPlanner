@@ -187,6 +187,35 @@
 </script>
 
 <script>
+    function filterbyname() {
+        jQuery.expr[":"].containsIgnoreCase = jQuery.expr.createPseudo(function (arg) {
+            return function (elem) {
+                return jQuery(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+            };
+        });
+
+        
+        var spans = document.getElementsByTagName("span");
+
+        $("span.filtered").each(function () { $(this).removeClass() });
+
+
+        var e = document.getElementById("input-h").value;
+        $("div:containsIgnoreCase('" + e + "')").each(function () {
+ 
+            if ($(this).attr('class').indexOf("guest") !== -1)
+            {
+
+                $(this).html("<span class=\"filtered\">" + $(this).html() + "</span>");
+                
+            }
+        });
+
+    }
+</script>
+
+
+<script>
     function getOptionId() {
         return document.getElementById("Opts");
     }
@@ -213,7 +242,7 @@
     <br />
 
     <input id="input-h" type="search" name="id" maxlength="20" placeholder="  Filter by name" style="width:205px;width: 12%; border-radius: 12px; border: 1px solid #F3969A;background-color: #fff;">
-    <button style="border: 0px ;background-color: #fff;" id="btn-filter" type="submit" onclick="filter()"><i class="fa fa-search" aria-hidden="true"></i></button>
+    <button style="border: 0px ;background-color: #fff;" id="btn-filter" type="submit" onclick="filterbyname()"><i class="fa fa-search" aria-hidden="true"></i></button>
 </div>
 
 
