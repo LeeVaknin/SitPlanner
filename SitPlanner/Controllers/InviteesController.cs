@@ -29,6 +29,11 @@ namespace SitPlanner.Controllers
         // GET: Invitees
         public async Task<IActionResult> Index(string category)
         {
+            //if event not chosen
+            if (MyGlobals.GlobalEventID == 0)
+            {
+                return StatusCode(Microsoft.AspNetCore.Http.StatusCodes.Status405MethodNotAllowed);
+            }
             // If no such  category exists
             if (!_context.Category.Where(i => i.EventId == MyGlobals.GlobalEventID).Where(i => i.Name == category).Any())
             {
@@ -62,7 +67,8 @@ namespace SitPlanner.Controllers
             ViewData["TotalCommingInvitees"] = _context.Invitee.Where(i => i.EventId == MyGlobals.GlobalEventID).
                 Where(i => i.IsComing).Count();
             ViewData["TotalInvitees"] = _context.Invitee.Where(i => i.EventId == MyGlobals.GlobalEventID).Count();
-
+            ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
+            ViewData["SwitchEvent"] = "Switch Event";
             if (category == "Any")
             {
                 var invitees = _context.Invitee.Where(i => i.EventId == MyGlobals.GlobalEventID).Include(i => i.Category).Include(i => i.Event).OrderBy(n => n.LastName);
@@ -225,6 +231,7 @@ namespace SitPlanner.Controllers
         {
             ViewData["CategoryId"] = new SelectList(_context.Category.Where(x => x.EventId == MyGlobals.GlobalEventID).
                 OrderBy(x => x.Name), "Id", "Name");
+            ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
 
 
             //ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
@@ -248,7 +255,9 @@ namespace SitPlanner.Controllers
             }
             ViewData["CategoryId"] = new SelectList(_context.Category.OrderBy(x => x.Name), "Id", "Name", invitee.CategoryId);
             ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", invitee.EventId);
+            ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
             return View(invitee);
+
         }
 
         [Route("Invitees/InviteeExist")]
@@ -280,6 +289,7 @@ namespace SitPlanner.Controllers
             }
             ViewData["CategoryId"] = new SelectList(_context.Category.Where(x=> x.EventId == MyGlobals.GlobalEventID).
                 OrderBy(x => x.Name), "Id", "Name", invitee.CategoryId);
+            ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
             //ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", invitee.EventId);
             return PartialView(invitee);
         }
@@ -330,6 +340,7 @@ namespace SitPlanner.Controllers
             }
             ViewData["CategoryId"] = new SelectList(_context.Category.OrderBy(x => x.Name), "Id", "Name", invitee.CategoryId);
             ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", invitee.EventId);
+            ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
             return View(invitee);
         }
 

@@ -22,8 +22,14 @@ namespace SitPlanner.Controllers
         // GET: AccessibilityRestrictions
         public async Task<IActionResult> Index()
         {
+            if (MyGlobals.GlobalEventID == 0)
+            {
+                return StatusCode(Microsoft.AspNetCore.Http.StatusCodes.Status405MethodNotAllowed);
+            }
             var sitPlannerContext = _context.AccessibilityRestriction.Where(t => t.EventId == MyGlobals.GlobalEventID).
                 Include(a => a.Event).Include(a => a.Invitee);
+            ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
+            ViewData["SwitchEvent"] = "Switch Event";
             return View(await sitPlannerContext.ToListAsync());
         }
 
@@ -44,7 +50,7 @@ namespace SitPlanner.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
             return View(accessibilityRestriction);
         }
 

@@ -40,6 +40,10 @@ namespace SitPlanner.Controllers
         // GET: InviteeTables/optionId
         public async Task<IActionResult> Index(int? id, string name)
         {
+            if (MyGlobals.GlobalEventID == 0)
+            {
+                return StatusCode(Microsoft.AspNetCore.Http.StatusCodes.Status405MethodNotAllowed);
+            }
             if (name == null)
             {
                 name = "";
@@ -65,6 +69,8 @@ namespace SitPlanner.Controllers
             ViewData["isFavorite"] = _context.EventOption.Where(i => i.Id == id).Select(i=>i.isFavorite).FirstOrDefault();
             ViewData["Opts"] = optionIdsList;
             ViewData["Id"] = id;
+            ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
+            ViewData["SwitchEvent"] = "Switch Event";
             if (id == null)
             {
                 var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
@@ -171,6 +177,7 @@ namespace SitPlanner.Controllers
             ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id");
             ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName");
             ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id");
+            ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
 
             return eventOption.Id;
 

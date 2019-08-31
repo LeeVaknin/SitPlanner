@@ -27,7 +27,15 @@ namespace SitPlanner.Controllers
 
         // GET: Events
         public async Task<IActionResult> Index()
-        {        
+        {
+
+            ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
+            if (MyGlobals.GlobalEventID == 0)
+            {
+                ViewData["SwitchEvent"] = "";
+            }
+            else
+                ViewData["SwitchEvent"] = "Switch Event";
             return View(await _context.Event.OrderBy(d => d.Date).ToListAsync());
         }
 
@@ -40,12 +48,30 @@ namespace SitPlanner.Controllers
                 return null;
             }
             MyGlobals.SetEventID((int)id);
+            MyGlobals.SetEventName(GetCurrentEventName());
 
             var item = _context.Event.FirstOrDefault(i => i.Id == id);
 
             return item;
         }
-
+        public string GetCurrentEventName()
+        {
+            string eventName = null;
+            if (MyGlobals.GlobalEventID == 0)
+                eventName = "Choose Event";
+            else
+            {
+                foreach (var item in _context.Event.Where(i => i.Id == MyGlobals.GlobalEventID))
+                {
+                    eventName = item.Name;
+                }
+                if (eventName == null)
+                {
+                    eventName = "Create Event";
+                }
+            }
+            return eventName;
+        }
         // GET: Events/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -58,6 +84,7 @@ namespace SitPlanner.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             MyGlobals.SetEventID((int)id);
+            MyGlobals.SetEventName(GetCurrentEventName());
             if (@event == null)
             {
                 return NotFound();
