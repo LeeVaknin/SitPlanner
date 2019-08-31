@@ -23,14 +23,22 @@ namespace SitPlanner.Controllers
         // GET: Tables
         public async Task<IActionResult> Index(int? id)
         {
+            if (MyGlobals.GlobalEventID == 0)
+            {
+                return StatusCode(Microsoft.AspNetCore.Http.StatusCodes.Status405MethodNotAllowed);
+            }
             if (id == null)
             {
                 var sitPlannerContext = _context.Table.Where(t => t.EventId == MyGlobals.GlobalEventID).Include(t => t.Event);
-                ViewData["TotalCapacity"] = _context.Table.Sum(c => c.CapacityOfPeople);
+                ViewData["TotalCapacity"] = _context.Table.Where(c=> c.EventId == MyGlobals.GlobalEventID).Sum(c => c.CapacityOfPeople);
+                ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
+                ViewData["SwitchEvent"] = "Switch Event";
                 return View(await sitPlannerContext.ToListAsync());
             }
             var seatPlannerContext = _context.Table.Where(t => t.EventId == MyGlobals.GlobalEventID).Include(t => t.Event).Where(i => i.Id == id);
-            ViewData["TotalCapacity"] = _context.Table.Sum(c => c.CapacityOfPeople);
+            ViewData["TotalCapacity"] = _context.Table.Where(c => c.EventId == MyGlobals.GlobalEventID).Sum(c => c.CapacityOfPeople);
+            ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
+            ViewData["SwitchEvent"] = "Switch Event";
             return View(await seatPlannerContext.ToListAsync());
 
 
