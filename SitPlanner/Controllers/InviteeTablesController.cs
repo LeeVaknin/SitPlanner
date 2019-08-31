@@ -38,8 +38,18 @@ namespace SitPlanner.Controllers
         //    return View(await sitPlannerContext.ToListAsync());
         //}
         // GET: InviteeTables/optionId
-        public async Task<IActionResult> Index(int? id, string name)
+        public async Task<IActionResult> Index(int? id, string name, bool? graphicView)
         {
+            if (graphicView == null)
+            {
+                graphicView = true;
+            }
+
+            if (MyGlobals.GlobalEventID == 0)
+            {
+                return StatusCode(Microsoft.AspNetCore.Http.StatusCodes.Status405MethodNotAllowed);
+            }
+
             if (name == null)
             {
                 name = "";
@@ -51,7 +61,7 @@ namespace SitPlanner.Controllers
             }
 
             var optionIdsList = new List<SelectListItem>();
-            foreach (var opt in _context.EventOption)
+            foreach (var opt in _context.EventOption.Where(i => i.EventId == MyGlobals.GlobalEventID))
             {
                 optionIdsList.Add(new SelectListItem()
                 {
@@ -65,9 +75,13 @@ namespace SitPlanner.Controllers
             ViewData["isFavorite"] = _context.EventOption.Where(i => i.Id == id).Select(i=>i.isFavorite).FirstOrDefault();
             ViewData["Opts"] = optionIdsList;
             ViewData["Id"] = id;
+            ViewData["graphicView"] = graphicView;
+
+            ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
+            ViewData["SwitchEvent"] = "Switch Event";
             if (id == null)
             {
-                var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
+                var sitPlannerContext = _context.InviteeTable.Where(i => i.EventId == MyGlobals.GlobalEventID).Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
                .OrderBy(i => i.TableId).GroupBy(i => i.TableId);
                 List<IGrouping<int, InviteeTable>> b = await sitPlannerContext.ToListAsync();
 
@@ -80,7 +94,7 @@ namespace SitPlanner.Controllers
             }
             else
             {
-                var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
+                var sitPlannerContext = _context.InviteeTable.Where(i => i.EventId == MyGlobals.GlobalEventID).Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
                     .Where(i => i.EventOptionId.Equals(id)).Where(i=>i.Invitee.FirstName.ToLower().Contains(name.ToLower()) || i.Invitee.LastName.ToLower().Contains(name.ToLower()))
                     .OrderBy(i => i.TableId).GroupBy(i => i.TableId);
              
@@ -157,11 +171,11 @@ namespace SitPlanner.Controllers
 
             result = algo.RunAlgo(AlgoDbCreation()).getGens().ToList();
 
-            EventOption eventOption = new EventOption(GetEventByID(1));
+            EventOption eventOption = new EventOption(GetEventByID(MyGlobals.GlobalEventID));
 
             foreach (var item in result)
             {
-                InviteeTable inviteeTable = new InviteeTable(item.invitee, item.table, eventOption, GetEventByID(1));
+                InviteeTable inviteeTable = new InviteeTable(item.invitee, item.table, eventOption, GetEventByID(MyGlobals.GlobalEventID));
                 var result = _context.Add(inviteeTable);
             }
 
@@ -171,6 +185,7 @@ namespace SitPlanner.Controllers
             ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id");
             ViewData["InviteeId"] = new SelectList(_context.Invitee, "Id", "FirstName");
             ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id");
+            ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
 
             return eventOption.Id;
 
@@ -180,10 +195,10 @@ namespace SitPlanner.Controllers
         {
             bool isValid = false;
 
-            if (_context.Table.Count() > 0 && _context.Invitee.Count() > 0)
+            if (_context.Table.Where(i => i.EventId == MyGlobals.GlobalEventID).Count() > 0 && _context.Invitee.Where(i => i.EventId == MyGlobals.GlobalEventID).Count() > 0)
             {
                 
-                if (_context.Table.Sum(p => p.CapacityOfPeople) > _context.Invitee.Where(i => i.IsComing).Count())
+                if (_context.Table.Where(i => i.EventId == MyGlobals.GlobalEventID).Sum(p => p.CapacityOfPeople) > _context.Invitee.Where(i => i.EventId == MyGlobals.GlobalEventID).Where(i => i.IsComing).Count())
                 {
                     isValid = true;
                 }
@@ -201,7 +216,7 @@ namespace SitPlanner.Controllers
 
             foreach (var item in result)
             {
-                InviteeTable inviteeTable = new InviteeTable(item.invitee, item.table, GetEventOptionByID(1), GetEventByID(1));
+                InviteeTable inviteeTable = new InviteeTable(item.invitee, item.table, GetEventOptionByID(1), GetEventByID(MyGlobals.GlobalEventID));
                 var result = _context.Add(inviteeTable);
             }
 
@@ -247,7 +262,7 @@ namespace SitPlanner.Controllers
             {
                 return NotFound();
             }
-            ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", inviteeTable.EventId);
+            //ViewData["EventId"] = new SelectList(_context.Event.OrderBy(x => x.Name), "Id", "Name", inviteeTable.EventId);
             ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id", inviteeTable.EventOptionId);
             ViewData["InviteeId"] = new SelectList(_context.Invitee.OrderBy(x => x.FullName), "Id", "FullName", inviteeTable.InviteeId);
             ViewData["TableId"] = new SelectList(_context.Table, "Id", "Id", inviteeTable.TableId);
@@ -261,6 +276,7 @@ namespace SitPlanner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,InviteeId,TableId,EventOptionId,EventId")] InviteeTable inviteeTable)
         {
+            inviteeTable.EventId = MyGlobals.GlobalEventID;
             if (id != inviteeTable.Id)
             {
                 return NotFound();
@@ -334,19 +350,24 @@ namespace SitPlanner.Controllers
         private AlgoDb AlgoDbCreation()
         {
             
-            var sitPlannerContextInvitees = _context.Invitee.Where(i => i.IsComing).Include(i => i.Category).Include(i => i.Event).ToList();
+            var sitPlannerContextInvitees = _context.Invitee.Where(i => i.EventId == MyGlobals.GlobalEventID).
+                Where(i => i.IsComing).Include(i => i.Category).Include(i => i.Event).ToList();
             invitees = new List<Invitee>(sitPlannerContextInvitees);
 
-            var sitPlannerContextTables = _context.Table.Include(t => t.Event).ToList();
+            var sitPlannerContextTables = _context.Table.Where(i => i.EventId == MyGlobals.GlobalEventID)
+            .Include(t => t.Event).ToList();
             tables = new List<Table>(sitPlannerContextTables);
 
-            var sitPlannerContextPersonalRestriction = _context.PersonalRestriction.Include(t => t.Event).ToList();
+            var sitPlannerContextPersonalRestriction = _context.PersonalRestriction.Where(i => i.EventId == MyGlobals.GlobalEventID)
+                .Include(t => t.Event).ToList();
             personalRestrictions = new List<PersonalRestriction>(sitPlannerContextPersonalRestriction);
 
-            var sitPlannerContextAccessibilityRestriction = _context.AccessibilityRestriction.Include(t => t.Event).ToList();
+            var sitPlannerContextAccessibilityRestriction = _context.AccessibilityRestriction.Where(i => i.EventId == MyGlobals.GlobalEventID)
+                .Include(t => t.Event).ToList();
             accessibilityRestrictions = new List<AccessibilityRestriction>(sitPlannerContextAccessibilityRestriction);
 
-            var sitPlannerContextCategory = _context.Category.Include(t => t.Event).ToList();
+            var sitPlannerContextCategory = _context.Category.Where(i => i.EventId == MyGlobals.GlobalEventID)
+            .Include(t => t.Event).ToList();
             categories = new List<Category>(sitPlannerContextCategory);
 
             AlgoDb algoDb = new AlgoDb(invitees, tables, personalRestrictions, accessibilityRestrictions, categories);

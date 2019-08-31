@@ -7,12 +7,18 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SitPlanner.Data;
 using SitPlanner.Models;
+using SitPlanner.Algo;
+
 
 namespace SitPlanner.Controllers
 {
     public class EventsController : Controller
     {
         private readonly SitPlannerContext _context;
+
+        //int i = MyGlobals.GlobalEventID;
+
+        //MyGlobals.GlobalEventID = 2; 
 
         public EventsController(SitPlannerContext context)
         {
@@ -22,22 +28,50 @@ namespace SitPlanner.Controllers
         // GET: Events
         public async Task<IActionResult> Index()
         {
+
+            ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
+            if (MyGlobals.GlobalEventID == 0)
+            {
+                ViewData["SwitchEvent"] = "";
+            }
+            else
+                ViewData["SwitchEvent"] = "Switch Event";
             return View(await _context.Event.OrderBy(d => d.Date).ToListAsync());
         }
 
         // GET: Events/Details/5
         public Event GetEventByID(int? id)
         {
+            
             if (id == null)
             {
                 return null;
             }
+            MyGlobals.SetEventID((int)id);
+            MyGlobals.SetEventName(GetCurrentEventName());
 
             var item = _context.Event.FirstOrDefault(i => i.Id == id);
 
             return item;
         }
-
+        public string GetCurrentEventName()
+        {
+            string eventName = null;
+            if (MyGlobals.GlobalEventID == 0)
+                eventName = "Choose Event";
+            else
+            {
+                foreach (var item in _context.Event.Where(i => i.Id == MyGlobals.GlobalEventID))
+                {
+                    eventName = item.Name;
+                }
+                if (eventName == null)
+                {
+                    eventName = "Create Event";
+                }
+            }
+            return eventName;
+        }
         // GET: Events/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -48,6 +82,9 @@ namespace SitPlanner.Controllers
 
             var @event = await _context.Event
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            MyGlobals.SetEventID((int)id);
+            MyGlobals.SetEventName(GetCurrentEventName());
             if (@event == null)
             {
                 return NotFound();

@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
+    <Folder Include="Global\" />
     <Folder Include="Services\DAL\" />
   </ItemGroup>
 
@@ -65,6 +66,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\Error\CreateEventError.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Shared\_Partial.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

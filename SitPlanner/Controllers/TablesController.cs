@@ -23,14 +23,22 @@ namespace SitPlanner.Controllers
         // GET: Tables
         public async Task<IActionResult> Index(int? id)
         {
+            if (MyGlobals.GlobalEventID == 0)
+            {
+                return StatusCode(Microsoft.AspNetCore.Http.StatusCodes.Status405MethodNotAllowed);
+            }
             if (id == null)
             {
-                var sitPlannerContext = _context.Table.Include(t => t.Event);
-                ViewData["TotalCapacity"] = _context.Table.Sum(c => c.CapacityOfPeople);
+                var sitPlannerContext = _context.Table.Where(t => t.EventId == MyGlobals.GlobalEventID).Include(t => t.Event);
+                ViewData["TotalCapacity"] = _context.Table.Where(c=> c.EventId == MyGlobals.GlobalEventID).Sum(c => c.CapacityOfPeople);
+                ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
+                ViewData["SwitchEvent"] = "Switch Event";
                 return View(await sitPlannerContext.ToListAsync());
             }
-            var seatPlannerContext = _context.Table.Include(t => t.Event).Where(i => i.Id == id);
-            ViewData["TotalCapacity"] = _context.Table.Sum(c => c.CapacityOfPeople);
+            var seatPlannerContext = _context.Table.Where(t => t.EventId == MyGlobals.GlobalEventID).Include(t => t.Event).Where(i => i.Id == id);
+            ViewData["TotalCapacity"] = _context.Table.Where(c => c.EventId == MyGlobals.GlobalEventID).Sum(c => c.CapacityOfPeople);
+            ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
+            ViewData["SwitchEvent"] = "Switch Event";
             return View(await seatPlannerContext.ToListAsync());
 
 
@@ -63,7 +71,7 @@ namespace SitPlanner.Controllers
         // GET: Tables/Create
         public IActionResult Create()
         {
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
+            //ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
 
             var enumData = from Table.TableTypeEnum e in Enum.GetValues(typeof(Table.TableTypeEnum))
                            select new
@@ -83,19 +91,20 @@ namespace SitPlanner.Controllers
         }
 
         // POST: Tables/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,CapacityOfPeople,MinCapacityOfPeople,TableType,EventId")] Table table)
         {
+            table.EventId = MyGlobals.GlobalEventID;
             if (ModelState.IsValid)
             {
                 _context.Add(table);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", table.EventId);       
+            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", table.EventId);
             return View(table);
         }
 
@@ -112,7 +121,7 @@ namespace SitPlanner.Controllers
             {
                 return NotFound();
             }
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", table.EventId);
+            //ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", table.EventId);
 
             var enumData = from Table.TableTypeEnum e in Enum.GetValues(typeof(Table.TableTypeEnum))
                            select new
@@ -120,17 +129,18 @@ namespace SitPlanner.Controllers
                                TableTypeEnum = e,
                            };
             ViewData["TableType"] = new SelectList(enumData, "TableTypeEnum", "TableTypeEnum");
-            
+
             return PartialView(table);
         }
 
         // POST: Tables/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,CapacityOfPeople,MinCapacityOfPeople,TableType,EventId")] Table table)
         {
+            table.EventId = MyGlobals.GlobalEventID;
             if (id != table.Id)
             {
                 return NotFound();
