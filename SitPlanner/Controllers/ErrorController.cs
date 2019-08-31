@@ -14,6 +14,7 @@ namespace SitPlanner.Controllers
         [HttpGet("/Error/{errorId}")]
         public IActionResult InvalidAction(int errorId)
         {
+            ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
             if (errorId == 401 || errorId == 403)
                 return View("Views/Error/InvalidAction.cshtml");
             if (errorId == 405)
@@ -25,12 +26,14 @@ namespace SitPlanner.Controllers
         [Route("/Error")]
         public IActionResult OurError()
         {
+            ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
             return View("Views/Error/OurError.cshtml");
         }
 
         [Route("/Error/InvalidAction")]
         public IActionResult InvalidAction()
         {
+            ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
             return View("Views/Error/InvalidAction.cshtml");
         }
     }
