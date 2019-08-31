@@ -82,7 +82,7 @@
 }
     <div class="fade-in">
         </br>
-        <h2 style="color:#F3969A">Events</h2>
+        <h2 style="color:#F3969A; text-shadow: 2px 2px 5px #F3969A">Events</h2>
 
         <p>
             <button style="border-radius: 12px; border: 1px solid #56CC9D;background-color: #fff;" id="createevent"><i class="fa fa-plus" aria-hidden="true"></i> Event</button>
@@ -116,8 +116,8 @@
                             @Html.DisplayFor(modelItem => item.Date)
                         </td>
                         <td>
-                            @*<button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Edit" value="@item.Id"><i class="fa fa-folder-open" aria-hidden="true"></i></button>*@
                             <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Details" value="@item.Id"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i></button>
+                            <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Edit" value="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></button>
                             <button style="border-radius: 12px; border: 0px ;background-color: #fff;" id="Delete" value="@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></button>
 
                         </td>
