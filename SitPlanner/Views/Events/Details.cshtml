@@ -8,24 +8,20 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     </div>
     <br />
-    <h4 style="color:#F3969A">Event Details</h4>
+    <h4 style="color:#F3969A">Have fun to work on your event!</h4>
     <hr />
-    <dl style="color:#56CC9D" class="dl-horizontal">
+    @*<dl style="color:#56CC9D" class="d-lg-flex">
         <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Date)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Date)
-        </dd>
-    </dl>
+    </dl>*@
     <div>
-        <a asp-action="Index">Back to List</a>
+        <a asp-controller="Invitees"
+           asp-action="Index">Go to your guests list</a>
+        @*<a asp-action="Invitees.Index">Go to your guests list</a>*@
     </div>
 </div>
     

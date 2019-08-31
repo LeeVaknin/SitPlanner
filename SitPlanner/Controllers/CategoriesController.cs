@@ -32,7 +32,13 @@ namespace SitPlanner.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
+            if (MyGlobals.GlobalEventID == 0)
+            {
+                return StatusCode(Microsoft.AspNetCore.Http.StatusCodes.Status405MethodNotAllowed);
+            }
             var sitPlannerContext = _context.Category.Where(i => i.EventId == MyGlobals.GlobalEventID).Include(c => c.Event);
+            ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
+            ViewData["SwitchEvent"] = "Switch Event";
             return View(await sitPlannerContext.ToListAsync());
         }
 

@@ -22,8 +22,14 @@ namespace SitPlanner.Controllers
         // GET: PersonalRestrictions
         public async Task<IActionResult> Index()
         {
+            if (MyGlobals.GlobalEventID == 0)
+            {
+                return StatusCode(Microsoft.AspNetCore.Http.StatusCodes.Status405MethodNotAllowed);
+            }
             var sitPlannerContext = _context.PersonalRestriction.Where(t => t.EventId == MyGlobals.GlobalEventID).
                 Include(p => p.Event).Include(p => p.MainInvitee).Include(p => p.SecondaryInvitee);
+            ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
+            ViewData["SwitchEvent"] = "Switch Event";
             return View(await sitPlannerContext.ToListAsync());
         }
 

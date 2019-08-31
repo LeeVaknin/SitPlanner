@@ -8,16 +8,22 @@ namespace SitPlanner.Controllers
     public static class MyGlobals
     {
         public static int GlobalEventID;
+        public static string GlobalEventName;
 
-        static MyGlobals() { GlobalEventID = 1234; }
-
-        public static int MyProperty { get; set; }
-
-        
+        static MyGlobals()
+        {
+            GlobalEventID = 0;
+            GlobalEventName = "Choose Event";
+        }
 
         public static void SetEventID(int id)
         {
             GlobalEventID = id;
+        }
+
+        public static void SetEventName(string eventName)
+        {
+            GlobalEventName = eventName;
         }
     }
 }

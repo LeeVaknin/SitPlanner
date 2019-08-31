@@ -16,6 +16,8 @@ namespace SitPlanner.Controllers
         {
             if (errorId == 401 || errorId == 403)
                 return View("Views/Error/InvalidAction.cshtml");
+            if (errorId == 405)
+                return View("Views/Error/CreateEventError.cshtml");
             return OurError();
         }
 
