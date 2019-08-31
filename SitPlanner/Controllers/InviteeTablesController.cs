@@ -55,7 +55,7 @@ namespace SitPlanner.Controllers
             }
 
             var optionIdsList = new List<SelectListItem>();
-            foreach (var opt in _context.EventOption)
+            foreach (var opt in _context.EventOption.Where(i => i.EventId == MyGlobals.GlobalEventID))
             {
                 optionIdsList.Add(new SelectListItem()
                 {
@@ -73,7 +73,7 @@ namespace SitPlanner.Controllers
             ViewData["SwitchEvent"] = "Switch Event";
             if (id == null)
             {
-                var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
+                var sitPlannerContext = _context.InviteeTable.Where(i => i.EventId == MyGlobals.GlobalEventID).Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
                .OrderBy(i => i.TableId).GroupBy(i => i.TableId);
                 List<IGrouping<int, InviteeTable>> b = await sitPlannerContext.ToListAsync();
 
@@ -86,7 +86,7 @@ namespace SitPlanner.Controllers
             }
             else
             {
-                var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
+                var sitPlannerContext = _context.InviteeTable.Where(i => i.EventId == MyGlobals.GlobalEventID).Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
                     .Where(i => i.EventOptionId.Equals(id)).Where(i=>i.Invitee.FirstName.ToLower().Contains(name.ToLower()) || i.Invitee.LastName.ToLower().Contains(name.ToLower()))
                     .OrderBy(i => i.TableId).GroupBy(i => i.TableId);
              
@@ -187,10 +187,10 @@ namespace SitPlanner.Controllers
         {
             bool isValid = false;
 
-            if (_context.Table.Count() > 0 && _context.Invitee.Count() > 0)
+            if (_context.Table.Where(i => i.EventId == MyGlobals.GlobalEventID).Count() > 0 && _context.Invitee.Where(i => i.EventId == MyGlobals.GlobalEventID).Count() > 0)
             {
                 
-                if (_context.Table.Sum(p => p.CapacityOfPeople) > _context.Invitee.Where(i => i.IsComing).Count())
+                if (_context.Table.Where(i => i.EventId == MyGlobals.GlobalEventID).Sum(p => p.CapacityOfPeople) > _context.Invitee.Where(i => i.EventId == MyGlobals.GlobalEventID).Where(i => i.IsComing).Count())
                 {
                     isValid = true;
                 }

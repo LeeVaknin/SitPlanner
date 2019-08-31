@@ -53,7 +53,7 @@ namespace SitPlanner.Controllers
                 Selected = category == "Any"
             });
 
-            foreach (var opt in _context.Category)
+            foreach (var opt in _context.Category.Where(i => i.EventId == MyGlobals.GlobalEventID))
             {
                 categoriesList.Add(new SelectListItem()
                 {
