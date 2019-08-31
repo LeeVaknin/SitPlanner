@@ -22,7 +22,6 @@
             return;
         }
         var TeamDetailPostBackURL = '/Invitees/InviteeExist?firstName=' + document.getElementById("firstnamelabel").value + '&lastName=' + document.getElementById("lastnamelabel").value + '&phoneNumber=' + document.getElementById("phonenumberlabel").value;
-        alert(TeamDetailPostBackURL);
         var options = { keyboard: true };
         $.ajax({
             type: "GET",
