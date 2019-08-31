@@ -15,6 +15,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
+        window.graphicView = "@ViewBag.graphicView";
+    </script>
+    <script>
         var TeamDetailPostBackURL = '/InviteeTables/Create';
         $(function () {
             $("#createinviteetable").click(function () {
@@ -177,13 +180,26 @@
 }
 
 <script>
+    
     function filter() {
         var e = document.getElementById("Opts");
         var val = e.options[e.selectedIndex].value;
 
-        window.location.href = "https://" + window.location.host + window.location.pathname + '?id=' + val;
+        window.location.href = "https://" + window.location.host + window.location.pathname + '?id=' + val + "&graphicView="+ window.graphicView;
         return false;
     }
+
+    function graphicviewtoggle() {
+        
+        var e = document.getElementById("graphicviewtoggleinput");
+        if (e.checked === true) {
+            window.graphicView = "True";
+        } else {
+            window.graphicView = "False";
+        }
+        filter();
+    }
+
 </script>
 
 <script>
@@ -242,6 +258,7 @@
 
     <input id="input-h" type="search" name="id" maxlength="20" placeholder="  Filter by name" style="width:205px;width: 12%; border-radius: 12px; border: 1px solid #F3969A;background-color: #fff;">
     <button style="border: 0px ;background-color: #fff;" id="btn-filter" type="submit" onclick="filterbyname()"><i class="fa fa-search" aria-hidden="true"></i></button>
+    <br /><br /><input type="checkbox" id="graphicviewtoggleinput" @if (ViewBag.graphicView) {@Html.Raw("Checked") } onclick="graphicviewtoggle()"> Graphic View
 </div>
 
 
@@ -254,12 +271,23 @@
     </div>
 </p>
 
-<!-- <div class="tables-container" style="display: grid; grid-template-columns: repeat(auto-fill,400px); width:80%;"> -->
-<div>
+
+
+
+
+@if(ViewBag.graphicView)
+{
+    @Html.Raw("<div class=\"tables-container\" style=\"display:grid; grid-template-columns:repeat(auto-fill,400px); width:80%; \">");
+} else
+{
+    @Html.Raw("<div>");
+}
+
+
 @foreach (var invtable in Model)
 {
     int invtableCounter = invtable.Count();
-    if (invtableCounter <= 10 && false)
+    if (invtableCounter <= 10 && ViewBag.graphicView)
     {
         string tableClass = "10";
         // <h2 style="color:#56CC9D">Table @invtable.Key</h2>
@@ -288,7 +316,7 @@
 
     }
 
-    if (invtableCounter > 10 && invtableCounter <= 12 && false)
+    if (invtableCounter > 10 && invtableCounter <= 12 && ViewBag.graphicView)
     {
         string tableClass = "12";
         // <h2 style="color:#56CC9D">Table @invtable.Key</h2>
@@ -316,7 +344,7 @@
         </div>
 
     }
-    if (invtableCounter > 12 && invtableCounter <= 16 && false)
+    if (invtableCounter > 12 && invtableCounter <= 16 && ViewBag.graphicView)
     {
         string tableClass = "16";
         // <h2 style="color:#56CC9D">Table @invtable.Key</h2>
@@ -344,7 +372,7 @@
         </div>
 
     }
-    if (invtableCounter > 16 || true)
+    if (invtableCounter > 16 || !ViewBag.graphicView)
     {
         <h2 style="color:#56CC9D">Table @invtable.Key</h2>
         <br />
@@ -375,6 +403,10 @@
         </table>
     }
 }
+
+
+
+
 <div id='myModal' class='modal'>
     <div class="modal-dialog">
         <div class="modal-content" style="width:700">

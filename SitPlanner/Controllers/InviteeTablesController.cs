@@ -38,8 +38,13 @@ namespace SitPlanner.Controllers
         //    return View(await sitPlannerContext.ToListAsync());
         //}
         // GET: InviteeTables/optionId
-        public async Task<IActionResult> Index(int? id, string name)
+        public async Task<IActionResult> Index(int? id, string name, bool? graphicView)
         {
+            if (graphicView == null)
+            {
+                graphicView = true;
+            }
+
             if (name == null)
             {
                 name = "";
@@ -65,6 +70,7 @@ namespace SitPlanner.Controllers
             ViewData["isFavorite"] = _context.EventOption.Where(i => i.Id == id).Select(i=>i.isFavorite).FirstOrDefault();
             ViewData["Opts"] = optionIdsList;
             ViewData["Id"] = id;
+            ViewData["graphicView"] = graphicView;
             if (id == null)
             {
                 var sitPlannerContext = _context.InviteeTable.Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)
