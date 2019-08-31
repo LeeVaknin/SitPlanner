@@ -30,13 +30,13 @@ namespace SitPlanner.Controllers
             if (id == null)
             {
                 var sitPlannerContext = _context.Table.Where(t => t.EventId == MyGlobals.GlobalEventID).Include(t => t.Event);
-                ViewData["TotalCapacity"] = _context.Table.Sum(c => c.CapacityOfPeople);
+                ViewData["TotalCapacity"] = _context.Table.Where(c=> c.EventId == MyGlobals.GlobalEventID).Sum(c => c.CapacityOfPeople);
                 ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
                 ViewData["SwitchEvent"] = "Switch Event";
                 return View(await sitPlannerContext.ToListAsync());
             }
             var seatPlannerContext = _context.Table.Where(t => t.EventId == MyGlobals.GlobalEventID).Include(t => t.Event).Where(i => i.Id == id);
-            ViewData["TotalCapacity"] = _context.Table.Sum(c => c.CapacityOfPeople);
+            ViewData["TotalCapacity"] = _context.Table.Where(c => c.EventId == MyGlobals.GlobalEventID).Sum(c => c.CapacityOfPeople);
             ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
             ViewData["SwitchEvent"] = "Switch Event";
             return View(await seatPlannerContext.ToListAsync());
