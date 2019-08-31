@@ -287,9 +287,9 @@
 @foreach (var invtable in Model)
 {
     int invtableCounter = invtable.Count();
-    if (invtableCounter <= 10 && ViewBag.graphicView)
+    if (invtableCounter <= 16 && ViewBag.graphicView)
     {
-        string tableClass = "10";
+        string tableClass = @ViewBag.idtocap[invtable.Key].ToString();
         // <h2 style="color:#56CC9D">Table @invtable.Key</h2>
 
 
@@ -316,62 +316,7 @@
 
     }
 
-    if (invtableCounter > 10 && invtableCounter <= 12 && ViewBag.graphicView)
-    {
-        string tableClass = "12";
-        // <h2 style="color:#56CC9D">Table @invtable.Key</h2>
-
-
-        <div style="position: relative" class="table-container-@tableClass">
-            <img width="300" height="300" src="~/images/Table-@tableClass-.png" />
-            <div class="position-middle-@tableClass ">
-                @invtable.Key
-            </div>
-
-            @{
-                int counter = 0;
-            }
-
-            @foreach (var item in invtable)
-            {
-                <div class="guest-@tableClass-@counter">
-                    @invtable.ElementAt(counter).Invitee.FirstName <br />@invtable.ElementAt(counter).Invitee.LastName
-                </div>
-                counter++;
-
-            }
-
-        </div>
-
-    }
-    if (invtableCounter > 12 && invtableCounter <= 16 && ViewBag.graphicView)
-    {
-        string tableClass = "16";
-        // <h2 style="color:#56CC9D">Table @invtable.Key</h2>
-
-
-        <div style="position: relative" class="table-container-@tableClass">
-            <img width="400" height="300" src="~/images/Table-@tableClass-.png" />
-            <div class="position-middle-@tableClass ">
-                @invtable.Key
-            </div>
-
-            @{
-                int counter = 0;
-            }
-
-            @foreach (var item in invtable)
-            {
-                <div class="guest-@tableClass-@counter">
-                    @invtable.ElementAt(counter).Invitee.FirstName <br />@invtable.ElementAt(counter).Invitee.LastName
-                </div>
-                counter++;
-
-            }
-
-        </div>
-
-    }
+   
     if (invtableCounter > 16 || !ViewBag.graphicView)
     {
         <h2 style="color:#56CC9D">Table @invtable.Key</h2>
