@@ -22,7 +22,8 @@ namespace SitPlanner.Controllers
         // GET: PersonalRestrictions
         public async Task<IActionResult> Index()
         {
-            var sitPlannerContext = _context.PersonalRestriction.Include(p => p.Event).Include(p => p.MainInvitee).Include(p => p.SecondaryInvitee);
+            var sitPlannerContext = _context.PersonalRestriction.Where(t => t.EventId == MyGlobals.GlobalEventID).
+                Include(p => p.Event).Include(p => p.MainInvitee).Include(p => p.SecondaryInvitee);
             return View(await sitPlannerContext.ToListAsync());
         }
 
@@ -35,6 +36,7 @@ namespace SitPlanner.Controllers
             }
 
             var personalRestriction = await _context.PersonalRestriction
+                .Where(t => t.EventId == MyGlobals.GlobalEventID)
                 .Include(p => p.Event)
                 .Include(p => p.MainInvitee)
                 .Include(p => p.SecondaryInvitee)
@@ -50,10 +52,13 @@ namespace SitPlanner.Controllers
         // GET: PersonalRestrictions/Create
         public IActionResult Create()
         {
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
-            ViewData["EventOptionId"] = new SelectList(_context.EventOption, "Id", "Id");
-            ViewData["MainInviteeId"] = new SelectList(_context.Invitee.OrderBy(x => x.FullName), "Id", "FullName");
-            ViewData["SecondaryInviteeId"] = new SelectList(_context.Invitee.OrderBy(x => x.FullName), "Id", "FullName");
+            //ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name");
+            ViewData["EventOptionId"] = new SelectList(_context.EventOption.Where(t => t.EventId == MyGlobals.GlobalEventID)
+                , "Id", "Id");
+            ViewData["MainInviteeId"] = new SelectList(_context.Invitee.Where(t => t.EventId == MyGlobals.GlobalEventID).
+                OrderBy(x => x.FullName), "Id", "FullName");
+            ViewData["SecondaryInviteeId"] = new SelectList(_context.Invitee.Where(t => t.EventId == MyGlobals.GlobalEventID).
+                OrderBy(x => x.FullName), "Id", "FullName");
             return PartialView();
         }
 
@@ -64,6 +69,7 @@ namespace SitPlanner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,MainInviteeId,SecondaryInviteeId,IsSittingTogether,EventId,EventOptionId")] PersonalRestriction personalRestriction)
         {
+            personalRestriction.EventId = MyGlobals.GlobalEventID;
             if (ModelState.IsValid)
             {
                 _context.Add(personalRestriction);
@@ -89,9 +95,11 @@ namespace SitPlanner.Controllers
             {
                 return NotFound();
             }
-            ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", personalRestriction.EventId);
-            ViewData["MainInviteeId"] = new SelectList(_context.Invitee.OrderBy(x => x.FullName), "Id", "FullName", personalRestriction.MainInviteeId);
-            ViewData["SecondaryInviteeId"] = new SelectList(_context.Invitee.OrderBy(x => x.FullName), "Id", "FullName", personalRestriction.SecondaryInviteeId);
+            //ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", personalRestriction.EventId);
+            ViewData["MainInviteeId"] = new SelectList(_context.Invitee.Where(t => t.EventId == MyGlobals.GlobalEventID).
+                OrderBy(x => x.FullName), "Id", "FullName", personalRestriction.MainInviteeId);
+            ViewData["SecondaryInviteeId"] = new SelectList(_context.Invitee.Where(t => t.EventId == MyGlobals.GlobalEventID).
+                OrderBy(x => x.FullName), "Id", "FullName", personalRestriction.SecondaryInviteeId);
             return PartialView(personalRestriction);
         }
 
@@ -102,6 +110,7 @@ namespace SitPlanner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,MainInviteeId,SecondaryInviteeId,IsSittingTogether,EventId,EventOptionId")] PersonalRestriction personalRestriction)
         {
+            personalRestriction.EventId = MyGlobals.GlobalEventID;
             if (id != personalRestriction.Id)
             {
                 return NotFound();
