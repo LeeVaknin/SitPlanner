@@ -18,8 +18,11 @@
                 <input type="hidden" asp-for="Id" />
                 <div class="form-group">
                     <label asp-for="CapacityOfPeople" class="control-label"></label>
-                    <input asp-for="CapacityOfPeople" class="form-control" />
-                    <span asp-validation-for="CapacityOfPeople" class="text-danger"></span>
+                    <select asp-for="CapacityOfPeople" class="form-control">
+                        <option selected="selected" value="10">10</option>
+                        <option value="12">12</option>
+                        <option value="16">16</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label asp-for="MinCapacityOfPeople" class="control-label"></label>
