@@ -43,13 +43,29 @@ namespace SitPlanner.Algo
             for (int i = 0; i < population.Length; i++)
             {
                 population[i].CalculateFitness();
+                if (population[i].fitness == Algo.AlgoConsts.fitnessBestResult)
+                {
+
+                }
             }
         }
 
         public void runMutation()
         {
+            if(this.population.Length <= 0)
+            {
+
+            }
             int randomeIndividualId = algoUtils.AlgoRandom(this.population.Length);
+            if (randomeIndividualId <= 0)
+            {
+
+            }
             int randomeGenId = algoUtils.AlgoRandom(this.population[randomeIndividualId].gens.Length);
+            if (algoDb.tables.Count <= 0)
+            {
+                
+            }
             int randomeTableId = algoUtils.AlgoRandom(algoDb.tables.Count);
             Invitee genInvitee = this.population[randomeIndividualId].gens[randomeGenId].invitee;
             this.population[randomeIndividualId].gens[randomeGenId] = new Gen(genInvitee, algoDb.tables[randomeTableId]);

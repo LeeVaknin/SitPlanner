@@ -97,10 +97,20 @@ namespace SitPlanner.Algo
             //invitee- is comming?
            // totalPunishment += InviteeConfirmedInvatationPunishment();
 
+            if (totalPunishment < 20)
+            {
+                if (totalPunishment < 10)
+                {
+
+                }
+
+            }
             if (totalPunishment > this.fitness)
-                this.fitness = AlgoConsts.fitnessWorstResult;
+                //return AlgoConsts.fitnessWorstResult;
+            this.fitness = AlgoConsts.fitnessWorstResult;
             else
-                this.fitness -= totalPunishment;
+                //return totalPunishment;
+            this.fitness -= totalPunishment;
         }
 
         #endregion
@@ -255,25 +265,30 @@ namespace SitPlanner.Algo
                 }
                 // The number of categories for a specific table
                 numberOfCategoriesInTable = categories.Count;
+                
                 // Punish on each multi categories which is bigger than 1
-                punishment += (numberOfCategoriesInTable - 1);
+                if (numberOfCategoriesInTable > 1)
+                {
+                    punishment += (numberOfCategoriesInTable - 1);
+                }
+                
             }
             return punishment * AlgoConsts.punishmentOnMultiCategoriesInTable;
         }
 
-        private int InviteeConfirmedInvatationPunishment()
-        {
-            int punishment = 0;
+        //private int InviteeConfirmedInvatationPunishment()
+        //{
+        //    int punishment = 0;
 
-            foreach(Gen gen in gens)
-            {
-                if(!gen.invitee.IsComing)
-                {
-                    punishment++;
-                }
-            }
-            return punishment * AlgoConsts.punishmentOnIsComming;
-        }
+        //    foreach(Gen gen in gens)
+        //    {
+        //        if(!gen.invitee.IsComing)
+        //        {
+        //            punishment++;
+        //        }
+        //    }
+        //    return punishment * AlgoConsts.punishmentOnIsComming;
+        //}
 
         #endregion
 
@@ -282,6 +297,10 @@ namespace SitPlanner.Algo
         //random Gen will create Gen with the invitee id by i, and random table
         private Gen generateRandomGen(int i)
         {
+            if (tablesAmount <= 0)
+            {
+
+            }
             int ran = algoUtils.AlgoRandom(tablesAmount);
 
             Gen gen = new Gen(invitees[i], tables[ran]);
