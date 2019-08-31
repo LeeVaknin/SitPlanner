@@ -62,7 +62,7 @@ namespace SitPlanner.Controllers
                     Selected = opt.Name == category
                 });
             }
-            ViewData["Categories"] = categoriesList;
+            ViewData["Categories"] = categoriesList.OrderBy(n => n.Value);
             ViewData["Id"] = category;
             ViewData["TotalCommingInvitees"] = _context.Invitee.Where(i => i.EventId == MyGlobals.GlobalEventID).
                 Where(i => i.IsComing).Count();
@@ -71,7 +71,7 @@ namespace SitPlanner.Controllers
             ViewData["SwitchEvent"] = "Switch Event";
             if (category == "Any")
             {
-                var invitees = _context.Invitee.Where(i => i.EventId == MyGlobals.GlobalEventID).Include(i => i.Category).Include(i => i.Event).OrderBy(n => n.LastName);
+                var invitees = _context.Invitee.Where(i => i.EventId == MyGlobals.GlobalEventID).Include(i => i.Category).Include(i => i.Event).OrderBy(n => n.FullName);
                 var categories = _context.Category.Where(i => i.EventId == MyGlobals.GlobalEventID).Include(c => c.Event).OrderBy(e => e.Name);
                 var tuple = new Tuple<IEnumerable<Invitee>, IEnumerable<Category>>(invitees, categories);
                 return View(tuple);
