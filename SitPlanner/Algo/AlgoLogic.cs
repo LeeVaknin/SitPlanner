@@ -111,7 +111,10 @@ namespace SitPlanner.Algo
 
         private bool breakCondition()
         {
+            if (iterationsWithoutTopXChange > AlgoConsts.numIterationsWithoutChange)
+            {
 
+            }
             return (iterationsWithoutTopXChange > AlgoConsts.numIterationsWithoutChange ||
             GetIndividualWithBestResult().fitness == AlgoConsts.optimalResult ||
             iterations == AlgoConsts.maxIterationsCount);

@@ -39,11 +39,15 @@ namespace SitPlanner.Algo
         {
             //initialize 
             this.algoDb = algoDb;
-            this.invitees = new List<Invitee>(algoDb.invitees);
+            var invitessList = new List<Invitee>(algoDb.invitees);
             this.tables = new List<Table>(algoDb.tables);
-            this.invitessAmount = invitees.Count;
+            this.invitessAmount = invitessList.Count;
             this.tablesAmount = tables.Count;
             gens = new Gen[invitessAmount];
+
+
+            this.invitees = invitessList.OrderBy(a => Guid.NewGuid()).ToList();
+            
 
       /*      //generate gens list - all invitess with random tables
             Gen gen = null;
@@ -97,9 +101,9 @@ namespace SitPlanner.Algo
             //invitee- is comming?
            // totalPunishment += InviteeConfirmedInvatationPunishment();
 
-            if (totalPunishment < 20)
+            if (totalPunishment < 400)
             {
-                if (totalPunishment < 10)
+                if (totalPunishment < 200)
                 {
 
                 }
@@ -165,7 +169,12 @@ namespace SitPlanner.Algo
                         mustSittingTogetherPunishment++;
                 }
             }
+            
             totalPunished = (notSittingTogetherPunishment * AlgoConsts.punishmentOnCannotSitTogether) + (mustSittingTogetherPunishment * AlgoConsts.punishmentOnMustSitTogether);
+            if (totalPunished != 0)
+            {
+
+            }
             return totalPunished;
         }
 
@@ -192,7 +201,12 @@ namespace SitPlanner.Algo
                     }
                 }
             }
-            return numOfpunished * AlgoConsts.punishmentOnAccessibilityRestriction;
+            var result = numOfpunished * AlgoConsts.punishmentOnAccessibilityRestriction;
+            if(result != 0)
+            {
+
+            }
+            return result;
         }
 
         private int AmountOfInviteesPerTablePunishment()
@@ -219,6 +233,10 @@ namespace SitPlanner.Algo
                     inviteeExceeded = table.MinCapacityOfPeople - tableCounter;
                     punishment += Math.Abs(inviteeExceeded) * AlgoConsts.punishmentOnUnderBookingInviteeForTable;
                 }
+            }
+            if (punishment != 0)
+            {
+
             }
             return punishment;
         }
