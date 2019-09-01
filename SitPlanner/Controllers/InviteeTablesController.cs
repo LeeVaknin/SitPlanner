@@ -79,6 +79,14 @@ namespace SitPlanner.Controllers
 
             ViewData["CurrentEvent"] = MyGlobals.GlobalEventName;
             ViewData["SwitchEvent"] = "Switch Event";
+            List<Table> tables = _context.Table.Where(i => i.EventId == MyGlobals.GlobalEventID).ToList();
+            Dictionary<int, int> idToCap = new Dictionary<int, int>();
+            foreach(Table t in tables)
+            {
+                idToCap.Add(t.Id, t.CapacityOfPeople);
+          
+            }
+            ViewData["idtocap"] = idToCap;
             if (id == null)
             {
                 var sitPlannerContext = _context.InviteeTable.Where(i => i.EventId == MyGlobals.GlobalEventID).Include(i => i.Event).Include(i => i.EventOption).Include(i => i.Invitee.Category).Include(i => i.Table)

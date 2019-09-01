@@ -17,7 +17,7 @@
             <div class="col-md-4">
                 <form asp-action="Create">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                   <div class="form-group">
+                    <div class="form-group">
                         <label asp-for="CapacityOfPeople" class="control-label"></label>
                         <select asp-for="CapacityOfPeople" class="form-control">
                             <option selected="selected" value="10">10</option>
@@ -27,17 +27,22 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="MinCapacityOfPeople" class="control-label"></label>
-                        <input asp-for="MinCapacityOfPeople" class="form-control" />
+                        <input asp-for="MinCapacityOfPeople" value="0" class="form-control" />
                         <span asp-validation-for="MinCapacityOfPeople" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="TableType" class="control-label"></label>
                         <select asp-for="TableType" class="form-control" asp-items="ViewBag.EnumList as SelectList"></select>
                     </div>
+                    <div class="form-group">
+                        <label asp-for="amountOfTables" class="control-label"></label>
+                        <input asp-for="amountOfTables" value="0" class="form-control" />
+                        <span asp-validation-for="amountOfTables" class="text-danger"></span>
+                    </div>
                     @*<div class="form-group">
-                        <label asp-for="Event" class="control-label"></label>
-                        <select asp-for="EventId" class="form-control" asp-items="ViewBag.EventId"></select>
-                    </div>*@
+            <label asp-for="Event" class="control-label"></label>
+            <select asp-for="EventId" class="form-control" asp-items="ViewBag.EventId"></select>
+        </div>*@
                     <div class="form-group">
                         <input type="submit" value="Create" class="btn btn-default" style="background-color: #56CC9D; font-family: cursive" />
                     </div>
