@@ -176,8 +176,8 @@ namespace SitPlanner.Controllers
             {
                 throw new Exception(" ");
             }
-
-            result = algo.RunAlgo(AlgoDbCreation()).getGens().ToList();
+            var algodb = AlgoDbCreation();
+            result = algo.RunAlgo(algodb).getGens().ToList();
 
             EventOption eventOption = new EventOption(GetEventByID(MyGlobals.GlobalEventID));
 

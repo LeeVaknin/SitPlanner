@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SitPlanner.Algo
@@ -40,10 +41,23 @@ namespace SitPlanner.Algo
         //Calculate fitness of each individual in single population
         public void CalculateIndividualsFitness()
         {
-            for (int i = 0; i < population.Length; i++)
+            List<Thread> threads = new List<Thread>();
+            for (int i = 0; i < population.Length -1; i++)
             {
-                population[i].CalculateFitness();
+                //Task.Factory.StartNew(() => population[i].CalculateFitness());
+                Thread t = new Thread(() => population[i].CalculateFitness());
+                t.Start();
+                threads.Add(t);
+                //population[i].CalculateFitness();
             }
+            for (int i = 0; i < population.Length -1; i++)
+            {
+                threads[i].Join();
+            }
+            //    foreach (Thread thread in threads)
+            //{
+            //    thread.Join();
+            //}
         }
 
         public void runMutation()
