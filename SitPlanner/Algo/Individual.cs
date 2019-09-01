@@ -39,11 +39,15 @@ namespace SitPlanner.Algo
         {
             //initialize 
             this.algoDb = algoDb;
-            this.invitees = new List<Invitee>(algoDb.invitees);
+            var invitessList = new List<Invitee>(algoDb.invitees);
             this.tables = new List<Table>(algoDb.tables);
-            this.invitessAmount = invitees.Count;
+            this.invitessAmount = invitessList.Count;
             this.tablesAmount = tables.Count;
             gens = new Gen[invitessAmount];
+
+
+            this.invitees = invitessList.OrderBy(a => Guid.NewGuid()).ToList();
+            
 
       /*      //generate gens list - all invitess with random tables
             Gen gen = null;
@@ -97,10 +101,20 @@ namespace SitPlanner.Algo
             //invitee- is comming?
            // totalPunishment += InviteeConfirmedInvatationPunishment();
 
+            if (totalPunishment < 400)
+            {
+                if (totalPunishment < 200)
+                {
+
+                }
+
+            }
             if (totalPunishment > this.fitness)
-                this.fitness = AlgoConsts.fitnessWorstResult;
+                //return AlgoConsts.fitnessWorstResult;
+            this.fitness = AlgoConsts.fitnessWorstResult;
             else
-                this.fitness -= totalPunishment;
+                //return totalPunishment;
+            this.fitness -= totalPunishment;
         }
 
         #endregion
@@ -155,7 +169,12 @@ namespace SitPlanner.Algo
                         mustSittingTogetherPunishment++;
                 }
             }
+            
             totalPunished = (notSittingTogetherPunishment * AlgoConsts.punishmentOnCannotSitTogether) + (mustSittingTogetherPunishment * AlgoConsts.punishmentOnMustSitTogether);
+            if (totalPunished != 0)
+            {
+
+            }
             return totalPunished;
         }
 
@@ -182,7 +201,12 @@ namespace SitPlanner.Algo
                     }
                 }
             }
-            return numOfpunished * AlgoConsts.punishmentOnAccessibilityRestriction;
+            var result = numOfpunished * AlgoConsts.punishmentOnAccessibilityRestriction;
+            if(result != 0)
+            {
+
+            }
+            return result;
         }
 
         private int AmountOfInviteesPerTablePunishment()
@@ -209,6 +233,10 @@ namespace SitPlanner.Algo
                     inviteeExceeded = table.MinCapacityOfPeople - tableCounter;
                     punishment += Math.Abs(inviteeExceeded) * AlgoConsts.punishmentOnUnderBookingInviteeForTable;
                 }
+            }
+            if (punishment != 0)
+            {
+
             }
             return punishment;
         }
@@ -255,25 +283,30 @@ namespace SitPlanner.Algo
                 }
                 // The number of categories for a specific table
                 numberOfCategoriesInTable = categories.Count;
+                
                 // Punish on each multi categories which is bigger than 1
-                punishment += (numberOfCategoriesInTable - 1);
+                if (numberOfCategoriesInTable > 1)
+                {
+                    punishment += (numberOfCategoriesInTable - 1);
+                }
+                
             }
             return punishment * AlgoConsts.punishmentOnMultiCategoriesInTable;
         }
 
-        private int InviteeConfirmedInvatationPunishment()
-        {
-            int punishment = 0;
+        //private int InviteeConfirmedInvatationPunishment()
+        //{
+        //    int punishment = 0;
 
-            foreach(Gen gen in gens)
-            {
-                if(!gen.invitee.IsComing)
-                {
-                    punishment++;
-                }
-            }
-            return punishment * AlgoConsts.punishmentOnIsComming;
-        }
+        //    foreach(Gen gen in gens)
+        //    {
+        //        if(!gen.invitee.IsComing)
+        //        {
+        //            punishment++;
+        //        }
+        //    }
+        //    return punishment * AlgoConsts.punishmentOnIsComming;
+        //}
 
         #endregion
 
@@ -282,6 +315,10 @@ namespace SitPlanner.Algo
         //random Gen will create Gen with the invitee id by i, and random table
         private Gen generateRandomGen(int i)
         {
+            if (tablesAmount <= 0)
+            {
+
+            }
             int ran = algoUtils.AlgoRandom(tablesAmount);
 
             Gen gen = new Gen(invitees[i], tables[ran]);

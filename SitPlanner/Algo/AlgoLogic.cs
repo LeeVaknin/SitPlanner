@@ -74,6 +74,10 @@ namespace SitPlanner.Algo
                 {
                     if (topXIndividuals[x] != null)
                     {
+                        if (pop.population[i].fitness == Algo.AlgoConsts.fitnessBestResult)
+                        {
+
+                        }
                         if (pop.population[i].fitness > topXIndividuals[x].fitness)
                         {
                             topXIndividuals[x] = pop.population[i];
@@ -191,10 +195,19 @@ namespace SitPlanner.Algo
             int sumFitness = 0;
             for (int i = 0; i < population.population.Length; i++)
             {
+                if (sumFitness < 0)
+                {
+
+                }
                 sumFitness += population.population[i].fitness;
+
             }
 
             Individual[] parents = new Individual[2];
+            if ((sumFitness + 1) <= 0)
+            {
+
+            }
             parents[0] = findlIndividualByRandom(algoUtils.AlgoRandom(sumFitness+1), population);
             parents[1] = findlIndividualByRandom(algoUtils.AlgoRandom(sumFitness+1), population);
 
