@@ -95,13 +95,18 @@ namespace SitPlanner.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CapacityOfPeople,MinCapacityOfPeople,TableType,EventId")] Table table)
+        public async Task<IActionResult> Create([Bind("Id,CapacityOfPeople,MinCapacityOfPeople,TableType,EventId,amountOfTables")] Table table)
         {
+
             table.EventId = MyGlobals.GlobalEventID;
             if (ModelState.IsValid)
             {
-                _context.Add(table);
-                await _context.SaveChangesAsync();
+                for (int i = 0; i < table.amountOfTables; i++)
+                {                    
+                    var ta = new Table(table);
+                    _context.Add(ta);
+                    await _context.SaveChangesAsync();
+                }
                 return RedirectToAction(nameof(Index));
             }
             ViewData["EventId"] = new SelectList(_context.Event, "Id", "Name", table.EventId);

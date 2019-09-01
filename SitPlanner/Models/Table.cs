@@ -1,4 +1,5 @@
-﻿using SitPlanner.Models.Enums;
+﻿using Microsoft.AspNetCore.Mvc;
+using SitPlanner.Models.Enums;
 
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,16 @@ namespace SitPlanner.Models
 {
     public class Table
     {
+        public Table() { }
+
+        public Table(Table table)
+        {
+            this.amountOfTables = table.amountOfTables;
+            this.CapacityOfPeople = table.CapacityOfPeople;
+            this.MinCapacityOfPeople = table.MinCapacityOfPeople;
+            this.TableType = table.TableType;
+            this.EventId = table.EventId;
+        }
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Please provide table capacity")]
@@ -27,6 +38,10 @@ namespace SitPlanner.Models
         
         public int EventId { get; set; }
         public virtual Event Event { get; set; }
+
+        [NotMapped]
+        [Display(Name = "How many tables?")]
+        public int amountOfTables { get; set; }
 
         public enum TableTypeEnum
         {
