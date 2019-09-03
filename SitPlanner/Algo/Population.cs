@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SitPlanner.Algo
@@ -40,19 +41,62 @@ namespace SitPlanner.Algo
         //Calculate fitness of each individual in single population
         public void CalculateIndividualsFitness()
         {
-            for (int i = 0; i < population.Length; i++)
+        //    List<Thread> threads = new List<Thread>();
+        //    for (int i = 0; i < population.Length; i++)
+        //    {
+        //        Thread t = new Thread(() => population[i].CalculateFitness());
+        //        t.Start();
+        //        threads.Add(t);
+        //        //population[i].CalculateFitness();
+        //    }
+        //    foreach (Thread thread in threads)
+        //    {
+        //        thread.Join();
+        //    }
+        //}
+
+            for (int i = 0; i<population.Length; i++)
             {
                 population[i].CalculateFitness();
-            }
-        }
+                if (population[i].fitness == Algo.AlgoConsts.fitnessBestResult)
+                {
 
-        public void runMutation()
+                }
+                else if (population[i].fitness > Algo.AlgoConsts.fitnessBestResult - 2000)
+                {
+                    
+                }
+                else if (population[i].fitness > Algo.AlgoConsts.fitnessBestResult - 3000)
+                {
+
+                }
+            }
+}
+
+public void runMutation()
         {
+            if(this.population.Length <= 0)
+            {
+
+            }
             int randomeIndividualId = algoUtils.AlgoRandom(this.population.Length);
+            int randomeIndividualId2 = algoUtils.AlgoRandom(this.population.Length);
+            if (randomeIndividualId <= 0)
+            {
+
+            }
             int randomeGenId = algoUtils.AlgoRandom(this.population[randomeIndividualId].gens.Length);
+            int randomeGenId2 = algoUtils.AlgoRandom(this.population[randomeIndividualId].gens.Length);
+            if (algoDb.tables.Count <= 0)
+            {
+                
+            }
             int randomeTableId = algoUtils.AlgoRandom(algoDb.tables.Count);
+            int randomeTableId2 = algoUtils.AlgoRandom(algoDb.tables.Count);
             Invitee genInvitee = this.population[randomeIndividualId].gens[randomeGenId].invitee;
+            Invitee genInvitee2 = this.population[randomeIndividualId2].gens[randomeGenId2].invitee;
             this.population[randomeIndividualId].gens[randomeGenId] = new Gen(genInvitee, algoDb.tables[randomeTableId]);
+            this.population[randomeIndividualId2].gens[randomeGenId2] = new Gen(genInvitee2, algoDb.tables[randomeTableId2]);
         }
 
         private void cloneIndividuals(Individual[] individuals)
