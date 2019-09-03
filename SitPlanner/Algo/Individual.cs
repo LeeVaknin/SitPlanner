@@ -39,14 +39,16 @@ namespace SitPlanner.Algo
         {
             //initialize 
             this.algoDb = algoDb;
-            var invitessList = new List<Invitee>(algoDb.invitees);
+            this.invitees = new List<Invitee>(algoDb.invitees);
+            //var invitessList = new List<Invitee>(algoDb.invitees);
             this.tables = new List<Table>(algoDb.tables);
-            this.invitessAmount = invitessList.Count;
+            this.invitessAmount = this.invitees.Count;
+            //this.invitessAmount = invitessList.Count;
             this.tablesAmount = tables.Count;
             gens = new Gen[invitessAmount];
 
-
-            this.invitees = invitessList.OrderBy(a => Guid.NewGuid()).ToList();
+            //Balagan in the list
+            //this.invitees = invitessList.OrderBy(a => Guid.NewGuid()).ToList();
             
 
       /*      //generate gens list - all invitess with random tables
